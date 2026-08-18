@@ -1,0 +1,7 @@
+title: TECH 65000
+
+# The default Jupyter Book theme provides the book-style layout.
+html:
+  use_edit_page_button: false
+  use_repository_button: false
+  use_issues_button: false

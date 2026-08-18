@@ -1,0 +1,9 @@
+format: jb-book
+root: index
+parts:
+  - caption: Lectures
+    chapters:
+      - file: lectures/mathematical-foundations
+  - caption: Code
+    chapters:
+      - file: codes/intro-to-python
