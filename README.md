@@ -1,4 +1,4 @@
-# TLI 65000
+# TECH 65000
 
 Book-style course site built with Jupyter Book and deployed with GitHub Pages.
 
