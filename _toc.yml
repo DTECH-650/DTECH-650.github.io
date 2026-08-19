@@ -1,2 +1,11 @@
 format: jb-book
 root: index
+parts:
+  - caption: Lectures
+    chapters:
+      - file: lectures/lecture-1-mathematical_foundations
+      - file: lectures/lecture-2-probability-foundations
+      - file: lectures/lecture-3-random-variables-and-distributions
+  - caption: Code
+    chapters:
+      - file: codes/intro-to-python

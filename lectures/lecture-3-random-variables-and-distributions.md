@@ -1,4 +1,4 @@
-# Random Variables and Distributions
+# Lecture 3 - Random Variables and Distributions
 
 This tutorial extends Probability Foundations from discrete probability to continuous random variables and probability distributions. The central modeling idea is that uncertainty can be represented with probability distributions, learning can be framed as inference from data, and many machine learning models can be built by choosing a distributional form and fitting its parameters.
 
