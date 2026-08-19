@@ -2,7 +2,3 @@ _build/
 .DS_Store
 .ipynb_checkpoints/
 .venv/
-
-# Course content is kept local until it is ready to publish.
-/codes/
-/lectures/
