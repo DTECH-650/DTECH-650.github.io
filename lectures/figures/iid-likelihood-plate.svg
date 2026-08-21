@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="280" viewBox="0 0 720 280" role="img" aria-labelledby="title description">
+  <title id="title">Plate diagram for IID observations</title>
+  <desc id="description">A shared fixed but unknown parameter theta points to an observed variable x sub n inside a plate labeled n equals 1 through N.</desc>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+    </marker>
+  </defs>
+
+  <rect x="1" y="1" width="718" height="278" rx="12" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+
+  <rect x="315" y="34" width="320" height="204" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="3"/>
+  <text x="610" y="224" text-anchor="end" font-family="Arial, sans-serif" font-size="19" fill="#334155">n = 1, …, N</text>
+
+  <rect x="68" y="90" width="142" height="72" rx="36" fill="#fef3c7" stroke="#b45309" stroke-width="3"/>
+  <text x="139" y="122" text-anchor="middle" dominant-baseline="middle" font-family="Georgia, serif" font-size="31" fill="#78350f">θ</text>
+  <text x="139" y="147" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#78350f">fixed, unknown</text>
+
+  <line x1="210" y1="126" x2="394" y2="126" stroke="#374151" stroke-width="3" marker-end="url(#arrowhead)"/>
+
+  <circle cx="442" cy="126" r="45" fill="#cbd5e1" stroke="#334155" stroke-width="3"/>
+  <text x="442" y="127" text-anchor="middle" dominant-baseline="middle" font-family="Georgia, serif" font-size="29" fill="#0f172a">xₙ</text>
+  <text x="442" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#334155">observed</text>
+
+  <text x="475" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" font-weight="bold" fill="#334155">IID repetitions</text>
+</svg>

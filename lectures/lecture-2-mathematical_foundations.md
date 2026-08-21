@@ -1,15 +1,15 @@
-# Lecture 1 - Mathematical Foundations
+# Lecture 2 - Mathematical Foundations
 
-This lecture reviews the linear algebra and multivariable calculus used throughout the course. An additional introduction to python notebook is available here: .
+This lecture reviews the linear algebra and multivariable calculus used throughout the course. An additional introduction to python notebook is available in the Code folder.
 
-## Learning objectives
+<!-- ## Learning objectives
 
 After completing this lecture, you should be able to:
 
 - identify the dimensions of vectors and matrices;
 - compute dot products, matrix products, and common norms;
 - interpret eigenvectors and eigenvalues; and
-- compute derivatives, partial derivatives, and gradients.
+- compute derivatives, partial derivatives, and gradients. -->
 
 ## Scalars, vectors, and matrices
 
@@ -284,10 +284,175 @@ $$
 
 where $\alpha>0$ is the step size.
 
-## Practice problems
+## Practice Problems and Solutions
 
-1. Compute the dot product of $[2,-1,3]^T$ and $[4,2,0]^T$.
-2. Multiply $\begin{bmatrix}1&0\\-2&3\end{bmatrix}$ by $[4,5]^T$.
-3. Find the $1$-, $2$-, and $\infty$-norms of $[-2,1,2]^T$.
-4. Find the eigenvalues and eigenvectors of $\begin{bmatrix}4&0\\0&-1\end{bmatrix}$.
-5. For $f(x,y)=x^2+3xy+y^2$, compute both partial derivatives and the gradient.
+### 1. Dot Product
+
+Compute the dot product of $[2,-1,3]^T$ and $[4,2,0]^T$.
+
+```{admonition} Solution
+:class: dropdown
+Multiply corresponding components and add:
+
+$$
+\begin{aligned}
+\begin{bmatrix}2\\-1\\3\end{bmatrix}^{\mathsf T}
+\begin{bmatrix}4\\2\\0\end{bmatrix}
+&=(2)(4)+(-1)(2)+(3)(0)\\
+&=8-2+0\\
+&=6.
+\end{aligned}
+$$
+```
+
+### 2. Matrix--Vector Multiplication
+
+Multiply $\begin{bmatrix}1&0\\-2&3\end{bmatrix}$ by $[4,5]^T$.
+
+```{admonition} Solution
+:class: dropdown
+Take the dot product of each matrix row with the vector:
+
+$$
+\begin{aligned}
+\begin{bmatrix}
+1&0\\
+-2&3
+\end{bmatrix}
+\begin{bmatrix}4\\5\end{bmatrix}
+&=
+\begin{bmatrix}
+(1)(4)+(0)(5)\\
+(-2)(4)+(3)(5)
+\end{bmatrix}\\
+&=
+\begin{bmatrix}
+4\\
+-8+15
+\end{bmatrix}\\
+&=
+\begin{bmatrix}4\\7\end{bmatrix}.
+\end{aligned}
+$$
+```
+
+### 3. Vector Norms
+
+Find the $1$-, $2$-, and $\infty$-norms of $[-2,1,2]^T$.
+
+```{admonition} Solution
+:class: dropdown
+The $1$-norm is the sum of the absolute values:
+
+$$
+\|\mathbf{x}\|_1=|-2|+|1|+|2|=2+1+2=5.
+$$
+
+The $2$-norm is the square root of the sum of the squared components:
+
+$$
+\|\mathbf{x}\|_2
+=\sqrt{(-2)^2+1^2+2^2}
+=\sqrt{4+1+4}
+=3.
+$$
+
+The $\infty$-norm is the largest absolute component:
+
+$$
+\|\mathbf{x}\|_\infty
+=\max\{|-2|,|1|,|2|\}
+=2.
+$$
+```
+
+### 4. Eigenvalues and Eigenvectors
+
+Find the eigenvalues and eigenvectors of
+
+$$
+A=\begin{bmatrix}4&0\\0&-1\end{bmatrix}.
+$$
+
+```{admonition} Solution
+:class: dropdown
+The eigenvalues satisfy the characteristic equation
+
+$$
+\begin{aligned}
+\det(A-\lambda I)
+&=\det
+\begin{bmatrix}
+4-\lambda&0\\
+0&-1-\lambda
+\end{bmatrix}\\
+&=(4-\lambda)(-1-\lambda)=0.
+\end{aligned}
+$$
+
+Therefore, the eigenvalues are $\lambda_1=4$ and $\lambda_2=-1$.
+
+For $\lambda_1=4$,
+
+$$
+(A-4I)\mathbf{v}
+=\begin{bmatrix}0&0\\0&-5\end{bmatrix}
+\begin{bmatrix}v_1\\v_2\end{bmatrix}
+=\mathbf{0},
+$$
+
+which requires $v_2=0$. Thus, the corresponding eigenvectors are
+
+$$
+\mathbf{v}_1=t\begin{bmatrix}1\\0\end{bmatrix},
+\qquad t\neq0.
+$$
+
+For $\lambda_2=-1$,
+
+$$
+(A+I)\mathbf{v}
+=\begin{bmatrix}5&0\\0&0\end{bmatrix}
+\begin{bmatrix}v_1\\v_2\end{bmatrix}
+=\mathbf{0},
+$$
+
+which requires $v_1=0$. Thus, the corresponding eigenvectors are
+
+$$
+\mathbf{v}_2=t\begin{bmatrix}0\\1\end{bmatrix},
+\qquad t\neq0.
+$$
+```
+
+### 5. Partial Derivatives and Gradient
+
+For $f(x,y)=x^2+3xy+y^2$, compute both partial derivatives and the gradient.
+
+```{admonition} Solution
+:class: dropdown
+When differentiating with respect to $x$, treat $y$ as a constant:
+
+$$
+\frac{\partial f}{\partial x}
+=2x+3y.
+$$
+
+When differentiating with respect to $y$, treat $x$ as a constant:
+
+$$
+\frac{\partial f}{\partial y}
+=3x+2y.
+$$
+
+The gradient collects these partial derivatives into a column vector:
+
+$$
+\nabla f(x,y)
+=
+\begin{bmatrix}
+2x+3y\\
+3x+2y
+\end{bmatrix}.
+$$
+```

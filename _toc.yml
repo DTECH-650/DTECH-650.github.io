@@ -3,9 +3,16 @@ root: index
 parts:
   - caption: Lectures
     chapters:
-      - file: lectures/lecture-1-mathematical_foundations
-      - file: lectures/lecture-2-probability-foundations
-      - file: lectures/lecture-3-random-variables-and-distributions
+      - file: lectures/lecture-1-motivation
+      - file: lectures/lecture-2-mathematical_foundations
+      - file: lectures/lecture-3-probability-foundations
+      - file: lectures/lecture-4-discrete-random-variables
+      - file: lectures/lecture-5-random-variables-and-distributions
+      - file: lectures/lecture-6-distributions
+      - file: lectures/lecture-7-frequentist-parameter-learning
+      - file: lectures/lecture-8-information-theory
+      - file: lectures/bayesian
   - caption: Code
     chapters:
       - file: codes/intro-to-python
+      - file: codes/distributions
