@@ -46,7 +46,7 @@ $$
 P(a<X\leq b)=F(b)-F(a).
 $$
 
-![A probability density function and its cumulative distribution function.](figures/continuous-pdf-cdf.png)
+![A probability density function and its cumulative distribution function.](../figures/continuous-pdf-cdf.png)
 
 *Fig. 1. A PDF assigns density, and probability is area under the curve. A CDF gives cumulative probability up to a point.*
 
@@ -317,7 +317,7 @@ $$
 
 The diagonal entries are the variances of the individual components, and the off-diagonal entries are their pairwise covariances. The covariance matrix is symmetric and positive semidefinite.
 
-![Scatter plot with an ellipse showing positive covariance.](figures/covariance-ellipse.png)
+![Scatter plot with an ellipse showing positive covariance.](../figures/covariance-ellipse.png)
 
 *Fig. 2. Covariance describes how random variables vary together. For two-dimensional Gaussian data, the covariance matrix controls the orientation and width of the elliptical contours.*
 

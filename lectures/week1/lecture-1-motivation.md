@@ -6,18 +6,57 @@ Statistical analysis is the process of using limited, noisy data to make defensi
 
 In a traditional computer program, a developer specifies the rules that transform an input into an output. This works well when the rules are known and can be written down precisely. For example, a program can calculate sales tax from a known tax rate or sort a list using a prescribed algorithm.
 
-Many important tasks do not have such a convenient set of rules. Consider trying to:
+Many important problems do not have such a convenient rulebook. The difficulty is not that we have failed to write enough instructions. It is that the useful pattern is buried under variation, noise, interacting factors, or behavior that changes over time.
 
-- recognize a handwritten digit;
-- predict the demand for a product;
-- identify a defective component from sensor measurements;
-- estimate the risk of a medical outcome;
-- filter unwanted email; or
-- forecast the energy use of a building.
+::::{grid} 1 1 2 2
+:gutter: 3
 
-People may perform some of these tasks intuitively, but converting that intuition into a complete list of reliable rules can be extremely difficult. The appearance of a handwritten digit changes with the writer, pen, scale, rotation, and image quality. Product demand depends on many interacting variables. Measurements contain noise, and future cases are rarely identical to past cases.
+:::{grid-item-card} Handwritten digit recognition
+Imagine writing rules that tell a computer whether an image contains a 3, 5, or 8. One person writes a narrow 3, another makes it almost circular, and a third leaves the loops partly open. Digits may be shifted, rotated, faint, smudged, or written with different pens. Even the same person does not produce an identical image twice.
 
-Machine learning offers a different approach: provide examples and allow an algorithm to infer a set of useful patterns from them that can be used for new data.
+A rule for every possible stroke and exception would quickly become unmanageable. Pattern recognition instead learns from many labeled examples which visual differences matter for identifying a digit and which differences can safely be ignored.
+:::
+
+:::{grid-item-card} Did a process improvement actually work?
+A factory changes its cooling procedure and observes fewer defective parts the following week. It is tempting to declare the change successful. But perhaps that week's raw materials were better, production volume was lower, or the apparent improvement was ordinary random fluctuation.
+
+Statistical analysis helps separate a repeatable effect from coincidence. It asks how much evidence the data provide, how uncertain the estimated improvement is, and whether the conclusion is likely to apply beyond the particular week that was observed.
+:::
+
+:::{grid-item-card} Predicting equipment failure
+A machine may fail after a subtle combination of rising vibration, slightly higher temperature, unusual sound, heavy recent use, and its maintenance history. None of these measurements alone may cross an obvious alarm threshold.
+
+A collection of fixed “if–then” rules can miss interactions or trigger too many false alarms. Machine learning can use historical examples to discover combinations that tend to precede failure and estimate which machines require attention before a breakdown occurs.
+:::
+
+:::{grid-item-card} Detecting spam or fraud as behavior changes
+A rule that blocks every message containing “free” will reject legitimate email while missing scams that use different wording. A rule that flags every unusually large purchase will inconvenience customers and still miss a sequence of smaller fraudulent transactions.
+
+Spam senders and fraudsters also adapt once a rule becomes predictable. Data-driven systems can learn patterns involving many clues and can be updated as those patterns change, although their performance must continue to be monitored.
+:::
+
+::::
+
+### What these examples have in common
+
+These problems share several features:
+
+- valid cases can look very different from one another;
+- different categories can sometimes look deceptively similar;
+- measurements are incomplete, noisy, or affected by context;
+- several weak clues may become useful only when considered together;
+- the observed data contain both genuine structure and random variation; and
+- the system must work on future cases, not only the examples already seen.
+
+Rules remain valuable when requirements are exact—for example, enforcing a safety limit or validating the format of an identification number. The difficulty arises when we try to describe every legitimate variation and every possible exception in advance.
+
+This is where the three perspectives used in this course complement one another:
+
+- **Pattern recognition** identifies meaningful structure despite variation in how observations appear.
+- **Statistical analysis** asks whether an apparent pattern is supported by evidence rather than chance and communicates the uncertainty in a conclusion.
+- **Machine learning** uses examples to construct models that can make predictions or decisions for new cases.
+
+Instead of attempting to specify every rule by hand, we provide representative data, choose an appropriate model, and evaluate whether the learned pattern remains useful on observations it has not seen before.
 
 :::{admonition} The central objective
 :class: tip
@@ -119,7 +158,7 @@ The factor $1/2$ does not change the minimizing value. It is included because it
 
 ## Model complexity: too little, too much, or enough?
 
-```{figure} figures/polynomial_fits.png
+```{figure} ../figures/polynomial_fits.png
 ---
 name: polynomial-fits
 alt: Plots showing different $M$-order polynomials fitting the data (taken from Bishop)

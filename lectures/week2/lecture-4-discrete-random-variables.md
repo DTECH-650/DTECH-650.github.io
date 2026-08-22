@@ -28,7 +28,7 @@ p(x) \geq 0
 \sum_x p(x) = 1
 $$
 
-```{figure} figures/binomial-pmf.png
+```{figure} ../figures/binomial-pmf.png
 ---
 name: binomial-pmf
 alt: Bar chart of a binomial probability mass function for n equals 5 and p equals 0.4.

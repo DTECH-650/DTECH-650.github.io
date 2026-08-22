@@ -87,7 +87,7 @@ Using the die-roll events defined above:
 - $A \cap B = \{4,6\}$ because 4 and 6 are both even and at least 4.
 - $A \cup B = \{2,4,5,6\}$ because each of these outcomes is even, at least 4, or both.
 
-```{figure} figures/venn-events.png
+```{figure} ../figures/venn-events.png
 ---
 name: venn-events
 alt: Venn diagram showing events A and B as overlapping subsets inside a sample space.
@@ -125,7 +125,7 @@ Bertrand's paradox shows that probability questions can be ambiguous when the ra
 
 Different reasonable methods for choosing a "random chord" produce different answers. For example, choosing two random endpoints on the circumference is not the same procedure as choosing a random midpoint inside the circle.
 
-```{figure} figures/bertrand-paradox.png
+```{figure} ../figures/bertrand-paradox.png
 ---
 name: bertrand-paradox
 alt: Circle with an inscribed equilateral triangle and example chords.
@@ -296,7 +296,7 @@ The pieces have useful names:
 - $P(B)$ is the **evidence** or normalizing probability.
 - $P(A \mid B)$ is the **posterior** probability of $A$ after observing $B$.
 
-```{figure} figures/bayes-tree.png
+```{figure} ../figures/bayes-tree.png
 ---
 name: bayes-tree
 alt: Tree diagram showing disease status and positive or negative test results.

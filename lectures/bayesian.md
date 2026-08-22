@@ -35,6 +35,45 @@ This is the core Bayesian workflow:
 3. Compute or approximate the posterior.
 4. Use the posterior for prediction or decision-making.
 
+### Plate Notation for Repeated Observations
+
+A **plate** is a compact graphical notation for repeated variables. It belongs to the language of probabilistic graphical models, which will be developed formally in a later lecture. For now, it gives a concise picture of how one shared parameter generates multiple observations.
+
+![An unobserved parameter theta outside a plate points to a shaded observed variable x sub n inside a plate labeled n equals 1 through N.](figures/iid-likelihood-plate.svg)
+
+The rectangle encloses one representative observation $x_n$, and the label $n=1,\ldots,N$ indicates that the node is repeated $N$ times. In the diagram:
+
+- the unshaded node $\boldsymbol{\theta}$ is an unknown parameter with prior $p(\boldsymbol{\theta})$;
+- the shaded node $x_n$ is observed;
+- the arrow indicates that the distribution of $X_n$ depends on $\boldsymbol{\theta}$; and
+- $\boldsymbol{\theta}$ remains outside the plate because the same parameter is shared by every observation.
+
+If the observations are conditionally independent and identically distributed given $\boldsymbol{\theta}$, the likelihood factors as
+
+$$
+p(\mathcal{D}\mid\boldsymbol{\theta})
+=\prod_{n=1}^{N}p(x_n\mid\boldsymbol{\theta}).
+$$
+
+Combining this likelihood with the prior gives the joint distribution
+
+$$
+p(\boldsymbol{\theta},\mathcal{D})
+=p(\boldsymbol{\theta})
+\prod_{n=1}^{N}p(x_n\mid\boldsymbol{\theta}),
+$$
+
+and therefore
+
+$$
+p(\boldsymbol{\theta}\mid\mathcal{D})
+\propto
+p(\boldsymbol{\theta})
+\prod_{n=1}^{N}p(x_n\mid\boldsymbol{\theta}).
+$$
+
+The plate records the assumed repetition and conditional-independence structure; it does not prove that observations are actually IID. Measurements from the same subject, nearby times, or connected systems may require a model with explicit dependencies.
+
 ### UAV Example: Sensor Bias
 
 Suppose a UAV's barometer has an unknown altitude bias $b$. Before flight, calibration data suggest the bias is probably near zero, so we choose a prior such as:

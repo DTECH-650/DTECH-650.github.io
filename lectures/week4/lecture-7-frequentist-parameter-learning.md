@@ -2,7 +2,7 @@
 
 The distributions introduced earlier contain parameters such as a Bernoulli success probability $\mu$, a Gaussian mean $\mu$, or a Gaussian variance $\sigma^2$. Until now, those parameters have usually been given. We now reverse the problem: the data are observed, but the parameter values that generated them are unknown.
 
-This lecture develops the frequentist approach to parameter learning. We distinguish probability from likelihood, use the independent and identically distributed assumption to factor a data-set likelihood, introduce plate notation, and derive maximum-likelihood estimates for Bernoulli and Gaussian models.
+This lecture develops the frequentist approach to parameter learning. We distinguish probability from likelihood, use the independent and identically distributed assumption to factor a data-set likelihood, and derive maximum-likelihood estimates for Bernoulli and Gaussian models.
 <!-- 
 ## Learning objectives
 
@@ -10,7 +10,7 @@ After completing this lecture, you should be able to:
 
 - explain what it means to treat a parameter as fixed but unknown;
 - distinguish a probability distribution from a likelihood function;
-- factor an IID data-set likelihood and interpret its plate diagram;
+- factor an IID data-set likelihood;
 - explain why log-likelihood is usually easier to work with than likelihood;
 - derive the Bernoulli maximum-likelihood estimate; and
 - derive the Gaussian maximum-likelihood estimates of the mean and variance. -->
@@ -167,28 +167,6 @@ $$
 \mathcal{L}(\boldsymbol{\theta};\mathcal{D})
 =\prod_{n=1}^{N}p(x_n\mid\boldsymbol{\theta}).
 $$
-
-### Plate notation
-
-A **plate** is a compact graphical notation for repeated variables. Instead of drawing $N$ separate observation nodes, a rectangle encloses one representative node $x_n$, and the label $n=1,\ldots,N$ states how many times it is repeated.
-
-```{figure} figures/iid-likelihood-plate.svg
----
-name: iid-likelihood-plate
-alt: An unknown parameter theta outside a plate points to a shaded observed variable x sub n inside a plate labeled n equals 1 through N.
-width: 80%
----
-The shared parameter $\boldsymbol{\theta}$ controls every observed variable $x_n$. The plate represents $N$ conditionally independent repetitions and therefore the product $\prod_{n=1}^{N}p(x_n\mid\boldsymbol{\theta})$.
-```
-
-In this diagram:
-
-- the rectangle is the plate;
-- the shaded node indicates an observed variable;
-- the arrow means that the distribution of $X_n$ depends on $\boldsymbol{\theta}$; and
-- $\boldsymbol{\theta}$ is outside the plate because one parameter value is shared by every observation.
-
-The diagram records an assumption, not an empirical guarantee. Repeated measurements from the same person, measurements close together in time, or observations from connected systems may not be independent. Incorrectly treating dependent data as IID can make an analysis appear more certain than it should.
 
 ## Maximum likelihood estimation
 
@@ -529,7 +507,7 @@ Model checking and knowledge of how the data were collected are therefore as imp
 
 - Frequentist parameter learning treats the parameter as fixed but unknown and the data as the outcome of a repeatable random process.
 - Probability fixes the parameter and varies possible data; likelihood fixes the observed data and varies candidate parameter values.
-- Under an IID assumption, the data-set likelihood factors into a product of one-observation distributions. Plate notation represents this repetition compactly.
+- Under an IID assumption, the data-set likelihood factors into a product of one-observation distributions.
 - The log-likelihood converts the IID product into a sum without changing the maximizer.
 - The Bernoulli MLE is the observed fraction of successes.
 - The Gaussian MLEs are the sample mean and the average squared deviation from that mean.
@@ -612,14 +590,14 @@ A company records one measurement every second from the same machine and models 
 
 1. What two distinct claims does the IID assumption make?
 2. Give one reason the independence claim may fail.
-3. Does drawing a plate diagram prove that the measurements are IID?
+3. Does writing an IID product factorization prove that the measurements are IID?
 
 ```{admonition} Solution
 :class: dropdown
 
 The assumption states that all measurements have the same Gaussian distribution with shared parameters and that, conditional on those parameters, the measurements are independent.
 
-Independence may fail because measurements close together in time can share operating conditions or exhibit autocorrelation. A plate diagram records the assumed factorization; it does not establish that the assumption is true. The dependence structure must be justified and checked using knowledge of the process and appropriate diagnostics.
+Independence may fail because measurements close together in time can share operating conditions or exhibit autocorrelation. Writing the product factorization records the modeling assumption; it does not establish that the assumption is true. The dependence structure must be justified and checked using knowledge of the process and appropriate diagnostics.
 ```
 
 ## Reading

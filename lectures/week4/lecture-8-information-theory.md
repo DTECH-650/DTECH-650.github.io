@@ -606,122 +606,34 @@ Let $X$ be a fair bit. Let $Y=X$ with probability $0.9$ and $Y=1-X$ with probabi
 :::{admonition} Solution
 :class: dropdown
 
-First write the conditional probabilities implied by the problem:
+Because $X$ is fair and the flip mechanism is symmetric, $Y$ is also fair:
+
+$$
+H(Y)=1\text{ bit}.
+$$
+
+Once $X$ is known, the only uncertainty is whether the bit was flipped:
 
 $$
 \begin{aligned}
-P(Y=0\mid X=0)&=0.9,
-&
-P(Y=1\mid X=0)&=0.1,\\
-P(Y=1\mid X=1)&=0.9,
-&
-P(Y=0\mid X=1)&=0.1.
-\end{aligned}
-$$
-
-Because $X$ is fair,
-
-$$
-P(X=0)=P(X=1)=0.5.
-$$
-
-Multiplying each conditional probability by the corresponding probability of $X$ gives the joint distribution:
-
-| | $Y=0$ | $Y=1$ | $P(X=x)$ |
-|---|---:|---:|---:|
-| $X=0$ | $(0.5)(0.9)=0.45$ | $(0.5)(0.1)=0.05$ | $0.50$ |
-| $X=1$ | $(0.5)(0.1)=0.05$ | $(0.5)(0.9)=0.45$ | $0.50$ |
-| $P(Y=y)$ | $0.50$ | $0.50$ | $1.00$ |
-
-**Step 1: Find $H(Y)$**
-
-Sum each column of the joint table to obtain the marginal distribution of $Y$:
-
-$$
-\begin{aligned}
-P(Y=0)&=0.45+0.05=0.5,\\
-P(Y=1)&=0.05+0.45=0.5.
-\end{aligned}
-$$
-
-Thus, $Y$ is also a fair bit. Its entropy is
-
-$$
-\begin{aligned}
-H(Y)
-&=-\sum_y P(Y=y)\log_2P(Y=y)\\
-&=-0.5\log_2(0.5)-0.5\log_2(0.5)\\
-&=1\text{ bit}.
-\end{aligned}
-$$
-
-Before learning $X$, there is one bit of uncertainty about $Y$.
-
-**Step 2: Find $H(Y\mid X)$**
-
-If $X=0$, then $Y$ equals 0 with probability $0.9$ and 1 with probability $0.1$. Therefore,
-
-$$
-\begin{aligned}
-H(Y\mid X=0)
+H(Y\mid X)
 &=-0.9\log_2(0.9)-0.1\log_2(0.1)\\
 &\approx0.4690\text{ bits}.
 \end{aligned}
 $$
 
-If $X=1$, the labels of the two outcomes are reversed, but their probabilities remain $0.9$ and $0.1$. Entropy depends on the probabilities rather than the outcome names, so
-
-$$
-H(Y\mid X=1)\approx0.4690\text{ bits}.
-$$
-
-Conditional entropy averages these two quantities over the possible values of $X$:
-
-$$
-\begin{aligned}
-H(Y\mid X)
-&=\sum_xP(X=x)H(Y\mid X=x)\\
-&=(0.5)(0.4690)+(0.5)(0.4690)\\
-&=0.4690\text{ bits}.
-\end{aligned}
-$$
-
-Even after $X$ is known, some uncertainty about $Y$ remains because there is a $10\%$ probability that the bit was flipped.
-
-**Step 3: Find $I(X;Y)$**
-
-Mutual information is the reduction in uncertainty about $Y$ obtained by observing $X$:
+Thus,
 
 $$
 \begin{aligned}
 I(X;Y)
 &=H(Y)-H(Y\mid X)\\
-&=1-0.4690\\
+&\approx1-0.4690\\
 &=0.5310\text{ bits}.
 \end{aligned}
 $$
 
-We can verify the result directly from the joint distribution:
-
-$$
-I(X;Y)
-=\sum_x\sum_y p(x,y)
-\log_2\frac{p(x,y)}{p(x)p(y)}.
-$$
-
-All four products of the marginals equal $(0.5)(0.5)=0.25$. The two matching outcomes have joint probability $0.45$, and the two mismatching outcomes have joint probability $0.05$. Hence,
-
-$$
-\begin{aligned}
-I(X;Y)
-&=2(0.45)\log_2\left(\frac{0.45}{0.25}\right)
-+2(0.05)\log_2\left(\frac{0.05}{0.25}\right)\\
-&=0.9\log_2(1.8)+0.1\log_2(0.2)\\
-&\approx0.5310\text{ bits}.
-\end{aligned}
-$$
-
-Therefore, knowing $X$ removes about $0.531$ of the original 1 bit of uncertainty about $Y$, while the noisy flip leaves about $0.469$ bits unresolved.
+Observing $X$ removes about $0.531$ bits of uncertainty about $Y$.
 :::
 
 ### 4. Empirical cross-entropy

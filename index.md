@@ -60,7 +60,7 @@ By the end of the course, students should be able to:
 
 [sbrunswi@purdue.edu](mailto:sbrunswi@purdue.edu)
 
-**Office hours:** Fridays, 3–4 p.m. Eastern Time
+**Office hours:** Fridays, 3:30 – 4:30 p.m. Eastern Time
 
 The online meeting link is available in Brightspace.
 :::
@@ -70,7 +70,7 @@ The online meeting link is available in Brightspace.
 
 [jshreeku@purdue.edu](mailto:jshreeku@purdue.edu)
 
-**Office hours:** Fridays, 3–4 p.m. Eastern Time
+**Office hours:** Fridays, 3:30 – 4:30 p.m. Eastern Time
 
 The online meeting link is available in Brightspace.
 :::
