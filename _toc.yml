@@ -23,6 +23,10 @@ parts:
         sections:
           - file: lectures/week4/lecture-7-frequentist-parameter-learning
           - file: lectures/week4/lecture-8-information-theory
+      - file: lectures/week5/index
+        title: Week 5
+        sections:
+          - file: lectures/week5/lecture-9-sampling-statistics.md
       - file: lectures/bayesian
   - caption: Code
     chapters:
