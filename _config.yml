@@ -1,5 +1,12 @@
 title: TECH 65000
 
+# Build only pages included in the selected table of contents. This keeps
+# local environments and unpublished course material out of the site build.
+only_build_toc_files: true
+exclude_patterns:
+  - .venv
+  - .venv/**
+
 # The default Jupyter Book theme provides the book-style layout.
 html:
   use_edit_page_button: false

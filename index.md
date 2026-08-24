@@ -7,8 +7,29 @@
 :::{admonition} Welcome
 :class: tip
 
-This site is the public home for TECH 65000. Enrolled students should use Brightspace for announcements, meeting links, access codes for Piazza and Gradescope, and assignments.
+This site is the public home for TECH 65000. Enrolled students should use Brightspace for announcements, meeting links, access codes for Piazza and Gradescope, and assignments. Lectures will be released here the Monday of every week, with additional recorded videos as necessary on Brightspace. An overview of the syllabus is below. A more detailed syllabus is on Simple Syllabus on Brightspace.
 :::
+
+## Course schedule (subject to change)
+
+| Week | Dates | Topics |
+| :---: | :---: | :--- |
+| 1 | 08/24/26 – 08/30/26 | Motivation, mathematical toolkit, and Python |
+| 2 | 08/31/26 – 09/06/26 | Probability foundations |
+| 3 | 09/07/26 – 09/13/26 | Random variables and distributions |
+| 4 | 09/14/26 – 09/20/26 | Information theory<br>Frequentist parameter learning: likelihood and MLE |
+| 5 | 09/21/26 – 09/27/26 | Classical frequentist inference and hypothesis testing |
+| 6 | 09/28/26 – 10/04/26 | ML basics and workflow |
+| 7 | 10/05/26 – 10/11/26 | Exponential families<br>Bayesian inference |
+| 8 | 10/12/26 – 10/18/26 | Bayesian inference |
+| 9 | 10/19/26 – 10/25/26 | Probabilistic graphical models |
+| 10 | 10/26/26 – 11/01/26 | Linear models for regression |
+| 11 | 11/02/26 – 11/08/26 | Regularized and Bayesian linear regression |
+| 12 | 11/09/26 – 11/15/26 | Linear models for classification and generalized linear models |
+| 13 | 11/16/26 – 11/22/26 | Linear models for classification and generalized linear models |
+| 14 | 11/23/26 – 11/29/26 | Introduction to neural networks |
+| 15 | 11/30/26 – 12/06/26 | Backpropagation |
+| 16 | 12/07/26 – 12/13/26 | Class wrap-up and review |
 
 ## Course overview
 
@@ -60,7 +81,7 @@ By the end of the course, students should be able to:
 
 [sbrunswi@purdue.edu](mailto:sbrunswi@purdue.edu)
 
-**Office hours:** Fridays, 3–4 p.m. Eastern Time
+**Office hours:** Fridays, 3:30 – 4:30 p.m. Eastern Time
 
 The online meeting link is available in Brightspace.
 :::
@@ -70,7 +91,7 @@ The online meeting link is available in Brightspace.
 
 [jshreeku@purdue.edu](mailto:jshreeku@purdue.edu)
 
-**Office hours:** Fridays, 3–4 p.m. Eastern Time
+**Office hours:** Fridays, 3:30 – 4:30 p.m. Eastern Time
 
 The online meeting link is available in Brightspace.
 :::
