@@ -8,10 +8,15 @@ In a traditional computer program, a developer specifies the rules that transfor
 
 Many important problems do not have such a convenient rulebook. The difficulty is not that we have failed to write enough instructions. It is that the useful pattern is buried under variation, noise, interacting factors, or behavior that changes over time.
 
+![Examples of handwritten digits from the MNIST test dataset.](../figures/mnist.png)
+
+*Image credit: [Suvanjanprasai, “MNIST dataset example”](https://commons.wikimedia.org/wiki/File:MNIST_dataset_example.png), via Wikimedia Commons, licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Unmodified.*
+
 ::::{grid} 1 1 2 2
 :gutter: 3
 
 :::{grid-item-card} Handwritten digit recognition
+
 Imagine writing rules that tell a computer whether an image contains a 3, 5, or 8. One person writes a narrow 3, another makes it almost circular, and a third leaves the loops partly open. Digits may be shifted, rotated, faint, smudged, or written with different pens. Even the same person does not produce an identical image twice.
 
 A rule for every possible stroke and exception would quickly become unmanageable. Pattern recognition instead learns from many labeled examples which visual differences matter for identifying a digit and which differences can safely be ignored.
