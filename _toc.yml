@@ -8,27 +8,30 @@ parts:
         sections:
           - file: lectures/week1/lecture-1-motivation
           - file: lectures/week1/lecture-2-mathematical_foundations
-      # - file: lectures/week2/index
-      #   title: Week 2
-      #   sections:
-      #     - file: lectures/week2/lecture-3-probability-foundations
-      #     - file: lectures/week2/lecture-4-discrete-random-variables
-      # - file: lectures/week3/index
-      #   title: Week 3
-      #   sections:
-      #     - file: lectures/week3/lecture-5-random-variables-and-distributions
-      #     - file: lectures/week3/lecture-6-distributions
-      # - file: lectures/week4/index
-      #   title: Week 4
-      #   sections:
-      #     - file: lectures/week4/lecture-7-frequentist-parameter-learning
-      #     - file: lectures/week4/lecture-8-information-theory
-      # - file: lectures/week5/index
-      #   title: Week 5
-      #   sections:
-      #     - file: lectures/week5/lecture-9-sampling-statistics.md
-      # - file: lectures/bayesian
+      - file: lectures/week2/index
+        title: Week 2
+        sections:
+          - file: lectures/week2/lecture-3-probability-foundations
+          - file: lectures/week2/lecture-4-discrete-random-variables
+      - file: lectures/week3/index
+        title: Week 3
+        sections:
+          - file: lectures/week3/lecture-5-random-variables-and-distributions
+          - file: lectures/week3/lecture-6-distributions
+      - file: lectures/week4/index
+        title: Week 4
+        sections:
+          - file: lectures/week4/lecture-7-frequentist-parameter-learning
+          - file: lectures/week4/lecture-8-information-theory
+      - file: lectures/week5/index
+        title: Week 5
+        sections:
+          - file: lectures/week5/lecture-9-sampling-statistics.md
+      - file: lectures/bayesian
   - caption: Code
     chapters:
       - file: codes/intro-to-python
-      # - file: codes/distributions
+      - file: codes/distributions
+  - caption: Assignments
+    chapters:
+      - file: assignments/assignment1

@@ -337,6 +337,116 @@ For common distributions:
 | Geometric$(p)$ | $1/p$ | $(1-p)/p^2$ |
 | Poisson$(\lambda)$ | $\lambda$ | $\lambda$ |
 
+### Law of Total Expectation
+
+Sometimes the distribution of $X$ depends on another random variable $Z$. For example, the number of requests received by a server may depend on whether the server is under normal or heavy load. If we know the conditional expectation of $X$ within each possible state of $Z$, we can recover the overall expectation by averaging those conditional expectations:
+
+$$
+\boxed{E[X]=E_Z\!\left[E[X\mid Z]\right]}.
+$$
+
+When $Z$ is discrete, this becomes
+
+$$
+E[X]
+=\sum_z E[X\mid Z=z]P(Z=z).
+$$
+
+This result is called the **law of total expectation**, or sometimes the **tower property**. It says that we may first compute an average within each group and then average those group means according to how often the groups occur.
+
+More generally, for any function $g$,
+
+$$
+E[g(X)]
+=E_Z\!\left[E[g(X)\mid Z]\right].
+$$
+
+### Law of Total Variance
+
+There is a corresponding result for variance, but simply averaging the conditional variances is not enough. Overall variability can arise from two sources:
+
+1. variation of $X$ **within** each state of $Z$, and
+2. variation of the conditional means **between** the states of $Z$.
+
+The **law of total variance** combines both sources:
+
+$$
+\boxed{
+\operatorname{Var}(X)
+=E_Z\!\left[\operatorname{Var}(X\mid Z)\right]
++\operatorname{Var}_Z\!\left(E[X\mid Z]\right)
+}.
+$$
+
+The first term is the average within-group variance. The second term is the variance of the group means. It is zero only when all states of $Z$ have the same conditional expectation.
+
+The formula follows from
+
+$$
+E[X^2\mid Z]
+=\operatorname{Var}(X\mid Z)+(E[X\mid Z])^2.
+$$
+
+Taking expectations and subtracting $(E[X])^2$ gives the two terms in the law of total variance.
+
+### Example: Requests under changing server load
+
+Suppose $Z$ records the server load:
+
+$$
+P(Z=\text{normal})=0.8,
+\qquad
+P(Z=\text{busy})=0.2.
+$$
+
+Let $X$ be the number of requests received in one minute, with
+
+$$
+X\mid Z=\text{normal}\sim\operatorname{Poisson}(2)
+$$
+
+and
+
+$$
+X\mid Z=\text{busy}\sim\operatorname{Poisson}(6).
+$$
+
+Because the expectation of a Poisson random variable equals its rate, the law of total expectation gives
+
+$$
+\begin{aligned}
+E[X]
+&=(0.8)(2)+(0.2)(6)\\
+&=2.8.
+\end{aligned}
+$$
+
+The conditional variances are also 2 and 6. Therefore, the average within-mode variance is
+
+$$
+E[\operatorname{Var}(X\mid Z)]
+=(0.8)(2)+(0.2)(6)
+=2.8.
+$$
+
+The variance between the two conditional means is
+
+$$
+\begin{aligned}
+\operatorname{Var}(E[X\mid Z])
+&=(0.8)(2-2.8)^2+(0.2)(6-2.8)^2\\
+&=2.56.
+\end{aligned}
+$$
+
+Thus the overall variance is
+
+$$
+\operatorname{Var}(X)=2.8+2.56=5.36.
+$$
+
+The marginal variance is larger than the average conditional variance because the changing server mode introduces additional variation in the mean request rate.
+
 
 ## Probability and Likelihood
 
@@ -378,7 +488,7 @@ $L(p;X=8)$ is not $P(p\mid X=8)$. To construct a probability distribution over t
 
 ## Summary
 
-A discrete random variable maps outcomes to a finite or countably infinite set of numbers, and its PMF assigns probability to those values. Bernoulli, Binomial, Geometric, Poisson, and discrete uniform distributions model different data-generating processes. Probability treats the model as fixed and varies the possible data; likelihood treats the observed data as fixed and compares model parameters. Independence means that one variable supplies no information about another, while conditional independence means this holds after a third variable is known. Expectation and variance summarize the center and spread of a distribution.
+A discrete random variable maps outcomes to a finite or countably infinite set of numbers, and its PMF assigns probability to those values. Bernoulli, Binomial, Geometric, Poisson, and discrete uniform distributions model different data-generating processes. Probability treats the model as fixed and varies the possible data; likelihood treats the observed data as fixed and compares model parameters. Independence means that one variable supplies no information about another, while conditional independence means this holds after a third variable is known. Expectation and variance summarize the center and spread of a distribution, and the laws of total expectation and total variance combine conditional moments across different states of another variable.
 
 ## Practice Questions and Solutions
 

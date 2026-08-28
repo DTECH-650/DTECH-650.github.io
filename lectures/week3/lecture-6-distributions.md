@@ -93,6 +93,323 @@ $$
 \operatorname{Var}(X)=\sigma^2.
 $$
 
+### From Gaussian Integrals to $\Phi$, $\operatorname{erf}$, and $\operatorname{erfc}$
+
+The Gaussian PDF tells us how density is distributed along the real line. To obtain a probability, we must integrate that density over an interval. For example, if $X\sim\mathcal{N}(\mu,\sigma^2)$, then its CDF is
+
+$$
+F_X(x)
+=P(X\leq x)
+=\int_{-\infty}^{x}
+\frac{1}{\sigma\sqrt{2\pi}}
+\exp\left(-\frac{(u-\mu)^2}{2\sigma^2}\right)du.
+$$
+
+It is natural to ask why we do not simply evaluate this integral directly. The difficulty is that the function $e^{-u^2}$, and therefore the Gaussian density, does not have an antiderivative that can be written using elementary functions such as polynomials, exponentials, logarithms, and trigonometric functions. The definite integral still exists and can be approximated numerically, but ordinary integration rules do not produce a convenient closed-form CDF.
+
+There is also no need to solve a different numerical integration problem for every possible $\mu$, $\sigma$, and $x$. Every Gaussian curve has the same basic shape; changing $\mu$ shifts that shape and changing $\sigma$ rescales it. We can remove those two changes of location and scale through an exact change of variables.
+
+#### Why We Standardize
+
+Inside the CDF integral, define
+
+$$
+s=\frac{u-\mu}{\sigma}.
+$$
+
+Equivalently,
+
+$$
+u=\mu+\sigma s,
+\qquad
+du=\sigma\,ds.
+$$
+
+As $u$ moves from $-\infty$ to $x$, the new variable $s$ moves from $-\infty$ to $(x-\mu)/\sigma$. Substituting into the original integral gives
+
+$$
+\begin{aligned}
+F_X(x)
+&=\int_{-\infty}^{(x-\mu)/\sigma}
+\frac{1}{\sigma\sqrt{2\pi}}
+\exp\left(-\frac{(\sigma s)^2}{2\sigma^2}\right)
+\sigma\,ds\\
+&=\frac{1}{\sqrt{2\pi}}
+\int_{-\infty}^{(x-\mu)/\sigma}e^{-s^2/2}\,ds.
+\end{aligned}
+$$
+
+The factors of $\sigma$ cancel, and neither $\mu$ nor $\sigma$ remains inside the density. This is the reason for standardizing: it converts a probability under **any** univariate Gaussian into a probability under one reference distribution, the standard Gaussian.
+
+At the random-variable level, the same transformation is written as
+
+$$
+Z=\frac{X-\mu}{\sigma},
+\qquad
+Z\sim\mathcal{N}(0,1).
+$$
+
+Subtracting $\mu$ centers the variable at zero. Dividing by $\sigma$ expresses distance in units of standard deviations. Thus the standardized threshold
+
+$$
+z=\frac{x-\mu}{\sigma}
+$$
+
+tells us how many standard deviations $x$ lies above or below the mean.
+
+#### The Standard Gaussian CDF
+
+Because every Gaussian probability can now be reduced to the same integral, that integral is given its own name:
+
+$$
+\Phi(z)
+=P(Z\leq z)
+=\frac{1}{\sqrt{2\pi}}
+\int_{-\infty}^{z}e^{-s^2/2}\,ds.
+$$
+
+The original CDF can therefore be written compactly as
+
+$$
+\boxed{
+F_X(x)=\Phi\left(\frac{x-\mu}{\sigma}\right)
+}.
+$$
+
+Historically, values of $\Phi$ were looked up in standard Gaussian tables. Software now evaluates the same integral numerically. The symbols $\operatorname{erf}$ and $\operatorname{erfc}$ provide another standard way to represent and compute it.
+
+#### Where the Error Function Comes From
+
+The standard Gaussian density is symmetric about zero, so $\Phi(0)=1/2$. We can separate the CDF at zero:
+
+$$
+\Phi(z)
+=\frac12+\frac{1}{\sqrt{2\pi}}
+\int_0^z e^{-s^2/2}\,ds.
+$$
+
+Now set $t=s/\sqrt{2}$, so that $s=\sqrt{2}t$ and $ds=\sqrt{2}\,dt$. Then
+
+$$
+\begin{aligned}
+\Phi(z)
+&=\frac12+\frac{1}{\sqrt{\pi}}
+\int_0^{z/\sqrt{2}}e^{-t^2}\,dt.
+\end{aligned}
+$$
+
+The **error function** is defined by
+
+$$
+\operatorname{erf}(a)
+=\frac{2}{\sqrt{\pi}}
+\int_0^a e^{-t^2}\,dt.
+$$
+
+This definition is chosen so that the preceding Gaussian integral becomes
+
+$$
+\boxed{
+\Phi(z)
+=\frac12\left[
+1+\operatorname{erf}\left(\frac{z}{\sqrt{2}}\right)
+\right]
+}.
+$$
+
+The unusual name comes from the function's historical use in studying measurement error. For our purposes, it is simply a named special function that software can evaluate. It packages an integral that cannot be expressed using elementary functions.
+
+#### Why the Complementary Error Function Describes a Tail
+
+For an unusually large observation, we usually want the probability to the **right** of a threshold:
+
+$$
+P(Z>z)=1-\Phi(z).
+$$
+
+The **complementary error function** is defined as
+
+$$
+\begin{aligned}
+\operatorname{erfc}(a)
+&=1-\operatorname{erf}(a)\\
+&=\frac{2}{\sqrt{\pi}}
+\int_a^\infty e^{-t^2}\,dt.
+\end{aligned}
+$$
+
+Substituting the error-function expression for $\Phi$ shows why $\operatorname{erfc}$ appears naturally:
+
+$$
+\begin{aligned}
+P(Z>z)
+&=1-\frac12\left[
+1+\operatorname{erf}\left(\frac{z}{\sqrt{2}}\right)
+\right]\\
+&=\frac12\left[
+1-\operatorname{erf}\left(\frac{z}{\sqrt{2}}\right)
+\right]\\
+&=\frac12\operatorname{erfc}\left(\frac{z}{\sqrt{2}}\right).
+\end{aligned}
+$$
+
+Returning to a general Gaussian variable, standardize the threshold first:
+
+$$
+\begin{aligned}
+P(X>x)
+&=P\left(
+\frac{X-\mu}{\sigma}>
+\frac{x-\mu}{\sigma}
+\right)\\
+&=\frac12\operatorname{erfc}\left(
+\frac{x-\mu}{\sigma\sqrt{2}}
+\right).
+\end{aligned}
+$$
+
+Thus
+
+$$
+\boxed{
+P(X>x)
+=\frac12\operatorname{erfc}\left(
+\frac{x-\mu}{\sigma\sqrt{2}}
+\right)
+}.
+$$
+
+The factor of $1/2$ and the $\sqrt{2}$ in the argument are not arbitrary constants. They arise from matching the standard Gaussian integral, which contains $e^{-s^2/2}$, to the definition of $\operatorname{erfc}$, which contains $e^{-t^2}$.
+
+#### Example: An Unusually High Vibration Reading
+
+Suppose a machine's vibration amplitude in millimeters per second is modeled as
+
+$$
+X\sim\mathcal{N}(10,2^2).
+$$
+
+We want the probability that a reading exceeds $13$ mm/s. First standardize the threshold:
+
+$$
+z=\frac{13-10}{2}=1.5.
+$$
+
+This says that $13$ is $1.5$ standard deviations above the mean. Because the question asks for a right-tail probability,
+
+$$
+\begin{aligned}
+P(X>13)
+&=P(Z>1.5)\\
+&=\frac12\operatorname{erfc}\left(\frac{1.5}{\sqrt{2}}\right)\\
+&=\frac12\operatorname{erfc}(1.0607)\\
+&\approx0.0668.
+\end{aligned}
+$$
+
+Under this model, approximately $6.68\%$ of normal-operation readings exceed the inspection threshold.
+
+Python's standard `math` module provides $\operatorname{erfc}$ directly:
+
+```python
+import math
+
+mu = 10.0
+sigma = 2.0
+threshold = 13.0
+
+z = (threshold - mu) / sigma
+upper_tail = 0.5 * math.erfc(z / math.sqrt(2.0))
+
+print(upper_tail)  # 0.06680720126885809
+```
+
+#### Other Gaussian Probabilities
+
+The same standardization applies to a left-tail probability. For a threshold $x$, define
+
+$$
+z_x=\frac{x-\mu}{\sigma}.
+$$
+
+Then
+
+$$
+P(X\leq x)
+=P\left(\frac{X-\mu}{\sigma}\leq z_x\right)
+=P(Z\leq z_x)
+=\Phi(z_x).
+$$
+
+To write this probability using $\operatorname{erfc}$, recall that $\operatorname{erf}$ is an odd function:
+
+$$
+\operatorname{erf}(-a)=-\operatorname{erf}(a).
+$$
+
+This follows because its integrand $e^{-t^2}$ is symmetric about zero, while reversing the limits of integration changes the sign. Consequently,
+
+$$
+\begin{aligned}
+\operatorname{erfc}\left(-\frac{z_x}{\sqrt{2}}\right)
+&=1-\operatorname{erf}\left(-\frac{z_x}{\sqrt{2}}\right)\\
+&=1+\operatorname{erf}\left(\frac{z_x}{\sqrt{2}}\right).
+\end{aligned}
+$$
+
+Comparing this with the earlier expression for $\Phi$ gives
+
+$$
+\Phi(z_x)
+=\frac12\operatorname{erfc}\left(-\frac{z_x}{\sqrt{2}}\right).
+$$
+
+Finally, because $-z_x=(\mu-x)/\sigma$,
+
+$$
+P(X\leq x)
+=\Phi\left(\frac{x-\mu}{\sigma}\right)
+=\frac12\operatorname{erfc}\left(
+\frac{\mu-x}{\sigma\sqrt{2}}
+\right).
+$$
+
+The sign is worth checking. If $x<\mu$, then $(\mu-x)/(\sigma\sqrt{2})$ is positive. For a positive argument, $\operatorname{erfc}$ is less than 1, so the left-tail probability is less than $1/2$, exactly as it should be for a threshold below the mean.
+
+For example, if $X\sim\mathcal{N}(10,2^2)$ and $x=8$, then
+
+$$
+z_x=\frac{8-10}{2}=-1
+$$
+
+and
+
+$$
+P(X\leq8)
+=\Phi(-1)
+=\frac12\operatorname{erfc}\left(\frac{1}{\sqrt{2}}\right)
+\approx0.1587.
+$$
+
+An interval probability is the difference between two CDF values:
+
+$$
+P(a<X\leq b)
+=\Phi\left(\frac{b-\mu}{\sigma}\right)
+-\Phi\left(\frac{a-\mu}{\sigma}\right).
+$$
+
+For a symmetric two-sided tail $k$ standard deviations from the mean,
+
+$$
+P(|X-\mu|>k\sigma)
+=\operatorname{erfc}\left(\frac{k}{\sqrt{2}}\right).
+$$
+
+Because a continuous random variable assigns probability zero to any single point, using $<$ instead of $\leq$, or $>$ instead of $\geq$, does not change these probabilities.
+
+### The Multivariate Gaussian
+
 For a vector $\mathbf{x}\in\mathbb{R}^D$, the multivariate Gaussian is:
 
 $$
@@ -191,7 +508,7 @@ So this model predicts about a 45.1% chance of a dropout within 3 minutes.
 
 ## Summary
 
-The Uniform distribution assigns constant density over a bounded interval, so probabilities depend only on interval length. The Gaussian distribution models real-valued quantities concentrated around a mean and extends naturally to random vectors through a covariance matrix. The Exponential distribution models nonnegative waiting times and has the memoryless property.
+The Uniform distribution assigns constant density over a bounded interval, so probabilities depend only on interval length. The Gaussian distribution models real-valued quantities concentrated around a mean; its probabilities can be evaluated after standardization using $\Phi$, $\operatorname{erf}$, or $\operatorname{erfc}$, and it extends naturally to random vectors through a covariance matrix. The Exponential distribution models nonnegative waiting times and has the memoryless property.
 
 ## Practice Questions
 
