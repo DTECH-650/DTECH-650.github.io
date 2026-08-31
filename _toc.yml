@@ -8,11 +8,11 @@ parts:
         sections:
           - file: lectures/week1/lecture-1-motivation
           - file: lectures/week1/lecture-2-mathematical_foundations
-      # - file: lectures/week2/index
-      #   title: Week 2
-      #   sections:
-      #     - file: lectures/week2/lecture-3-probability-foundations
-      #     - file: lectures/week2/lecture-4-discrete-random-variables
+      - file: lectures/week2/index
+        title: Week 2
+        sections:
+          - file: lectures/week2/lecture-3-probability-foundations
+          - file: lectures/week2/lecture-4-discrete-random-variables
       # - file: lectures/week3/index
       #   title: Week 3
       #   sections:
