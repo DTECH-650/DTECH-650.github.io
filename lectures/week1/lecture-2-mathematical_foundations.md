@@ -11,6 +11,101 @@ After completing this lecture, you should be able to:
 - interpret eigenvectors and eigenvalues; and
 - compute derivatives, partial derivatives, and gradients. -->
 
+## Notation Used in This Course
+
+Mathematical symbols do more than name quantities: their capitalization and formatting tell us what kind of object they represent. The following conventions will be used throughout the course.
+
+| Object | Notation | Interpretation |
+| --- | --- | --- |
+| Scalar | $a$, $x$, $\theta$ | A single, fixed number |
+| Vector | $\mathbf{x}$ | A fixed column vector with components $x_1,\ldots,x_D$ |
+| Matrix | $A$ | A fixed rectangular array with entries $a_{ij}$ |
+| Scalar random variable | $X$ | A quantity whose value is not known before it is observed |
+| Realization (or instantiation) of a scalar random variable | $x$ | A particular value taken by $X$ |
+| Random vector | $\mathbf{X}$ | A vector whose components $X_1,\ldots,X_D$ are random variables |
+| Realization (or instantiation) of a random vector | $\mathbf{x}$ | A particular vector value taken by $\mathbf{X}$, with observed components $x_1,\ldots,x_D$ |
+
+Three visual cues are especially important:
+
+- **Bold symbols denote vectors.** Thus $x$ is a scalar, while $\mathbf{x}$ is a vector, and when specified, instantiated vectors for vector RVs.
+- **For random quantities, uppercase denotes the unobserved random object.** Thus $X$ is a scalar random variable and $\mathbf{X}$ is a random vector. Uppercase letters such as $A$ and $B$ are also conventionally used for matrices; the surrounding definition and dimensions make their role clear.
+- **Lowercase symbols denote realized or fixed values.** Once $X$ has been observed, its realized value is written $x$; once $\mathbf{X}$ has been observed, its realized vector is written $\mathbf{x}$.
+
+### Random Variables and Their Realizations
+
+A random variable and its realization are related, but they are not the same object. Before a measurement is made, $X$ represents the uncertain quantity. If the observed value is $2.4$, we write
+
+$$
+x=2.4.
+$$
+
+The notation
+
+$$
+X=x
+$$
+
+describes the event that the random variable $X$ takes the particular value $x$. For example, $X=2.4$ connects the random quantity to the value that was observed.
+
+The same distinction applies component by component to a random vector. Suppose temperature and pressure are represented jointly by
+
+$$
+\mathbf{X}
+=
+\begin{bmatrix}
+X_1\\
+X_2
+\end{bmatrix}.
+$$
+
+Here $\mathbf{X}$ is a random vector, while $X_1$ and $X_2$ are scalar random variables. If the observed temperature and pressure are $21.3$ and $101.2$, respectively, the realization is
+
+$$
+\mathbf{x}
+=
+\begin{bmatrix}
+x_1\\
+x_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+21.3\\
+101.2
+\end{bmatrix}.
+$$
+
+We may summarize this relationship as
+
+$$
+\mathbf{X}=\mathbf{x}.
+$$
+
+When several vector observations are collected, $\mathbf{x}_n$ denotes the $n$th observed vector, and $x_{nd}$ denotes its $d$th component. For example,
+
+$$
+\mathbf{x}_n
+=
+\begin{bmatrix}
+x_{n1}\\
+x_{n2}\\
+\vdots\\
+x_{nD}
+\end{bmatrix}
+\in\mathbb{R}^D.
+$$
+
+The same lowercase bold notation $\mathbf{x}$ is also used for an ordinary deterministic vector that was not generated randomly. In either case, bold lowercase means that the vector is being treated as a concrete, fixed value. Context tells us whether it arose as an observation.
+
+### Distribution Notation
+
+When a distribution is written as $p_X(x)$, the subscript $X$ identifies the random variable and the argument $x$ is a possible realization. Similarly,
+
+$$
+p_{\mathbf{X}}(\mathbf{x})
+$$
+
+describes a probability mass function or probability density for the random vector $\mathbf{X}$, evaluated at the concrete vector $\mathbf{x}$. When the intended random variable is clear, the subscript is often omitted and these are written simply as $p(x)$ and $p(\mathbf{x})$.
+
 ## Scalars, vectors, and matrices
 
 A **scalar** is a single number, such as $3$, $-1.5$, or $\pi$. We usually write scalars with lowercase italic letters, such as $a$ or $x$.
