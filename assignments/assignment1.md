@@ -253,7 +253,7 @@ Complete the following investigation:
 6. In three to five sentences, discuss how closely the simulation agrees with theory and give one reason a Gaussian distribution might fail to describe real vibration measurements. (2 points)
 ---
 
-## Solutions
+<!-- ## Solutions
 
 ::::{admonition} Solution 1
 :class: dropdown
@@ -1126,4 +1126,4 @@ Theoretical P(X > 13): 0.0668
 ```
 
 The empirical mean, variance, and tail probability are close to their theoretical values, as expected for a sample of 10,000 observations. Small discrepancies remain because the sample is finite. A Gaussian model is plausible when many small additive effects contribute to the vibration reading, but real vibration data may be skewed, contain large transient spikes, or change as the machine wears. In addition, a Gaussian distribution assigns some probability to physically impossible negative vibration amplitudes, although that probability is extremely small for these parameters.
-::::
+:::: -->
