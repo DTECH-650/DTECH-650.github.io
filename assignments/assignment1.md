@@ -1,6 +1,8 @@
 # Assignment 1 — Mathematical and Statistical Foundations
 
-This assignment covers material from Weeks 1–4. It contains **nine questions worth 100 points total**.
+This assignment covers material from Weeks 1–3. It contains **nine questions worth 100 points total**.
+
+> Updates: Make the conditional probability 6a/b a bit harder, add honor's code! and also state that compute means by hand for quesiton 1 to 7. Only question 8 is a coding question. 
 
 ## Instructions
 
@@ -228,16 +230,7 @@ $$
 4. Compute both estimates for the observations $2,4,4,6$. (2 points)
 5. In one or two sentences, explain the distinction between the Gaussian probability density and the Gaussian likelihood. (2 points)
 
-### Question 8: Information theory (9 points)
-
-Use logarithms to base 2, so all information quantities are measured in bits.
-
-1. Let $X\sim\operatorname{Bernoulli}(1/2)$. Compute the surprisal of observing either outcome and the entropy $H(X)$. (2 points)
-2. Let $Y=X$. Compute $H(X,Y)$, $H(Y\mid X)$, and $I(X;Y)$. (3 points)
-3. The true distribution over two classes is $P=(1/2,1/2)$, while a model reports $Q=(3/4,1/4)$. Compute the cross-entropy $H(P,Q)$ and the KL divergence $D_{\mathrm{KL}}(P\Vert Q)$. You may use $\log_2(3/4)\approx-0.415$ and $\log_2(1/4)=-2$. (3 points)
-4. State the connection between cross-entropy and negative log-likelihood for labeled classification data. (1 point)
-
-### Question 9: Coding investigation (9 points)
+### Question 8: Coding investigation (9 points)
 
 An industrial vibration sensor records the root-mean-square vibration amplitude of a machine in millimeters per second. Under normal operating conditions, model one reading as
 
