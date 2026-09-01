@@ -1,20 +1,23 @@
 # Assignment 1 — Mathematical and Statistical Foundations
 
-This assignment covers material from Weeks 1–3. It contains **nine questions worth 100 points total**.
+This assignment covers material from Weeks 1–3. It contains **eight questions worth 100 points total**.
 
-> Updates: Make the conditional probability 6a/b a bit harder, add honor's code! and also state that compute means by hand for quesiton 1 to 7. Only question 8 is a coding question. 
+## Purdue Honor Pledge
+
+> “As a Boilermaker pursuing academic excellence, I pledge to be honest and true in all that I do. Accountable together—We are Purdue.”
 
 ## Instructions
 
 - Show the main steps in your reasoning. A correct numerical answer without supporting work may receive only partial credit.
-- You may use a calculator or software to evaluate standard Gaussian CDF values and logarithms.
-- Unless stated otherwise, use natural logarithms for likelihood calculations and base-2 logarithms for information-theory calculations.
+- Unless explicitly stated otherwise, **compute** means compute by hand and show your work. Only Question 8 is a coding question; do not use code to solve Questions 1–7.
+- You may use a calculator for arithmetic, but not symbolic or coding software, when solving Questions 1–7.
+- Unless stated otherwise, use natural logarithms for likelihood calculations.
 - For a geometric random variable, let $X$ denote the trial number of the first success, so $X\in\{1,2,\ldots\}$.
-- In Question 9, submit readable, reproducible code along with the requested figure and interpretation.
+- In Question 8, submit readable, reproducible code along with the requested figure and interpretation.
 
 ## Questions
 
-### Question 1: Vectors, matrices, and eigenvectors (9 points)
+### Question 1: Vectors, matrices, and eigenvectors (10 points)
 
 Let
 
@@ -54,9 +57,9 @@ $$
 2. Compute $\mathbf{u}^{\mathsf T}\mathbf{v}$. What does the result tell you geometrically? (2 points)
 3. Compute $\lVert\mathbf{u}\rVert_1$, $\lVert\mathbf{u}\rVert_2$, and $\lVert\mathbf{v}\rVert_2$. (2 points)
 4. Compute $B\mathbf{u}$. (1 point)
-5. Find the eigenvalues of $A$ and one eigenvector corresponding to each eigenvalue. Verify one eigenvector by direct multiplication. (3 points)
+5. Find the eigenvalues of $A$ and one eigenvector corresponding to each eigenvalue. Verify one eigenvector by direct multiplication. (4 points)
 
-### Question 2: Partial derivatives and gradients (9 points)
+### Question 2: Partial derivatives and gradients (10 points)
 
 Consider the function
 
@@ -65,11 +68,11 @@ L(w_1,w_2)=(w_1+2w_2-3)^2+w_1^2.
 $$
 
 1. Compute $\frac{\partial L}{\partial w_1}$ and $\frac{\partial L}{\partial w_2}$. (3 points)
-2. Write the gradient $\nabla L(w_1,w_2)$ as a column vector. (1 point)
+2. Write the gradient $\nabla L(w_1,w_2)$ as a column vector. (2 points)
 3. Evaluate the gradient at $(w_1,w_2)=(1,1)$. (2 points)
 4. Starting at $(1,1)$, take one gradient-descent step with learning rate $\eta=0.25$. Give the new point and verify that the value of $L$ decreases. (3 points)
 
-### Question 3: Events, independence, and Bayes' theorem (14 points)
+### Question 3: Events, independence, and Bayes' theorem (15 points)
 
 A monitoring system uses two alarms, $A$ and $B$, to detect a fault $F$. The fault prevalence and alarm behavior are
 
@@ -98,14 +101,14 @@ Assume that $A$ and $B$ are conditionally independent given $F$, and also condit
 3. Compute $P(A\cap B\mid F)$ and $P(A\cap B\mid F^c)$. (2 points)
 4. Use the law of total probability to compute $P(A\cap B)$. (2 points)
 5. Use Bayes' theorem to compute $P(F\mid A\cap B)$. (2 points)
-6. Compute $P(A)$ and $P(B)$. Are $A$ and $B$ marginally independent? Explain briefly. (2 points)
+6. Compute $P(A)$ and $P(B)$. Are $A$ and $B$ marginally independent? Explain briefly. (3 points)
 7. Compute $P(A\cup B)$. (2 points)
 
-### Question 4: Discrete random variables (9 points)
+### Question 4: Discrete random variables (12 points)
 
 Answer all three parts. Clearly identify the distribution and parameters you use.
 
-#### 4(a) Binomial model (3 points)
+#### 4(a) Binomial model (4 points)
 
 Each of 10 independently inspected components is defective with probability $0.20$. Let $X$ be the number of defective components.
 
@@ -113,7 +116,7 @@ Each of 10 independently inspected components is defective with probability $0.2
 2. Compute $P(X=2)$.
 3. Compute $E[X]$ and $\operatorname{Var}(X)$.
 
-#### 4(b) Poisson model and marginalization (3 points)
+#### 4(b) Poisson model and marginalization (4 points)
 
 Let $Z$ describe a server's operating mode. The server is in normal mode with probability $0.75$ and busy mode with probability $0.25$. Conditional on the mode,
 
@@ -128,7 +131,7 @@ where $X$ is the number of requests received in one minute.
 1. Marginalize over $Z$ to compute $P(X=0)$.
 2. Compute $E[X]$ by averaging the two conditional expectations.
 
-#### 4(c) Geometric model (3 points)
+#### 4(c) Geometric model (4 points)
 
 Independent transmission attempts succeed with probability $p=0.25$. Let $X$ be the trial number of the first successful transmission.
 
@@ -136,7 +139,7 @@ Independent transmission attempts succeed with probability $p=0.25$. Let $X$ be 
 2. Compute $P(X>4)$.
 3. Compute $E[X]$ and $\operatorname{Var}(X)$.
 
-### Question 5: Continuous random variables (9 points)
+### Question 5: Continuous random variables (10 points)
 
 #### 5(a) Gaussian measurements (4 points)
 
@@ -151,7 +154,7 @@ where the second parameter is the variance.
 1. Write the PDF of $X$.
 2. State $E[X]$ and $\operatorname{Var}(X)$.
 
-#### 5(b) Exponential waiting time (5 points)
+#### 5(b) Exponential waiting time (6 points)
 
 The time $T$ in hours until a component fails is modeled as
 
@@ -213,10 +216,10 @@ The pair $(X,Y)$ is jointly Gaussian.
 
 1. Compute $E[X]$, $E[Y]$, $\operatorname{Var}(X)$, and $\operatorname{Var}(Y)$. (3 points)
 2. Compute $\operatorname{Cov}(X,Y)$. (2 points)
-3. Write the covariance matrix of $(X,Y)$ and compute their correlation coefficient. (2 points)
-4. Are $X$ and $Y$ independent? Briefly interpret your result. (1 point)
+3. Write the covariance matrix of $(X,Y)$. (1 point)
+4. Are $X$ and $Y$ independent? Justify your answer and briefly interpret the dependence between them. (2 points)
 
-### Question 7: Gaussian maximum likelihood (14 points)
+### Question 7: Gaussian maximum likelihood (15 points)
 
 Suppose $x_1,\ldots,x_N$ are IID observations from a one-dimensional Gaussian distribution with unknown mean $\mu$ and unknown variance $\sigma^2$:
 
@@ -224,13 +227,13 @@ $$
 x_n\sim\mathcal{N}(\mu,\sigma^2).
 $$
 
-1. Write the likelihood $L(\mu,\sigma^2)$ and log-likelihood $\ell(\mu,\sigma^2)$. (3 points)
+1. Write the likelihood $L(\mu,\sigma^2)$ and log-likelihood $\ell(\mu,\sigma^2)$. (4 points)
 2. Differentiate the log-likelihood with respect to $\mu$ and derive the maximum-likelihood estimator $\hat\mu_{\mathrm{ML}}$. (3 points)
 3. Differentiate with respect to $\sigma^2$ and derive $\hat\sigma^2_{\mathrm{ML}}$. (4 points)
 4. Compute both estimates for the observations $2,4,4,6$. (2 points)
 5. In one or two sentences, explain the distinction between the Gaussian probability density and the Gaussian likelihood. (2 points)
 
-### Question 8: Coding investigation (9 points)
+### Question 8: Coding investigation (10 points)
 
 An industrial vibration sensor records the root-mean-square vibration amplitude of a machine in millimeters per second. Under normal operating conditions, model one reading as
 
@@ -242,12 +245,12 @@ Thus the expected vibration amplitude is $10$ mm/s and the standard deviation is
 
 Complete the following investigation:
 
-1. Explain what $\mu=10$ and $\sigma=2$ represent in this application.
-2. Initialize a NumPy random-number generator with seed `65000` and generate exactly 10,000 observations from the specified Gaussian distribution.
-3. Compute the empirical mean and variance and compare them with the theoretical mean and variance.
-4. Estimate $P(X>13)$ from the simulated observations and compute its theoretical value.
-5. Plot a normalized histogram of the simulated observations and overlay the theoretical Gaussian PDF. Mark the inspection threshold $x=13$ on the plot.
-6. In three to five sentences, discuss how closely the simulation agrees with theory and give one reason a Gaussian distribution might fail to describe real vibration measurements.
+1. Explain what $\mu=10$ and $\sigma=2$ represent in this application. (1 point)
+2. Initialize a NumPy random-number generator with seed `65000` and generate exactly 10,000 observations from the specified Gaussian distribution. (1 point)
+3. Compute the empirical mean and variance and compare them with the theoretical mean and variance. (2 points)
+4. Estimate $P(X>13)$ from the simulated observations and compute its theoretical value. (2 points)
+5. Plot a normalized histogram of the simulated observations and overlay the theoretical Gaussian PDF. Mark the inspection threshold $x=13$ on the plot. (2 points)
+6. In three to five sentences, discuss how closely the simulation agrees with theory and give one reason a Gaussian distribution might fail to describe real vibration measurements. (2 points)
 ---
 
 ## Solutions
@@ -687,7 +690,9 @@ The standard deviation is $\sigma=\sqrt{4}=2$.
 
 #### 6(a) Marginalization and conditional independence
 
-1. Conditional on $Z=0$, both conditional marginal densities equal $1$ on $[0,1]$. Therefore,
+1. Recall that a $\operatorname{Uniform}(a,b)$ random variable has density $1/(b-a)$ on $[a,b]$. Both intervals in this problem have width 1, so every conditional marginal density has height 1 on its support.
+
+   Conditional on $Z=0$, independence therefore gives
 
    $$
    f_{X,Y\mid Z}(x,y\mid0)
@@ -697,6 +702,15 @@ The standard deviation is $\sigma=\sqrt{4}=2$.
    1, & 0\leq x\leq1,\ 0\leq y\leq1,\\
    0, & \text{otherwise}.
    \end{cases}
+   $$
+
+   This conditional joint density integrates to 1:
+
+   $$
+   \int_0^1\int_0^1
+   f_{X,Y\mid Z}(x,y\mid0)\,dy\,dx
+   =\int_0^1\int_0^1 1\,dy\,dx
+   =1.
    $$
 
    Similarly,
@@ -711,7 +725,16 @@ The standard deviation is $\sigma=\sqrt{4}=2$.
    \end{cases}
    $$
 
-   These factorizations express $X\perp Y\mid Z$.
+   Its normalization is
+
+   $$
+   \int_1^2\int_1^2
+   f_{X,Y\mid Z}(x,y\mid1)\,dy\,dx
+   =\int_1^2\int_1^2 1\,dy\,dx
+   =1.
+   $$
+
+   These factorizations express $X\perp Y\mid Z$. The mode probability $P(Z=z)=1/2$ is not included in a density conditioned on $Z=z$; it is introduced when the modes are combined in the next part.
 
 2. Marginalizing the discrete variable $Z$ gives
 
@@ -724,18 +747,50 @@ The standard deviation is $\sigma=\sqrt{4}=2$.
    \end{aligned}
    $$
 
-   Ignoring endpoint values, which do not affect continuous probabilities,
+   Endpoint values do not affect continuous probabilities. To keep the two regions from overlapping at 1, use the equivalent half-open representation
 
    $$
    f_{X,Y}(x,y)=
    \begin{cases}
-   \frac12, & (x,y)\in[0,1]^2,\\
-   \frac12, & (x,y)\in[1,2]^2,\\
+   \frac12, & 0\leq x<1,\ 0\leq y<1,\\
+   \frac12, & 1\leq x\leq2,\ 1\leq y\leq2,\\
    0, & \text{otherwise}.
    \end{cases}
    $$
 
-3. Integrating the joint density over the other variable gives
+   This marginal joint density is also normalized: the two occupied squares each have area 1 and height $1/2$, so their total probability is
+
+   $$
+   \left(\frac12\right)(1)+\left(\frac12\right)(1)=1.
+   $$
+
+3. A marginal density is obtained by integrating the joint density over every possible value of the other variable. For $X$,
+
+   $$
+   f_X(x)=\int_{-\infty}^{\infty}f_{X,Y}(x,y)\,dy.
+   $$
+
+   Consider the possible values of $x$ separately.
+
+   - If $0\leq x<1$, the point $(x,y)$ can lie only in the lower square. The joint density is $1/2$ for $0\leq y<1$, so
+
+     $$
+     f_X(x)
+     =\int_0^1\frac12\,dy
+     =\frac12.
+     $$
+
+   - If $1\leq x\leq2$, the point $(x,y)$ can lie only in the upper square. The joint density is $1/2$ for $1\leq y\leq2$, so
+
+     $$
+     f_X(x)
+     =\int_1^2\frac12\,dy
+     =\frac12.
+     $$
+
+   - If $x<0$ or $x>2$, the joint density is zero for every $y$, so $f_X(x)=0$.
+
+   Combining these cases gives
 
    $$
    f_X(x)=
@@ -745,7 +800,25 @@ The standard deviation is $\sigma=\sqrt{4}=2$.
    \end{cases}
    $$
 
-   and, by symmetry,
+   The calculation for $Y$ is analogous:
+
+   $$
+   f_Y(y)=\int_{-\infty}^{\infty}f_{X,Y}(x,y)\,dx.
+   $$
+
+   For $0\leq y<1$, integrate across the lower square:
+
+   $$
+   f_Y(y)=\int_0^1\frac12\,dx=\frac12.
+   $$
+
+   For $1\leq y\leq2$, integrate across the upper square:
+
+   $$
+   f_Y(y)=\int_1^2\frac12\,dx=\frac12.
+   $$
+
+   Outside $[0,2]$, the result is zero. Therefore,
 
    $$
    f_Y(y)=
@@ -754,6 +827,24 @@ The standard deviation is $\sigma=\sqrt{4}=2$.
    0, & \text{otherwise}.
    \end{cases}
    $$
+
+   Both marginals integrate to 1; for example,
+
+   $$
+   \int_{-\infty}^{\infty}f_X(x)\,dx
+   =\int_0^2\frac12\,dx
+   =1.
+   $$
+
+   Thus
+
+   $$
+   X\sim\operatorname{Uniform}(0,2),
+   \qquad
+   Y\sim\operatorname{Uniform}(0,2).
+   $$
+
+   Although each marginal is uniform over $[0,2]$, the joint density is not uniform over the full square $[0,2]^2$: it assigns density only to the lower-left and upper-right unit squares. This distinction is what produces the marginal dependence examined next.
 
 4. The variables are not marginally independent. For example,
 
@@ -799,16 +890,60 @@ Because $E[U]=E[V]=0$, $\operatorname{Var}(U)=\operatorname{Var}(V)=1$, and $U$ 
    =1+1=2.
    $$
 
-2. Constants do not affect covariance, so
+2. Start from the definition of covariance:
+
+   $$
+   \operatorname{Cov}(X,Y)
+   =E\left[(X-E[X])(Y-E[Y])\right].
+   $$
+
+   From part 1, $E[X]=1$ and $E[Y]=-1$. Therefore, the centered random variables are
+
+   $$
+   X-E[X]=(1+2U)-1=2U
+   $$
+
+   and
+
+   $$
+   Y-E[Y]=(-1+U+V)-(-1)=U+V.
+   $$
+
+   Notice that the constants $1$ and $-1$ disappear after centering. Substituting the centered expressions into the covariance definition gives
 
    $$
    \begin{aligned}
    \operatorname{Cov}(X,Y)
-   &=\operatorname{Cov}(2U,U+V)\\
-   &=2\operatorname{Var}(U)+2\operatorname{Cov}(U,V)\\
-   &=2.
+   &=E\left[(2U)(U+V)\right]\\
+   &=E\left[2U^2+2UV\right]\\
+   &=2E[U^2]+2E[UV].
    \end{aligned}
    $$
+
+   Because $U$ is standard Gaussian, $E[U]=0$ and $\operatorname{Var}(U)=1$. Hence
+
+   $$
+   E[U^2]
+   =\operatorname{Var}(U)+(E[U])^2
+   =1.
+   $$
+
+   Also, $U$ and $V$ are independent, so the expectation of their product factors:
+
+   $$
+   E[UV]=E[U]E[V]=(0)(0)=0.
+   $$
+
+   It follows that
+
+   $$
+   \boxed{
+   \operatorname{Cov}(X,Y)
+   =2(1)+2(0)=2
+   }.
+   $$
+
+   The positive covariance comes from the shared $U$ term: an increase in $U$ raises both $X$ and $Y$. The independent term $V$ appears only in $Y$, so it contributes nothing to the covariance between them.
 
 3. The covariance matrix is
 
@@ -818,17 +953,6 @@ Because $E[U]=E[V]=0$, $\operatorname{Var}(U)=\operatorname{Var}(V)=1$, and $U$ 
    4 & 2\\
    2 & 2
    \end{bmatrix}.
-   $$
-
-   The correlation coefficient is
-
-   $$
-   \rho_{X,Y}
-   =\frac{\operatorname{Cov}(X,Y)}
-   {\sqrt{\operatorname{Var}(X)\operatorname{Var}(Y)}}
-   =\frac{2}{\sqrt{4\cdot2}}
-   =\frac1{\sqrt2}
-   \approx0.707.
    $$
 
 4. The variables are not independent. In particular, their covariance is nonzero. The positive covariance arises because both variables contain the common random component $U$; larger values of $U$ tend to make both $X$ and $Y$ larger.
@@ -925,67 +1049,6 @@ Because $E[U]=E[V]=0$, $\operatorname{Var}(U)=\operatorname{Var}(V)=1$, and $U$ 
 ::::
 
 ::::{admonition} Solution 8
-:class: dropdown
-
-1. Since each outcome has probability $1/2$, its surprisal is
-
-   $$
-   I(x)=-\log_2\left(\frac12\right)=1\text{ bit}.
-   $$
-
-   The entropy is
-
-   $$
-   H(X)
-   =-\sum_xp(x)\log_2p(x)
-   =-2\left(\frac12\log_2\frac12\right)
-   =1\text{ bit}.
-   $$
-
-2. Because $Y=X$, the only possible pairs are $(0,0)$ and $(1,1)$, each with probability $1/2$. Consequently,
-
-   $$
-   H(X,Y)=1\text{ bit}.
-   $$
-
-   Knowing $X$ determines $Y$ exactly, so
-
-   $$
-   H(Y\mid X)=0.
-   $$
-
-   Therefore,
-
-   $$
-   I(X;Y)=H(Y)-H(Y\mid X)=1-0=1\text{ bit}.
-   $$
-
-3. The cross-entropy is
-
-   $$
-   \begin{aligned}
-   H(P,Q)
-   &=-\sum_xP(x)\log_2Q(x)\\
-   &=-\frac12\log_2\left(\frac34\right)
-     -\frac12\log_2\left(\frac14\right)\\
-   &\approx-\frac12(-0.415)-\frac12(-2)\\
-   &\approx1.208\text{ bits}.
-   \end{aligned}
-   $$
-
-   Because $H(P)=1$ bit,
-
-   $$
-   D_{\mathrm{KL}}(P\Vert Q)
-   =H(P,Q)-H(P)
-   \approx1.208-1
-   =0.208\text{ bits}.
-   $$
-
-4. For a labeled observation, the cross-entropy loss is the negative logarithm of the probability assigned to the observed class. Summing this loss over IID observations gives the negative log-likelihood, so minimizing cross-entropy is equivalent to maximizing the likelihood.
-::::
-
-::::{admonition} Solution 9
 :class: dropdown
 
 Here $\mu=10$ mm/s is the expected vibration amplitude under normal operation, while $\sigma=2$ mm/s describes the typical spread of readings around that mean. The event of interest is $X>13$, corresponding to a reading that triggers further inspection.

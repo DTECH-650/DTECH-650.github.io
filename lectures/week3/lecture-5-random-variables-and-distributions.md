@@ -317,6 +317,64 @@ $$
 
 The diagonal entries are the variances of the individual components, and the off-diagonal entries are their pairwise covariances. The covariance matrix is symmetric and positive semidefinite.
 
+### Correlation Coefficient
+
+Covariance depends on the units and scales of the variables. For example, converting a measurement from meters to centimeters changes its covariance. The **correlation coefficient** removes this scale dependence by dividing the covariance by the product of the standard deviations:
+
+$$
+\rho_{X,Y}
+=\frac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y}
+=\frac{\operatorname{Cov}(X,Y)}
+{\sqrt{\operatorname{Var}(X)\operatorname{Var}(Y)}}.
+$$
+
+Correlation is unitless and always satisfies
+
+$$
+-1\leq\rho_{X,Y}\leq1.
+$$
+
+Its sign gives the direction of the linear relationship, and its magnitude indicates the strength:
+
+- $\rho_{X,Y}>0$: larger values of one variable tend to accompany larger values of the other;
+- $\rho_{X,Y}<0$: larger values of one tend to accompany smaller values of the other;
+- $\rho_{X,Y}=0$: the variables are uncorrelated, so they have no linear association;
+- $|\rho_{X,Y}|$ close to 1: the variables have a strong linear association.
+
+For two random variables, the covariance matrix may therefore be written as
+
+$$
+\boldsymbol{\Sigma}
+=
+\begin{bmatrix}
+\sigma_X^2 & \rho_{X,Y}\sigma_X\sigma_Y\\
+\rho_{X,Y}\sigma_X\sigma_Y & \sigma_Y^2
+\end{bmatrix}.
+$$
+
+For example, suppose
+
+$$
+\boldsymbol{\Sigma}
+=
+\begin{bmatrix}
+4 & 1\\
+1 & 9
+\end{bmatrix}.
+$$
+
+Here $\sigma_X=\sqrt{4}=2$, $\sigma_Y=\sqrt{9}=3$, and
+
+$$
+\rho_{X,Y}
+=\frac{1}{(2)(3)}
+=\frac16.
+$$
+
+The covariance is positive, but after accounting for the variables' different scales, the correlation shows that their linear association is fairly weak.
+
+Zero correlation does not generally imply independence. Independence implies zero correlation when the variances exist and are nonzero, but dependent variables can still have zero correlation when their relationship is nonlinear.
+
 ![Scatter plot with an ellipse showing positive covariance.](../figures/covariance-ellipse.png)
 
 *Fig. 2. Covariance describes how random variables vary together. For two-dimensional Gaussian data, the covariance matrix controls the orientation and width of the elliptical contours.*
@@ -337,7 +395,7 @@ The mean $\boldsymbol{\mu}$ gives the average bias in the estimate. The covarian
 
 ## Summary
 
-Continuous random variables use densities rather than probability masses. PDFs describe density, CDFs accumulate probability, expectation describes a distribution's average, and variance measures its spread. A joint density describes two or more random variables together; integrating out variables produces marginal densities, while integrating functions against the joint density produces expectations and componentwise variances. Covariance captures linear co-variation, and the covariance matrix extends this description to a random vector.
+Continuous random variables use densities rather than probability masses. PDFs describe density, CDFs accumulate probability, expectation describes a distribution's average, and variance measures its spread. A joint density describes two or more random variables together; integrating out variables produces marginal densities, while integrating functions against the joint density produces expectations and componentwise variances. Covariance captures linear co-variation, correlation expresses its direction and strength without units, and the covariance matrix extends this description to a random vector.
 
 ## Practice Problems and Solutions
 

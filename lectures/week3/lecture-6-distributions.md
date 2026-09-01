@@ -436,6 +436,10 @@ $$
 
 is the squared Mahalanobis distance. It measures distance from the mean while accounting for scale and correlation. Points in directions of high variance are less surprising than points the same Euclidean distance away in directions of low variance.
 
+#### Covariance in the Gaussian Case
+
+Covariance and correlation are defined for general random variables and also apply to Gaussian distributions. The multivariate Gaussian does, however, have an important special property: jointly Gaussian variables with zero covariance are independent. Therefore, a diagonal covariance matrix for a multivariate Gaussian means that its components are independent. This conclusion does not hold for arbitrary distributions, where dependent variables may have zero covariance and zero correlation.
+
 Common uses include:
 
 - modeling sensor noise,
