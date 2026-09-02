@@ -4,16 +4,20 @@ This assignment covers material from Weeks 1–3. It contains **eight questions 
 
 ## Purdue Honor Pledge
 
-> “As a Boilermaker pursuing academic excellence, I pledge to be honest and true in all that I do. Accountable together—We are Purdue.”
+> “As a Boilermaker pursuing academic excellence, I pledge to be honest and true in all that I do. Accountable together—We are Purdue.” 
+
+**When submitting this assignment via Gradescope, we assume that you commit to this honor pledge and submit your own work considering the instructions below.**  
 
 ## Instructions
 
 - Show the main steps in your reasoning. A correct numerical answer without supporting work may receive only partial credit.
-- Unless explicitly stated otherwise, **compute** means compute by hand and show your work. Only Question 8 is a coding question; do not use code to solve Questions 1–7.
-- You may use a calculator for arithmetic, but not symbolic or coding software, when solving Questions 1–7.
+- Unless explicitly stated otherwise, **compute** means compute step-by step meaning by hand (for example do not use a scientific calculator and computer program that implicitly does integration or differentation but write out the steps). Your solution should document your steps and your logical reasoning. We would like to evaluate your understanding rather than the final solution. 
+- Only Question 8 is a coding question; do not use code to solve Questions 1–7. Please submit readable, reproducible code along with the requested figure and interpretation.
+- You may use an arithmetic calculator when solving Questions 1–7 but not a computer program that does it all at once.
 - Unless stated otherwise, use natural logarithms for likelihood calculations.
 - For a geometric random variable, let $X$ denote the trial number of the first success, so $X\in\{1,2,\ldots\}$.
-- In Question 8, submit readable, reproducible code along with the requested figure and interpretation.
+- If you write your answers on paper or with an ipad and handwriting notetaking software, that is appreciated (You can also type up your final answer neatly with a word processor and use the build in symbols and equation functions or if you are a pro use latex or overleaf). Please make sure that your handwriting is legible, so that we can properly evaluate your effort.  
+- All assignments are to be submitted on Gradescope (see website for link or syllabus) as a PDF. 
 
 ## Questions
 
