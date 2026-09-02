@@ -18,6 +18,8 @@ The course begins with mathematical and computational foundations: linear algebr
 
 Classical statistical inference is connected to modern machine-learning practice through uncertainty quantification, experimental reasoning, model selection, and generalization. Later topics include exponential-family distributions, Bayesian inference, regression and classification models, numerical optimization, and an introduction to neural networks.
 
+The complete syllabus is on Brightspace and is only accessible to registered students. On the course Brightspace site, go to the Syllabus tab to access it.
+
 ::::{grid} 1 2 2 4
 :gutter: 2
 :margin: 4 0 4 0
