@@ -288,6 +288,6 @@ Throughout the course, we will repeatedly return to the same sequence:
 
 ## Reading
 
-Christopher M. Bishop, *Pattern Recognition and Machine Learning*, Springer, 2006, Chapter 1, pages 1–12.
+Christopher M. Bishop, *Pattern Recognition and Machine Learning*, Springer, 2006, Chapter 1 - pages 1–12.
 
 - [Official book page and free PDF](https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/)

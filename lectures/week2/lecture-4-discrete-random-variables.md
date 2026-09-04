@@ -624,6 +624,10 @@ $$
 Over many mission starts, the UAV will require an average of approximately 1.33 scans to obtain its first reliable GPS lock. This does not mean that a single mission can take 1.33 scans; an individual mission always requires a whole number of scans. -->
 ```
 
+## Reading
+
+Christopher M. Bishop, *Pattern Recognition and Machine Learning*, Springer, 2006, select parts of Appendix B.
+
 ## References
 
 - Joseph K. Blitzstein and Jessica Hwang, *Introduction to Probability*, 2nd ed., CRC Press, 2019. Book site: <https://projects.iq.harvard.edu/stat110/home>
