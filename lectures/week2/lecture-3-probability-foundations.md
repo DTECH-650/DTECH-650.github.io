@@ -49,7 +49,7 @@ Route A is faster when no delay occurs, but Route B has the lower expected trave
 
 A **sample space**, usually written $\Omega$, is the set of all possible outcomes of an experiment. An **event** is a subset of the sample space.
 
-For example, consider one roll of a fair six-sided die. The sample space is
+For example, consider one roll of a fair six-sided dice. The sample space is
 
 $$
 \Omega = \{1,2,3,4,5,6\},
@@ -82,7 +82,7 @@ We can combine two events, $A$ and $B$, in two fundamental ways:
 
   Here, **or is inclusive**: an outcome in both events is still part of the union. In a Venn diagram, the union is the entire region covered by either circle, including their overlap.
 
-Using the die-roll events defined above:
+Using the dice-roll events defined above:
 
 - $A \cap B = \{4,6\}$ because 4 and 6 are both even and at least 4.
 - $A \cup B = \{2,4,5,6\}$ because each of these outcomes is even, at least 4, or both.
@@ -187,7 +187,7 @@ P(A)=\frac{\text{number of outcomes in }A}
 {\text{total number of outcomes}}.
 $$
 
-This counting shortcut applies to a fair die or a well-shuffled deck, but it would not apply to the wind example because its three outcomes have different probabilities. Once additional information is observed, such as a strong-wind warning from a nearby weather station, we use conditional probability to update these probabilities.
+This counting shortcut applies to a fair dice or a well-shuffled deck, but it would not apply to the wind example because its three outcomes have different probabilities. Once additional information is observed, such as a strong-wind warning from a nearby weather station, we use conditional probability to update these probabilities.
 
 
 ## Joint, Marginal, and Conditional Probability
