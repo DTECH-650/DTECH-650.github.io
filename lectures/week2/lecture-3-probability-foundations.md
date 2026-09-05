@@ -532,6 +532,10 @@ $$
 Although $M_3$ produces only 20% of the components, it accounts for about 42.1% of the defective components because its defect rate is higher.
 ```
 
+## Reading
+
+Christopher M. Bishop, *Pattern Recognition and Machine Learning*, Springer, 2006, Chapter 1 - pages 12-17
+
 ## References
 
 - Joseph K. Blitzstein and Jessica Hwang, *Introduction to Probability*, 2nd ed., CRC Press, 2019. Book site: <https://projects.iq.harvard.edu/stat110/home>
