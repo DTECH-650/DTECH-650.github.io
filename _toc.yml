@@ -13,11 +13,11 @@ parts:
         sections:
           - file: lectures/week2/lecture-3-probability-foundations
           - file: lectures/week2/lecture-4-discrete-random-variables
-      # - file: lectures/week3/index
-      #   title: Week 3
-      #   sections:
-      #     - file: lectures/week3/lecture-5-random-variables-and-distributions
-      #     - file: lectures/week3/lecture-6-distributions
+      - file: lectures/week3/index
+        title: Week 3
+        sections:
+          - file: lectures/week3/lecture-5-random-variables-and-distributions
+          - file: lectures/week3/lecture-6-distributions
       # - file: lectures/week4/index
       #   title: Week 4
       #   sections:
