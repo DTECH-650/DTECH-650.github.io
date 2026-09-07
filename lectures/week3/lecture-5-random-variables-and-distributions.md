@@ -672,6 +672,10 @@ $$
 $$
 ```
 
+## Reading
+
+Christopher M. Bishop, *Pattern Recognition and Machine Learning*, Springer, 2006, Chapter 1 - pages 24-30, Chapter 2 - 67-71, 74-76.
+
 ## References
 
 - [1] Christopher M. Bishop, *Pattern Recognition and Machine Learning*, Springer, 2006. Book site: <https://www.microsoft.com/en-us/research/people/cmbishop/prml-book/>

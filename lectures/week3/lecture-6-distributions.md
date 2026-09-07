@@ -640,6 +640,10 @@ $$
 So the UAV leaves the corridor with probability about 9.6%.
 ```
 
+## Reading
+
+Christopher M. Bishop, *Pattern Recognition and Machine Learning*, Springer, 2006, Chapter 2 - 78-80, select parts of Appendix B
+
 ## References
 
 - [1] Christopher M. Bishop, *Pattern Recognition and Machine Learning*, Springer, 2006. Book site: <https://www.microsoft.com/en-us/research/people/cmbishop/prml-book/>
