@@ -31,7 +31,7 @@ parts:
   - caption: Code
     chapters:
       - file: codes/intro-to-python
-      # - file: codes/distributions
+      - file: codes/distributions
   - caption: Assignments
     chapters:
       - file: assignments/assignment1
