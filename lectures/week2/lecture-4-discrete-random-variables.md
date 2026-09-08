@@ -538,7 +538,7 @@ and:
 
 $$
 \operatorname{Var}(X)=np(1-p)=(5)(0.8)(0.2)=0.8.
-$$ -->
+$$
 ```
 
 ### 2. Discrete Random Variable: Wind Gusts
@@ -573,7 +573,7 @@ For a Poisson random variable, both the expectation and variance equal $\lambda$
 
 $$
 E[Y]=2, \qquad \operatorname{Var}(Y)=2.
-$$ -->
+$$
 ```
 
 ### 3. Mean and Variance: GPS Lock Acquisition
@@ -621,7 +621,7 @@ $$
 \approx 0.44.
 $$
 
-Over many mission starts, the UAV will require an average of approximately 1.33 scans to obtain its first reliable GPS lock. This does not mean that a single mission can take 1.33 scans; an individual mission always requires a whole number of scans. -->
+Over many mission starts, the UAV will require an average of approximately 1.33 scans to obtain its first reliable GPS lock. This does not mean that a single mission can take 1.33 scans; an individual mission always requires a whole number of scans.
 ```
 
 ## Reading
