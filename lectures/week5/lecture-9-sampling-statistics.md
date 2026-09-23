@@ -1,14 +1,12 @@
 # Lecture 9 - Frequentist Uncertainty and Hypotheses Testing (I/II)
 
-In prior lectures, we have established a frequentist perspective towards paramater learning. In this lecturer, we deepen the classical frequentist perspective, with a focus on sampling statistics and hypotheses testing. Specifically, we focus on statistical decision theory for a special case where we might want to reject or accept a hypotheses for a population, given a finite number of sample data at hand. 
+In prior lectures, we have established a frequentist perspective towards paramater learning. In this lecturer, we deepen the classical frequentist perspective, with a focus on sampling statistics and hypotheses testing. Specifically, we focus on statistical decision theory for a special case where we might want to reject or accept a hypotheses for a population, given a finite number of sample data at hand. So some of this lecture draws upon concepts introduced in lectures of week 2, where we establish the notion of the sampling space $\Omega$.
 
 Thus, before we discuss the details of hypotheses testing, it is important to understand the mathematical foundations of **finite** sampling through the frequentist lens: 
 
 Thus, the guiding question for this lecture is: 
 
-> How can a **finite** random sample provide a reliable estimate of an unknown population quantity?
-
-Thus, the concept of a **finite** random sample makes this lecturer distinct from the prior lectures in week4. 
+> How can a random sample provide a reliable estimate of an unknown population quantity, and how can we quantify the uncertainty in that estimate?
 
 This lecture will be guided by the following learning objectives. 
 
@@ -16,29 +14,11 @@ This lecture will be guided by the following learning objectives.
 
 After completing this lecture, you should be able to:
 
-1. Distinguish between a population, a sample, a population parameter, an estimator, and an observed estimate.
-2. Explain why an estimator such as the sample mean is a random variable. 
-3. Distinguish among population distribution, empirical distribution of one sample, the sampling distribution of an estimator. 
-4. Derive the standard error of the sample mean. 
-5. Explain the central limit theorem
-6. Construct and interpret a confidence interval using repeated-sampling coverage (rather than as a posterior probability) 
-7. Use Python simulation to examine sampling variability, the CLT, standard error, and confidence-interval coverage.
-
-<!-- 
-## Learning objectives
-
-After completing this lecture, you should be able to:
-
-- Distinguish between a population, a sample, a population parameter, an estimator, and an observed estimate.
-- Explain why an estimator such as the sample mean is a random variable. 
-- Connect the maximum-likelihood estimates introduced in Week 4 to their sampling distributions.
-- Distinguish among population distribution, empirical distribution of one sample, the sampling distribution of an estimator. 
-- Derive the standard error of the sample mean. 
-- Explain the central limit theorem
-- Analyze how sample size and population variability affect estimation uncertainty.
-- Construct a confidence interval for a population mean under stated assumptions.
-- Interpret a confidence interval using repeated-sampling coverage rather than as a posterior probability.
-- Use Python simulation to examine sampling variability, the CLT, standard error, and confidence-interval coverage.-->
+1. Distinguish finite-population and model-based sampling, including sampling with and without replacement.
+2. Explain sampling distributions and why the sample mean is a random estimator.
+3. Derive the expectation and standard error of the sample mean, including the finite-population correction.
+4. Construct and interpret confidence intervals for a population mean using an appropriate normal approximation.
+5. Use simulation to investigate sampling variability, sample-size effects, and confidence-interval coverage.
 
 ## From point estimation to uncertainty
 
@@ -65,57 +45,87 @@ our central question would be:
 
 > How widely do these estimates vary around the true population mean $\mu$?
 
-This question moves us from **point estimation** to **quantifying uncertainty**.
+This question moves us from **point estimation** to **sampling** and **uncertainty**.
 
-## 2. Population and random sampling
-In frequentist statistics, the term *population* is a very widely used, and it is important to understand uncertainty from a frequentist perspective. 
+## 2. Population, samples, and and random sampling
+In frequentist statistics, the term *population* is a very widely used.
 
-The word *population* is used in two related ways in statistics, namely in a finite-population setting and a model-based formulation. We begin with the finite-population setting because it makes random sampling concrete. We then introduce the model-based formulation used in most machine-learning theory.
+The word *population* is used in two related ways in statistics, namely in a finite-population setting and a model-based formulation. We begin with the finite-population setting because it makes random sampling concrete.
 
 ### 2.1 Finite population
 
-Suppose a fleet contains $M=1{,}000$ engines. Let
+Suppose a fleet contains $M=1{,}000$ engines. For each engine $j=1,\ldots,M$, let $z_j$ denote its temperature during a specified test.
 
-$$
-\mathcal{P}_M=\{z_1,z_2,\ldots,z_M\}
-$$
+The engines are the **population units**, and $z_1,\ldots,z_M$ are their associated measurements. Different engines may have the same temperature.
 
-denote a fixed measurement associated with each engine—for example, its operating temperature during a specified test. The finite-population mean is
+For this sampling problem, we treat these measurements as fixed. We want to learn about the complete population by inspecting a randomly selected sample of engines.
+
+Suppose we select $N=50$ distinct engines from the fleet. Then $M=1{,}000$ is the population size and $N=50$ is the sample size.
+
+The population values remain fixed. Randomness enters through which engines are selected: different samples can contain different temperatures and therefore produce different estimates.
+
+![Histogram of simulated temperatures for a fixed population of 1,000 engines.](images/population-and-sample.png)
+
+*Left: This histogram shows all 1,000 temperatures in our simulated population. The dashed line marks the population mean. We display the complete population for illustration; Right side: In practice, we would usually observe only the selected sample. You would than calculate sample statistic. In this case the population mean is 85.01 °C and the sample mean is 84.96 °C. So there is an estimation error (sample − population): -0.05 °C. *
+
+So keep in mind that:
+
+- $M$ is the number of units in the population;
+- $N$ is the number of units selected for the sample.
+
+:::{important}
+There are only two quantities here. Some statistics texts, including Rice (2007) (see references), use $N$ for population size and $n$ for sample size. In this course, we use $M$ for finite-population size and retain $N$ for sample size to remain consistent with Lecture 7. The difference is purely notational. What is important that you need to clearly define what your population statistic is as that impacts your inference.
+:::
+
+| Concept | Notation in this course  |
+|---|---:|
+| Finite-population size | $M$ |
+| Sample size | $N$|
+| Example | $M=1{,}000$, $N=50$ |
+
+
+A finite-population sample selects N units from M existing units. By contrast, the model-based formulation used in machine learning more broadly treats observations as draws from a probability distribution. We introduce this distinction  later.
+
+### 2.2 Finite-population parameters
+
+A population parameter is a numerical characteristic of the complete
+population. Because the engine temperatures $z_1,\ldots,z_M$ are treated as fixed, their population parameters are also fixed.
+
+The **population mean** is the average temperature:
 
 $$
 \mu_M=\frac{1}{M}\sum_{j=1}^{M}z_j.
 $$
 
-The $M$ population values are fixed. Randomness enters because we select only some of the engines for inspection.
-
-If we sample $N=50$ engines, then
+The **population variance** measures the spread of the individual
+temperatures around this mean:
 
 $$
-M=1{,}000 \quad \text{and} \quad N=50.
+\sigma_M^2
+=\frac{1}{M}\sum_{j=1}^{M}(z_j-\mu_M)^2.
 $$
 
-Thus:
+The denominator is $M$ because this definition uses all $M$ population values.
 
-- $M$ is the number of units in the finite population;
-- $N$ is the number of units selected for the sample.
+The **population standard deviation** is
+
+$$
+\sigma_M=\sqrt{\sigma_M^2}.
+$$
+
+It has the same units as the measurements: degrees Celsius in our example. The variance has units of degrees Celsius squared.
+
+In our simulated example, we know the complete population and can calculate these parameters directly. In practice, the population parameters are usually unknown because we observe only a sample.
 
 :::{important}
-There are only two quantities here. Some statistics texts, including Rice, use $N$ for population size and $n$ for sample size. In this course, we use $M$ for finite-population size and retain $N$ for sample size to remain consistent with Lecture 7.
-:::
+The population standard deviation describes variation among individual engines. It does not describe how much a sample mean varies across samples. That second quantity is the standard error, which we introduce later.
+::
 
-| Concept | Notation in this course  |
-|---|---:|---:|
-| Finite-population size | $M$ |
-| Sample size | $N$|
-| Example | $M=1{,}000$, $N=50$ |
+### 2.3 Simple random sampling without replacement
 
-> We use N for sample size throughout the course. When discussing a finite population, we use M for the total number of population units. Some statistics texts, including Rice (2007), instead use N for population size and n for sample size. The difference is purely notational.
-
-A finite-population sample selects N units from M existing units. By contrast, the model-based formulation used in machine learning more broadly treats observations as draws from a probability distribution. We introduce finite sampling above to clarify this special case that is important for this lectures on sampling and hypotheses testing. 
-
-### 2.2 Simple random sampling without replacement
-
-A **simple random sample without replacement** of size $N$ is selected so that every subset of $N$ distinct population units has the same probability of being selected.
+A **simple random sample without replacement** of size $N$ selects
+$N$ distinct population units so that every possible subset of that
+size has the same probability of selection.
 
 There are
 
@@ -123,40 +133,73 @@ $$
 \binom{M}{N}
 $$
 
-possible subsets, so the probability of selecting any particular subset is
+possible subsets. Therefore,
 
 $$
-P(\text{a particular sample})
+P(\text{selecting a particular subset})
 =\frac{1}{\binom{M}{N}}.
 $$
 
-The phrase *without replacement* means that a selected unit cannot be selected again. Consequently, the selected observations are dependent: learning which unit was selected changes which units remain available.
+For our fleet, this means selecting 50 distinct engines from 1,000.
+One way to obtain such a sample is to select each successive engine
+uniformly from those not yet selected.
 
-### 2.3 Model-based population
+**Without replacement** means that an engine cannot appear twice
+in the same sample. Different selected engines can nevertheless
+have identical temperatures.
 
-In mathematical statistics and machine learning, a population is usually represented by a probability distribution:
+Let $X_i$ denote the temperature obtained on the $i$th selection.
+Before selection, $X_i$ is random because we do not know which
+engine will be selected. After selection, we observe a particular
+value $x_i$.
+
+The selections are dependent: selecting one engine changes which engines remain available. This dependence affects the variance of the sample mean, but the sample mean remains unbiased:
 
 $$
-X\sim p(x\mid\theta).
+\mathbb{E}[\overline{X}]=\mu_M.
 $$
 
-A random sample of size $N$ is modeled as
+We will derive this result and the corresponding variance later.
+
+:::{note}
+Unbiasedness concerns the average over repeated samples. It does not require the mean of any one sample to equal the population mean.
+:::
+
+For comparison, **independent sampling with replacement** returns each selected engine to the pool before the next selection. Every selection again chooses uniformly from all $M$ engines, so an engine may appear more than once. The resulting observations are independent and identically distributed.
+
+Comparing these two procedures will help us understand the finite-population correction.
+For §2.4, retain the connection to Week 4 while distinguishing its assumptions:
+### 2.4 Connection to Week 4: Model-based populations
+
+In Week 4, we represented observations using a probability model $p(x\mid\theta)$, with fixed but unknown parameters $\theta$. Under an IID sampling model,
 
 $$
-X_1,\ldots,X_N
-\overset{\mathrm{iid}}{\sim}p(x\mid\theta).
+X_1,\ldots,X_N \overset{\mathrm{iid}}{\sim}p(x\mid\theta).
 $$
 
-Here, randomness enters through the data-generating process. There need not be a known finite collection of $M$ units, so $M$ does not appear in this formulation.
+Here, the population is described by a probability distribution, rather than by a specified list of $M$ fixed measurements. Its mean and variance are
 
-| Finite-population sampling | Model-based sampling |
-|---|---|
-| $M$ fixed units exist | The population is represented by $p(x\mid\theta)$ |
-| Select $N$ of those units | Observe or generate $N$ data points |
-| Often sample without replacement | Usually assume IID observations |
-| Infer properties of the finite collection | Infer properties of the distribution or process |
+$$
+\mu=\mathbb{E}[X],
+\qquad
+\sigma^2=\operatorname{Var}(X),
+$$
 
-The model-based IID formulation aligns with the broader problem of machine learning and statistical inference. We will return to finite sampling in this lecture when needed (e.g. when introducing the finite-population correction) to ensure that you build some intitution about the limitations of certain assumptions we make when dealing with small samples and finite sampling. 
+provided these quantities exist.
+
+The two perspectives answer related but different questions:
+
+| Perspective | Quantity of interest | Source of randomness |
+|---|---|---|
+| Finite population | A characteristic of the fixed values $z_1,\ldots,z_M$ | Which population units are selected |
+| Model-based population | A characteristic of $p(x\mid\theta)$ | Observations generated under the model |
+
+Both perspectives produce random estimators and sampling distributions. However, their assumptions determine which variance and standard-error formulas apply.
+
+A model-based formulation does not automatically imply independence. IID is an additional assumption of the particular model.
+
+In this lecture, finite-population sampling is our main setting. We use independent sampling with replacement as a comparison and return to the model-based perspective when connecting these results to the estimation methods introduced in Week 4.
+
 
 ## 3. Statistics and sampling distributions
 
@@ -196,12 +239,36 @@ The distribution of these possible values is the sampling distribution of $\over
 The sampling distribution of $\overline{X}$ is not the same as the distribution of the individual observations $X_i$. It describes the behavior of an estimator over hypothetical repetitions of the sampling process.
 :::
 
-## 4. Expected value of the sample mean
+## 4. The sample mean $\overline{X}$ as a random estimator
 
-Assume that
+To keep the logic clean, this section returns to the model-based IID setting from Lecture 7:
 
 $$
-\mathbb{E}[X_i]=\mu.
+X_1,\ldots,X_N
+\overset{\mathrm{iid}}{\sim}p(x\mid\theta),
+$$
+
+with
+
+$$
+\mathbb{E}[X_i]=\mu,
+\qquad
+\operatorname{Var}(X_i)=\sigma^2<\infty.
+$$
+
+Here $\mu$ and $\sigma^2$ describe the population distribution. In the finite-population setting from Section 2, the analogous quantities are $\mu_M$ and $\sigma_M^2$.
+
+We return to finite-population sampling without replacement in Section 6.
+
+> Why $\overline{X}$ is random before data are observed
+
+
+### 4.2 Expected value of $\overline{X}$
+
+The sample mean is
+
+$$
+\overline{X}=\frac{1}{N}\sum_{i=1}^{N}X_i.
 $$
 
 Using linearity of expectation,
@@ -227,8 +294,7 @@ which means that $\overline{X}$ is an **unbiased estimator** of $\mu$.
 :::{note}
 Unbiasedness does not mean that the estimate from one sample equals the population parameter. It means that the estimator is correct *on average over repeated samples*.
 :::
-
-## 5. Variance and standard error of the sample mean
+### 4.3 Variance and standard error of $\overline{X}$
 
 Assume the observations are independent and
 
@@ -265,82 +331,13 @@ The standard deviation of an estimator's sampling distribution is called its **s
 $$
 \operatorname{SE}(\overline{X})=\frac{\sigma}{\sqrt{N}}.
 $$
-
-### Sample-size implication
+### 4.4 What sample size does: the $1/\sqrt(N)$ rule
 
 Uncertainty decreases at the rate $1/\sqrt{N}$, not $1/N$. Therefore, halving the standard error requires four times as many independent observations.
 
 This is an important practical result when designing experiments or deciding how much data to collect.
 
-## 6. Sample variance and the connection to Lecture 7
-
-Lecture 7 derived the Gaussian maximum-likelihood estimator of the variance:
-
-$$
-\widehat{\sigma}_{\mathrm{ML}}^2
-=\frac{1}{N}\sum_{i=1}^{N}(X_i-\overline{X})^2.
-$$
-
-In classical sampling theory, the usual unbiased estimator of $\sigma^2$ is
-
-$$
-S^2
-=\frac{1}{N-1}\sum_{i=1}^{N}(X_i-\overline{X})^2.
-$$
-
-These formulas are not contradictory. They are motivated by different statistical properties.
-
-| Estimator | Denominator | Property |
-|---|---:|---|
-| Gaussian MLE | $N$ | Maximizes the Gaussian likelihood |
-| Unbiased sample variance | $N-1$ | Has expectation $\sigma^2$ |
-
-For IID Gaussian observations, the MLE is biased downward at finite $N$:
-
-$$
-\mathbb{E}\left[\widehat{\sigma}_{\mathrm{ML}}^2\right]
-=\frac{N-1}{N}\sigma^2.
-$$
-
-By contrast,
-
-$$
-\mathbb{E}[S^2]=\sigma^2.
-$$
-
-### Why does the unbiased estimator use $N-1$?
-
-The deviations from the sample mean satisfy
-
-$$
-\sum_{i=1}^{N}(X_i-\overline{X})=0.
-$$
-
-Once $N-1$ deviations are known, the final deviation is determined by this constraint. Only $N-1$ deviations are free to vary; we say that the residuals have $N-1$ **degrees of freedom**.
-
-## 7. Estimated standard error
-
-Because the population standard deviation $\sigma$ is usually unknown, we estimate it using $S$. The estimated standard error of the sample mean is
-
-$$
-\widehat{\operatorname{SE}}(\overline{X})
-=\frac{S}{\sqrt{N}}.
-$$
-
-It is important to distinguish
-
-$$
-S
-\quad \text{from} \quad
-\frac{S}{\sqrt{N}}.
-$$
-
-- $S$ estimates the variability of individual observations.
-- $S/\sqrt{N}$ estimates the variability of the sample mean across repeated samples.
-
-The latter should not be called the standard deviation of the data. It is the estimated standard deviation of the estimator's sampling distribution.
-
-## 8. Finite-population correction
+## 5. Finite-population correction
 
 The IID formula $\sigma/\sqrt{N}$ applies naturally to independent sampling, including sampling with replacement. When sampling without replacement from a finite population, the observations are dependent and uncertainty decreases slightly faster. 
 
@@ -394,7 +391,7 @@ $$
 
 The finite-population standard error is therefore about $2.5\%$ smaller than the independent-sampling approximation.
 
-## 9. Normal approximation and the central limit theorem
+## 6. Normal approximation and the central limit theorem
 
 Suppose
 
@@ -428,7 +425,7 @@ $$
 
 where $\overset{\cdot}{\sim}$ denotes an approximate distribution.
 
-### 9.1 Exact Gaussian case
+### 6.1 Exact Gaussian case
 
 If
 
@@ -445,11 +442,11 @@ $$
 
 exactly for every sample size $N$.
 
-### 9.2 Non-Gaussian case
+### 6.2 Non-Gaussian case
 
 If the population distribution is not Gaussian, normality of the sample mean is generally an approximation. How large $N$ must be depends on features such as skewness, heavy tails, outliers, and dependence.
 
-### 9.3 What the CLT does not guarantee
+### 6.3 What the CLT does not guarantee
 
 The CLT does not imply that:
 
@@ -459,7 +456,9 @@ The CLT does not imply that:
 - biased sampling becomes valid as $N$ grows; or
 - strong time-series correlation disappears merely because many observations were recorded.
 
-## 10. Confidence interval when the variance is known
+## 7. Confidence interval
+
+### 7.1 Confidence intervals when the variance is known
 
 If $\sigma$ is known and either the population is Gaussian or the normal approximation is adequate, then
 
@@ -504,7 +503,7 @@ $$
 z_{0.975}\approx 1.96.
 $$
 
-## 11. Confidence interval when the variance is unknown
+### 7.2 Confidence interval when the variance is unknown
 
 When $\sigma$ is unknown, replace it with the sample standard deviation $S$ and define
 
@@ -535,7 +534,51 @@ Three ideas are important:
 2. the $t$ distribution has heavier tails than the standard normal distribution; and
 3. the $t$ distribution approaches the standard normal distribution as $N$ increases.
 
-## 12. Correct interpretation of a confidence interval
+> Connection to Lecture 7: why does sample variance use $N-1$?
+
+Lecture 7 derived the Gaussian maximum-likelihood estimator of the variance:
+
+$$
+\widehat{\sigma}_{\mathrm{ML}}^2
+=\frac{1}{N}\sum_{i=1}^{N}(X_i-\overline{X})^2.
+$$
+
+In Section 5, however, we used
+
+$$
+S^2
+=\frac{1}{N-1}\sum_{i=1}^{N}(X_i-\overline{X})^2.
+$$
+
+These formulas are not contradictory. They answer different questions:
+
+| Estimator | Denominator | Main property |
+|---|---:|---|
+| Gaussian MLE | $N$ | Maximizes the Gaussian likelihood |
+| Sample variance $S^2$ | $N-1$ | Has expectation $\sigma^2$ under the IID model |
+
+The denominator $N-1$ appears because the deviations are computed from the sample mean $\overline{X}$, not from the unknown population mean $\mu$. These deviations must satisfy
+
+$$
+\sum_{i=1}^{N}(X_i-\overline{X})=0.
+$$
+
+Once $N-1$ deviations are known, the final deviation is determined by this constraint. Only $N-1$ deviations are free to vary; we say that the residuals have $N-1$ **degrees of freedom**.
+
+For IID Gaussian observations, the MLE is biased downward at finite $N$:
+
+$$
+\mathbb{E}\left[\widehat{\sigma}_{\mathrm{ML}}^2\right]
+=\frac{N-1}{N}\sigma^2,
+$$
+
+whereas
+
+$$
+\mathbb{E}[S^2]=\sigma^2.
+$$
+
+## 7.3.  Correct interpretation of a confidence interval
 
 Before observing the sample,
 
@@ -568,7 +611,7 @@ A correct frequentist interpretation is:
 
 It is not technically correct in the frequentist framework to say that the fixed parameter has a $95\%$ probability of lying in the particular interval already observed.
 
-## 13. Assumptions and limitations
+## 8 Assumptions recap:
 
 The formulas in this lecture assume, explicitly or implicitly:
 
@@ -594,7 +637,7 @@ may substantially underestimate uncertainty. More data points do not automatical
 
 This is particularly important for time-series, robotics, autonomous-system, and industrial sensor data.
 
-## 14. Python tutorial: making repeated sampling visible
+## 13. Coding experiments to build intuitaion: making repeated sampling visible
 
 ### Experiment 1: Sampling distribution of the mean
 
@@ -661,7 +704,7 @@ Generate an autocorrelated sequence and incorrectly treat its observations as II
 - Steven L. Brunton, [Normal Approximation to the Sample Mean](https://www.youtube.com/watch?v=Arbj9SoU9Cs).
 - Steven L. Brunton, [Confidence Intervals](https://www.youtube.com/watch?v=qTVdV8ITZfk).
 
-## 15. Bridge to Lecture 10: hypothesis testing
+## 14. Bridge to Lecture 10: hypothesis testing
 
 Suppose someone proposes that
 
@@ -683,3 +726,36 @@ We can therefore ask:
 
 We will discuss this in the next lecture. 
 
+
+## 5. Estimated standard error
+
+Section 4 used the population standard deviation $\sigma$. In practice, $\sigma$ is usually unknown, so we estimate the variability of individual observations from the same sample:
+
+$$
+S^2
+=\frac{1}{N-1}\sum_{i=1}^{N}(X_i-\overline{X})^2,
+\qquad
+S=\sqrt{S^2}.
+$$
+
+For now, read $S$ as the sample's estimate of the spread of individual observations. Then the estimated standard error of the sample mean is
+
+$$
+\widehat{\operatorname{SE}}(\overline{X})
+=\frac{S}{\sqrt{N}}.
+$$
+
+It is important to distinguish
+
+$$
+S
+\quad \text{from} \quad
+\frac{S}{\sqrt{N}}.
+$$
+
+- $S$ estimates the variability of individual observations.
+- $S/\sqrt{N}$ estimates the variability of the sample mean across repeated samples.
+
+The latter should not be called the standard deviation of the data. It is the estimated standard deviation of the estimator's sampling distribution.
+
+The denominator $N-1$ will be explained after we introduce confidence intervals with unknown variance.
