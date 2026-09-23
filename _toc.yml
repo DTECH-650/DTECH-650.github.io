@@ -28,6 +28,10 @@ parts:
         sections:
           - file: lectures/week5/lecture-9-sampling-statistics
           - file: lectures/week5/lecture-10-hypotheses-testing
+      - file: lectures/week6/index
+        title: Week 6
+        sections:
+          - file: lectures/week6/lecture-11-machine-learning.basics
       - file: lectures/bayesian
   - caption: Code
     chapters:
