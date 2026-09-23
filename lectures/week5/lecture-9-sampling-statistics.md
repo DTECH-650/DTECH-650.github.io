@@ -1,14 +1,12 @@
 # Lecture 9 - Frequentist Uncertainty and Hypotheses Testing (I/II)
 
-In prior lectures, we have established a frequentist perspective towards paramater learning. In this lecturer, we deepen the classical frequentist perspective, with a focus on sampling statistics and hypotheses testing. Specifically, we focus on statistical decision theory for a special case where we might want to reject or accept a hypotheses for a population, given a finite number of sample data at hand. 
+In prior lectures, we have established a frequentist perspective towards paramater learning. In this lecturer, we deepen the classical frequentist perspective, with a focus on sampling statistics and hypotheses testing. Specifically, we focus on statistical decision theory for a special case where we might want to reject or accept a hypotheses for a population, given a finite number of sample data at hand. So some of this lecture draws upon concepts introduced in lectures of week 2, where we establish the notion of the sampling space $\Omega$. 
 
 Thus, before we discuss the details of hypotheses testing, it is important to understand the mathematical foundations of **finite** sampling through the frequentist lens: 
 
 Thus, the guiding question for this lecture is: 
 
-> How can a **finite** random sample provide a reliable estimate of an unknown population quantity?
-
-Thus, the concept of a **finite** random sample makes this lecturer distinct from the prior lectures in week4. 
+> How can a random sample provide a reliable estimate of an unknown population quantity, and how can we quantify the uncertainty in that estimate?
 
 This lecture will be guided by the following learning objectives. 
 
@@ -16,29 +14,11 @@ This lecture will be guided by the following learning objectives.
 
 After completing this lecture, you should be able to:
 
-1. Distinguish between a population, a sample, a population parameter, an estimator, and an observed estimate.
-2. Explain why an estimator such as the sample mean is a random variable. 
-3. Distinguish among population distribution, empirical distribution of one sample, the sampling distribution of an estimator. 
-4. Derive the standard error of the sample mean. 
-5. Explain the central limit theorem
-6. Construct and interpret a confidence interval using repeated-sampling coverage (rather than as a posterior probability) 
-7. Use Python simulation to examine sampling variability, the CLT, standard error, and confidence-interval coverage.
-
-<!-- 
-## Learning objectives
-
-After completing this lecture, you should be able to:
-
-- Distinguish between a population, a sample, a population parameter, an estimator, and an observed estimate.
-- Explain why an estimator such as the sample mean is a random variable. 
-- Connect the maximum-likelihood estimates introduced in Week 4 to their sampling distributions.
-- Distinguish among population distribution, empirical distribution of one sample, the sampling distribution of an estimator. 
-- Derive the standard error of the sample mean. 
-- Explain the central limit theorem
-- Analyze how sample size and population variability affect estimation uncertainty.
-- Construct a confidence interval for a population mean under stated assumptions.
-- Interpret a confidence interval using repeated-sampling coverage rather than as a posterior probability.
-- Use Python simulation to examine sampling variability, the CLT, standard error, and confidence-interval coverage.-->
+1. Distinguish finite-population and model-based sampling, including sampling with and without replacement.
+2. Explain sampling distributions and why the sample mean is a random estimator.
+3. Derive the expectation and standard error of the sample mean, including the finite-population correction.
+4. Construct and interpret confidence intervals for a population mean using an appropriate normal approximation.
+5. Use simulation to investigate sampling variability, sample-size effects, and confidence-interval coverage.
 
 ## From point estimation to uncertainty
 
@@ -72,39 +52,29 @@ In frequentist statistics, the term *population* is a very widely used.
 
 The word *population* is used in two related ways in statistics, namely in a finite-population setting and a model-based formulation. We begin with the finite-population setting because it makes random sampling concrete. 
 
-### 2.1 Finite-population view
+### 2.1 Finite population
 
-Suppose a fleet contains $M=1{,}000$ engines. Let
+Suppose a fleet contains $M=1{,}000$ engines. For each engine $j=1,\ldots,M$, let $z_j$ denote its temperature during a specified test.
 
-$$
-\mathcal{P}_M=\{z_1,z_2,\ldots,z_M\}
-$$
+The engines are the **population units**, and $z_1,\ldots,z_M$ are their associated measurements. Different engines may have the same temperature.
 
-denote a fixed measurement associated with each engine—for example, its operating temperature during a specified test. 
+For this sampling problem, we treat these measurements as fixed. We want to learn about the complete population by inspecting a randomly selected sample of engines.
 
-% Add a histogram here %
+Suppose we select $N=50$ distinct engines from the fleet. Then $M=1{,}000$ is the population size and $N=50$ is the sample size.
 
-The finite-population mean is
+The population values remain fixed. Randomness enters through which engines are selected: different samples can contain different temperatures and therefore produce different estimates.
 
-$$
-\mu_M=\frac{1}{M}\sum_{j=1}^{M}z_j.
-$$
+![Histogram of simulated temperatures for a fixed population of 1,000 engines.](images/population-and-sample.png)
 
-The $M$ population values are fixed. Randomness enters because we select only some of the engines for inspection.
+*Left: This histogram shows all 1,000 temperatures in our simulated population. The dashed line marks the population mean. We display the complete population for illustration; Right side: In practice, we would usually observe only the selected sample. You would than calculate sample statistic. In this case the population mean is 85.01 °C and the sample mean is 84.96 °C. So there is an estimation error (sample − population): -0.05 °C. *
 
-If we sample $N=50$ engines, then
+So keep in mind that: 
 
-$$
-M=1{,}000 \quad \text{and} \quad N=50.
-$$
-
-Thus:
-
-- $M$ is the number of units in the finite population;
+- $M$ is the number of units in the population; 
 - $N$ is the number of units selected for the sample.
 
 :::{important}
-There are only two quantities here. Some statistics texts, including Rice (2007) (see references), use $N$ for population size and $n$ for sample size. In this course, we use $M$ for finite-population size and retain $N$ for sample size to remain consistent with Lecture 7. The difference is purely notational. 
+There are only two quantities here. Some statistics texts, including Rice (2007) (see references), use $N$ for population size and $n$ for sample size. In this course, we use $M$ for finite-population size and retain $N$ for sample size to remain consistent with Lecture 7. The difference is purely notational. What is important that you need to clearly define what your population statistic is as that impacts your inference. 
 :::
 
 | Concept | Notation in this course  |
@@ -116,17 +86,119 @@ There are only two quantities here. Some statistics texts, including Rice (2007)
 
 A finite-population sample selects N units from M existing units. By contrast, the model-based formulation used in machine learning more broadly treats observations as draws from a probability distribution. We introduce this distinction  later. 
 
-### 2.2 Finite population parameters
+### 2.2 Finite-population parameters
+
+A population parameter is a numerical characteristic of the complete
+population. Because the engine temperatures $z_1,\ldots,z_M$ are treated as fixed, their population parameters are also fixed.
+
+The **population mean** is the average temperature:
+
+$$
+\mu_M=\frac{1}{M}\sum_{j=1}^{M}z_j.
+$$
+
+The **population variance** measures the spread of the individual
+temperatures around this mean:
+
+$$
+\sigma_M^2
+=\frac{1}{M}\sum_{j=1}^{M}(z_j-\mu_M)^2.
+$$
+
+The denominator is $M$ because this definition uses all $M$ population values.
+
+The **population standard deviation** is
+
+$$
+\sigma_M=\sqrt{\sigma_M^2}.
+$$
+
+It has the same units as the measurements: degrees Celsius in our example. The variance has units of degrees Celsius squared.
+
+In our simulated example, we know the complete population and can calculate these parameters directly. In practice, the population parameters are usually unknown because we observe only a sample.
+
+:::{important}
+The population standard deviation describes variation among individual engines. It does not describe how much a sample mean varies across samples. That second quantity is the standard error, which we introduce later.
+::
 
 ### 2.3 Simple random sampling without replacement
 
-A **simple random sample without replacement** of size $N$ is selected so that every subset of $N$ distinct population units has the same probability of being selected. There are $\binom{M}{N}$ possible subsets of $N$. 
+A **simple random sample without replacement** of size $N$ selects
+$N$ distinct population units so that every possible subset of that
+size has the same probability of selection.
 
-The phrase *without replacement* means that a selected unit cannot be selected again. Consequently, the selected observations are dependent: learning which unit was selected changes which units remain available. This dependence violates the i.i.d assumptions we have established in earlier chapters, and can lead to biased sample estimators. 
+There are
 
-> To explain this bias and define unbiased statistics (parameter estimators), we will later also refer to scenarios where we sample with replacement. IN such cases, we would have $\binom{M + N -1 }{N}$ potential subsets of $N$ samples.
+$$
+\binom{M}{N}
+$$
 
-### 2.4. Connection to week 4: Model based population
+possible subsets. Therefore,
+
+$$
+P(\text{selecting a particular subset})
+=\frac{1}{\binom{M}{N}}.
+$$
+
+For our fleet, this means selecting 50 distinct engines from 1,000.
+One way to obtain such a sample is to select each successive engine
+uniformly from those not yet selected.
+
+**Without replacement** means that an engine cannot appear twice
+in the same sample. Different selected engines can nevertheless
+have identical temperatures.
+
+Let $X_i$ denote the temperature obtained on the $i$th selection.
+Before selection, $X_i$ is random because we do not know which
+engine will be selected. After selection, we observe a particular
+value $x_i$.
+
+The selections are dependent: selecting one engine changes which engines remain available. This dependence affects the variance of the sample mean, but the sample mean remains unbiased:
+
+$$
+\mathbb{E}[\overline{X}]=\mu_M.
+$$
+
+We will derive this result and the corresponding variance later.
+
+:::{note}
+Unbiasedness concerns the average over repeated samples. It does not require the mean of any one sample to equal the population mean.
+:::
+
+For comparison, **independent sampling with replacement** returns each selected engine to the pool before the next selection. Every selection again chooses uniformly from all $M$ engines, so an engine may appear more than once. The resulting observations are independent and identically distributed.
+
+Comparing these two procedures will help us understand the finite-population correction.
+For §2.4, retain the connection to Week 4 while distinguishing its assumptions:
+### 2.4 Connection to Week 4: Model-based populations
+
+In Week 4, we represented observations using a probability model $p(x\mid\theta)$, with fixed but unknown parameters $\theta$. Under an IID sampling model,
+
+$$
+X_1,\ldots,X_N \overset{\mathrm{iid}}{\sim}p(x\mid\theta).
+$$
+
+Here, the population is described by a probability distribution, rather than by a specified list of $M$ fixed measurements. Its mean and variance are
+
+$$
+\mu=\mathbb{E}[X],
+\qquad
+\sigma^2=\operatorname{Var}(X),
+$$
+
+provided these quantities exist.
+
+The two perspectives answer related but different questions:
+
+| Perspective | Quantity of interest | Source of randomness |
+|---|---|---|
+| Finite population | A characteristic of the fixed values $z_1,\ldots,z_M$ | Which population units are selected |
+| Model-based population | A characteristic of $p(x\mid\theta)$ | Observations generated under the model |
+
+Both perspectives produce random estimators and sampling distributions. However, their assumptions determine which variance and standard-error formulas apply.
+
+A model-based formulation does not automatically imply independence. IID is an additional assumption of the particular model.
+
+In this lecture, finite-population sampling is our main setting. We use independent sampling with replacement as a comparison and return to the model-based perspective when connecting these results to the estimation methods introduced in Week 4.
 
 
 ## 3. Statistics and sampling distributions
