@@ -1,14 +1,14 @@
 # Lecture 9 - Frequentist Uncertainty and Hypotheses Testing (I/II)
 
-In prior lectures, we have established a frequentist perspective towards paramater learning. In this lecturer, we deepen the classical frequentist perspective, with a focus on sampling statistics and hypotheses testing. Specifically, we focus on statistical decision theory for a special case where we might want to reject or accept a hypotheses for a population, given a finite number of sample data at hand. So some of this lecture draws upon concepts introduced in lectures of week 2, where we establish the notion of the sampling space $\Omega$. 
+In prior lectures, we have established a frequentist perspective towards paramater learning. In this lecturer, we deepen the classical frequentist perspective, with a focus on sampling statistics and hypotheses testing. Specifically, we focus on statistical decision theory for a special case where we might want to reject or accept a hypotheses for a population, given a finite number of sample data at hand. So some of this lecture draws upon concepts introduced in lectures of week 2, where we establish the notion of the sampling space $\Omega$.
 
-Thus, before we discuss the details of hypotheses testing, it is important to understand the mathematical foundations of **finite** sampling through the frequentist lens: 
+Thus, before we discuss the details of hypotheses testing, it is important to understand the mathematical foundations of **finite** sampling through the frequentist lens:
 
-Thus, the guiding question for this lecture is: 
+Thus, the guiding question for this lecture is:
 
 > How can a random sample provide a reliable estimate of an unknown population quantity, and how can we quantify the uncertainty in that estimate?
 
-This lecture will be guided by the following learning objectives. 
+This lecture will be guided by the following learning objectives.
 
 ## Learning objectives
 
@@ -20,7 +20,7 @@ After completing this lecture, you should be able to:
 4. Construct and interpret confidence intervals for a population mean using an appropriate normal approximation.
 5. Use simulation to investigate sampling variability, sample-size effects, and confidence-interval coverage.
 
-## From point estimation to uncertainty
+## 1. From point estimation to uncertainty
 
 In prior lectures, we treated model parameters as fixed but unknown and derived estimators from the likelihood. For example, the Gaussian maximum-likelihood estimator of the population mean is the sample mean:
 
@@ -45,12 +45,12 @@ our central question would be:
 
 > How widely do these estimates vary around the true population mean $\mu$?
 
-This question moves us from **point estimation** to **sampling** and **uncertainty**. 
+This question moves us from **point estimation** to **sampling** and **uncertainty**.
 
 ## 2. Population, samples, and and random sampling
-In frequentist statistics, the term *population* is a very widely used. 
+In frequentist statistics, the term *population* is a very widely used.
 
-The word *population* is used in two related ways in statistics, namely in a finite-population setting and a model-based formulation. We begin with the finite-population setting because it makes random sampling concrete. 
+The word *population* is used in two related ways in statistics, namely in a finite-population setting and a model-based formulation. We begin with the finite-population setting because it makes random sampling concrete.
 
 ### 2.1 Finite population
 
@@ -68,13 +68,13 @@ The population values remain fixed. Randomness enters through which engines are 
 
 *Left: This histogram shows all 1,000 temperatures in our simulated population. The dashed line marks the population mean. We display the complete population for illustration; Right side: In practice, we would usually observe only the selected sample. You would than calculate sample statistic. In this case the population mean is 85.01 °C and the sample mean is 84.96 °C. So there is an estimation error (sample − population): -0.05 °C. *
 
-So keep in mind that: 
+So keep in mind that:
 
 - $M$ is the number of units in the population; 
 - $N$ is the number of units selected for the sample.
 
 :::{important}
-There are only two quantities here. Some statistics texts, including Rice (2007) (see references), use $N$ for population size and $n$ for sample size. In this course, we use $M$ for finite-population size and retain $N$ for sample size to remain consistent with Lecture 7. The difference is purely notational. What is important that you need to clearly define what your population statistic is as that impacts your inference. 
+There are only two quantities here. Some statistics texts, including Rice (2007) (see references), use $N$ for population size and $n$ for sample size. In this course, we use $M$ for finite-population size and retain $N$ for sample size to remain consistent with Lecture 7. The difference is purely notational. What is important that you need to clearly define what your population statistic is as that impacts your inference.
 :::
 
 | Concept | Notation in this course  |
@@ -84,12 +84,11 @@ There are only two quantities here. Some statistics texts, including Rice (2007)
 | Example | $M=1{,}000$, $N=50$ |
 
 
-A finite-population sample selects N units from M existing units. By contrast, the model-based formulation used in machine learning more broadly treats observations as draws from a probability distribution. We introduce this distinction  later. 
+A finite-population sample selects N units from M existing units. By contrast, the model-based formulation used in machine learning more broadly treats observations as draws from a probability distribution. We introduce this distinction  later.
 
 ### 2.2 Finite-population parameters
 
-A population parameter is a numerical characteristic of the complete
-population. Because the engine temperatures $z_1,\ldots,z_M$ are treated as fixed, their population parameters are also fixed.
+A population parameter is a numerical characteristic of the complete population. Because the engine temperatures $z_1,\ldots,z_M$ are treated as fixed, their population parameters are also fixed.
 
 The **population mean** is the average temperature:
 
@@ -97,8 +96,7 @@ $$
 \mu_M=\frac{1}{M}\sum_{j=1}^{M}z_j.
 $$
 
-The **population variance** measures the spread of the individual
-temperatures around this mean:
+The **population variance** measures the spread of the individual temperatures around this mean:
 
 $$
 \sigma_M^2
@@ -159,7 +157,8 @@ Unbiasedness concerns the average over repeated samples. It does not require the
 For comparison, **independent sampling with replacement** returns each selected engine to the pool before the next selection. Every selection again chooses uniformly from all $M$ engines, so an engine may appear more than once. The resulting observations are independent and identically distributed.
 
 Comparing these two procedures will help us understand the finite-population correction.
-For §2.4, retain the connection to Week 4 while distinguishing its assumptions:
+
+
 ### 2.4 Connection to Week 4: Model-based populations
 
 In Week 4, we represented observations using a probability model $p(x\mid\theta)$, with fixed but unknown parameters $\theta$. Under an IID sampling model,
@@ -232,8 +231,10 @@ The sampling distribution of $\overline{X}$ is not the same as the distribution 
 
 ## 4. The sample mean $\overline{X}$ as a random estimator
 
+We first derive the sample statistics (e.g. the mean) and their properties under IID sampling. Section 5 then adapts the variance formula to sampling without replacement where the IID assumption is violated (based on the fleet example above).
 
-### 4.1 Relation to Lecture 7$
+
+### 4.1 Relation to Lecture 7 and frequentist parameter estimation. 
 
 Let us return to the model-based IID setting from Lecture 7 to clarify the connection:
 
@@ -250,12 +251,9 @@ $$
 \operatorname{Var}(X_i)=\sigma^2<\infty.
 $$
 
-Here $\mu$ and $\sigma^2$ describe the population distribution. In the finite-population setting from Section 2, the analogous quantities are $\mu_M$ and $\sigma_M^2$. 
+Here $\mu$ and $\sigma^2$ describe the population distribution. In the finite-population setting from Section 2, the analogous quantities are $\mu_M$ and $\sigma_M^2$.
 
-We return to finite-population sampling without replacement in Section 6.
-
-> Why $\overline{X}$ is random before data are observed
-
+We return to finite-population sampling without replacement in Section 5.
 
 ### 4.2 Expected value of $\overline{X}$
 
@@ -320,7 +318,7 @@ $$
 \operatorname{SD}(\overline{X})=\frac{\sigma}{\sqrt{N}}.
 $$
 
-The standard deviation of an estimator's sampling distribution is called its **standard error**. Therefore, when $\sigma$ is known,
+The standard deviation of an estimator's sampling distribution is called its **standard error**. Under IID sampling, the standard error of the sample mean is
 
 $$
 \operatorname{SE}(\overline{X})=\frac{\sigma}{\sqrt{N}}.
@@ -366,7 +364,9 @@ The denominator $N-1$ will be explained after we introduce confidence intervals 
 
 ## 5. Finite-population correction
 
-The IID formula $\sigma/\sqrt{N}$ applies naturally to independent sampling, including sampling with replacement. When sampling without replacement from a finite population, the observations are dependent and uncertainty decreases slightly faster. We will discuss this next (A full derivation can be found in RICE) 
+## 5.1 Correction method when IDD assumption is violated 
+
+The IID formula $\sigma/\sqrt{N}$ applies naturally to independent sampling, including sampling with replacement. When sampling without replacement from a finite population, the observations are dependent and uncertainty decreases slightly faster. We will discuss this next (A full derivation can be found in RICE)
 
 Let us define the finite-population variance using denominator $M$:
 
@@ -404,19 +404,34 @@ The correction has an intuitive interpretation:
 - if $N=M$, the correction equals $0$ because observing the entire population eliminates sampling uncertainty;
 - if $N/M$ is very small, the correction is close to $1$ and the IID standard-error formula is a good approximation.
 
-### Example
+## 5.2 Estimating the standard error from one sample
 
-If $N=50$ engines are selected without replacement from a fleet of $M=1{,}000$, then
+Usually, we do not know all the fleet temperatures, so we cannot calculate the population standard deviation $\sigma_M$. Instead, we calculate the sample standard deviation $s$ from the selected engines, using denominator $N-1$.
+
+For simple random sampling without replacement, the estimated standard error is
 
 $$
-\sqrt{\frac{M-N}{M-1}}
-=\sqrt{\frac{950}{999}}
-\approx 0.975.
+\widehat{\operatorname{SE}}(\overline{X})
+=\frac{s}{\sqrt{N}}\sqrt{1-\frac{N}{M}}.
 $$
 
-The finite-population standard error is therefore about $2.5\%$ smaller than the independent-sampling approximation.
+Here, lowercase $s$ is the numerical sample standard deviation calculated from the observed data.
+
+For example, if $M=1000$, $N=50$, and $s=10$ °C, then
+
+$$
+\widehat{\operatorname{SE}}(\overline{X})
+=\frac{10}{\sqrt{50}}\sqrt{1-\frac{50}{1000}}
+\approx 1.38\text{ °C}.
+$$
+
+The sample standard deviation of 10 °C describes variation among individual engine temperatures. The estimated standard error of 1.38 °C describes variation of sample means across repeated samples.
+
+Notice that the formula using $s$ contains $\sqrt{1-N/M}$. The earlier formula using $\sigma_M$ contains $\sqrt{(M-N)/(M-1)}$. These differ because the sample variance and our population variance use different denominators.
 
 ## 6. Normal approximation and the central limit theorem
+
+We first briefly state the classical central limit theorem for IID observations. Sampling without replacement requires a corresponding finite-population normal approximation ,using the standard error from Section 5.
 
 Suppose
 
@@ -485,7 +500,7 @@ The CLT does not imply that:
 
 ### 7.1 Confidence intervals when the variance is known
 
-If $\sigma$ is known and either the population is Gaussian or the normal approximation is adequate, then
+We first consider IID observations. If $\sigma$ is known, the standardized sample mean below follows a standard Gaussian. distribution exactly when the observations are Gaussian,and approximately when a normal approximation is adequate.
 
 $$
 Z
@@ -568,7 +583,7 @@ $$
 =\frac{1}{N}\sum_{i=1}^{N}(X_i-\overline{X})^2.
 $$
 
-Here, in the context of finite population sampling, we use: 
+Under the IID model, the unbiased estimator of the population variance is:
 
 $$
 S^2
@@ -628,9 +643,19 @@ $$
 
 is fixed.
 
+We now return to the fixed fleet. Each sample contains $N=50$ engines selected without replacement from $M=1000$ engines. For each sample, we calculate an approximate 95% confidence interval for the fleet mean:
+
+$$
+\overline{x}\pm1.96\,
+\frac{s}{\sqrt{N}}\sqrt{1-\frac{N}{M}}.
+$$
+
+This uses the estimated standard error from Section 5.1 and assumes that a normal approximation is adequate.
+
+Each confidence interval is centered on its own sample mean, so it always contains that sample mean. What we investigate is whethe also contains the fixed population mean $\mu_M$.
+
 **What does the 95% confidence interval mean?**
-Imagine repeatedly inspecting 50 engines from the same fixed fleet. Each time, we calculate a sample mean and an approximate 95% confidence interval. The population mean stays fixed, but the selected engines—and therefore the interval—change.
-The figure shows this experiment repeated 50 times. Each horizontal interval comes from a separate sample. The dashed vertical line marks the true fleet mean, which we know because this is a simulation.
+Imagine repeatedly inspecting 50 engines from the same fixed fleet. Each time, we calculate a sample mean and an approximate 95% confidence interval. The population mean stays fixed, but the selected engines—and therefore the interval—change. The figure shows this experiment repeated 50 times. Each horizontal interval comes from a separate sample. The dashed vertical line marks the true fleet mean, which we know because this is a simulation.
 
 ![Confidence interval](images/confidence-plot.png)
 
@@ -887,9 +912,7 @@ $$
 
 The exact standard error is approximately 6.45 °C. Our estimate uses only two observed temperatures, so it varies with the selected sample.
 
-Notice that the estimated-standard-error formula uses
-$\sqrt{1-N/M}$ with $s$. The formula using the known population
-standard deviation $\sigma_M$ uses $\sqrt{(M-N)/(M-1)}$.
+Notice that the estimated-standard-error formula uses $\sqrt{1-N/M}$ with $s$. The formula using the known population standard deviation $\sigma_M$ uses $\sqrt{(M-N)/(M-1)}$.
 ```
 
 ### 5. Calculate an approximate confidence interval
@@ -941,8 +964,7 @@ $$
 [81.30,\;86.70]\text{ °C}.
 $$
 
-This interval estimates the mean temperature of the fixed fleet.
-It is not an interval intended to contain 95% of individual engine temperatures.
+This interval estimates the mean temperature of the fixed fleet. It is not an interval intended to contain 95% of individual engine temperatures.
 
 Its nominal coverage is approximately 95%, subject to the sampling assumptions and adequacy of the normal approximation.
 ```
@@ -958,24 +980,16 @@ Explain what is incorrect or incomplete in each statement.
 ```{admonition} Solution
 :class: dropdown
 
-**1.** In the frequentist interpretation, the population mean is fixed.
-After observation, the interval is also fixed and either contains
-that mean or does not.
+**1.** In the frequentist interpretation, the population mean is fixed. After observation, the interval is also fixed and either contains that mean or does not.
 
-The confidence level describes the procedure's coverage across
-repeated samples.
+The confidence level describes the procedure's coverage across repeated samples.
 
-**2.** Coverage is a long-run property, not a requirement for every
-batch of 100 intervals. The observed fraction varies across batches.
-For an approximate procedure, its actual long-run coverage may also
-differ from the nominal 95%.
+**2.** Coverage is a long-run property, not a requirement for every batch of 100 intervals. The observed fraction varies across batches. For an approximate procedure, its actual long-run coverage may also differ from the nominal 95%.
 
-**3.** Measuring every engine determines this fleet's mean exactly,
-assuming accurate measurements. It does not generally determine the
-mean of a broader data-generating process exactly.
+**3.** Measuring every engine determines this fleet's mean exactly, assuming accurate measurements. It does not generally determine the mean of a broader data-generating process exactly.
+```
 
-The finite-population mean $\mu_M$ and a model's mean
-$\mu=\mathbb{E}[X]$ are different targets.
+The finite-population mean $\mu_M$ and a model's mean $\mu=\mathbb{E}[X]$ are different targets.
 
 ## 13. Coding experiments to build intuitaion: making repeated sampling visible
 
@@ -1064,5 +1078,5 @@ We can therefore ask:
 
 > Is the observed sample mean reasonably compatible with this proposed sampling distribution, or is it unusually far into its tails?
 
-We will discuss this in the next lecture. 
+We will discuss this in the next lecture.
 
