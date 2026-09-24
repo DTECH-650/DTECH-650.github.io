@@ -358,15 +358,15 @@ $$
 - $S$ estimates the variability of individual observations.
 - $S/\sqrt{N}$ estimates the variability of the sample mean across repeated samples.
 
-The latter should not be called the standard deviation of the data. It is the estimated standard deviation of the estimator's sampling distribution.
+The latter should not be called the standard deviation of the data. It is the **estimated standard deviation of the estimator's sampling distribution**.
 
 The denominator $N-1$ will be explained after we introduce confidence intervals with unknown variance.
 
 ## 5. Finite-population correction
 
-## 5.1 Correction method when IDD assumption is violated 
+### 5.1 Correction method when IDD assumption is violated 
 
-The IID formula $\sigma/\sqrt{N}$ applies naturally to independent sampling, including sampling with replacement. When sampling without replacement from a finite population, the observations are dependent and uncertainty decreases slightly faster. We will discuss this next (A full derivation can be found in RICE)
+The IID formula $\sigma/\sqrt{N}$ applies naturally to independent sampling, including sampling with replacement. When sampling without replacement from a finite population, the observations are dependent and uncertainty decreases slightly faster. We will discuss this next (A full derivation can be found in Rice (2007) see references below)
 
 Let us define the finite-population variance using denominator $M$:
 
@@ -404,9 +404,10 @@ The correction has an intuitive interpretation:
 - if $N=M$, the correction equals $0$ because observing the entire population eliminates sampling uncertainty;
 - if $N/M$ is very small, the correction is close to $1$ and the IID standard-error formula is a good approximation.
 
-## 5.2 Estimating the standard error from one sample
+### 5.2 Estimating the standard error from one sample
 
-Usually, we do not know all the fleet temperatures, so we cannot calculate the population standard deviation $\sigma_M$. Instead, we calculate the sample standard deviation $s$ from the selected engines, using denominator $N-1$.
+Usually, we cannot calculate the population standard deviation $\sigma_M$ (e.g. in the case of our fleet we do not know all the fleet temperatures). 
+Instead, we calculate the sample standard deviation $s$ from the samples we observe (e.g. the selected engines), using the denominator $N-1$.
 
 For simple random sampling without replacement, the estimated standard error is
 
@@ -415,7 +416,18 @@ $$
 =\frac{s}{\sqrt{N}}\sqrt{1-\frac{N}{M}}.
 $$
 
-Here, lowercase $s$ is the numerical sample standard deviation calculated from the observed data.
+In Section 4.5, we defined the sample standard deviation $S$. Before collecting data, $S$ is a random variable: its value depends on which observations enter the sample. After observing a particular sample, we write its calculated value as lowercase $s$.
+
+This follows the same convention as $\overline{X}$ for the random sample mean and $\overline{x}$ for its observed value:
+
+$$
+S=\sqrt{\frac{1}{N-1}\sum_{i=1}^{N}(X_i-\overline{X})^2}
+\qquad\longrightarrow\qquad
+s=\sqrt{\frac{1}{N-1}\sum_{i=1}^{N}(x_i-\overline{x})^2}.
+$$
+
+For example, before selecting 50 engines, $S$ is unknown and varies across possible samples. After measuring the selected engines, we might calculate $s=10$ °C.
+The lowercase $s$ is the numerical sample standard deviation calculated from the observed data.
 
 For example, if $M=1000$, $N=50$, and $s=10$ °C, then
 
@@ -1050,7 +1062,7 @@ Generate an autocorrelated sequence and incorrectly treat its observations as II
 
 ## References and supplementary resources
 
-- John A. Rice, *Mathematical Statistics and Data Analysis*, especially Sections 5.3 and 7.2–7.3.
+- John A. Rice (2007) [*Mathematical Statistics and Data Analysis*, especially Sections 5.3 and 7.2–7.3. ](https://korivernon.com/documents/MathematicalStatisticsandDataAnalysis3ed.pdf)
 - Steven L. Brunton, [Population Statistics and Random Sampling](https://www.youtube.com/watch?v=OlkL1YatyHI).
 - Steven L. Brunton, [Expected Value and Variance of the Sample Mean](https://www.youtube.com/watch?v=Gg3d-rn9eEU).
 - Steven L. Brunton, [Random Sampling Without Replacement](https://www.youtube.com/watch?v=IDvp3pMm16k).
