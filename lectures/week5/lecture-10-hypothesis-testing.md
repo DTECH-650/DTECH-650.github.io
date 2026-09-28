@@ -1,4 +1,5 @@
 # Lecture 10 - Hypothesis Testing
+
 Lecture 9 developed the frequentist account of **sampling uncertainty**. We distinguished populations from samples, treated the sample mean as a random estimator, derived its standard error, introduced the central limit theorem, and constructed confidence intervals. This lecture continues directly from that foundation.
 
 In Lecture 7, we treated model parameters as **fixed but unknown** and learned them from observed data using likelihood and maximum-likelihood estimation.
@@ -28,9 +29,9 @@ The three lectures use the same statistical model but ask different questions.
 
 | Lecture | Main mathematical object | Principal question |
 |---|---|---|
-| **Lecture 7: Parameter estimation** | Likelihood \(L(\theta;\mathbf{x})\) and estimator \(\widehat{\theta}_{\mathrm{ML}}\) | Given one observed sample, which parameter value best explains the data? |
-| **Lecture 9: Sampling uncertainty** | Sampling distribution of \(\widehat{\theta}\) | How would the estimator vary if the complete sampling procedure were hypothetically repeated? |
-| **Lecture 10: Hypothesis testing** | Null distribution of \(T(\mathbf{X})\) under \(H_0\) | Is the observed statistic compatible with a proposed parameter value \(\theta_0\)? |
+| **Lecture 7: Parameter estimation** | Likelihood $L(\theta;\mathbf{x})$ and estimator $\widehat{\theta}_{\mathrm{ML}}$ | Given one observed sample, which parameter value best explains the data? |
+| **Lecture 9: Sampling uncertainty** | Sampling distribution of $\widehat{\theta}$ | How would the estimator vary if the complete sampling procedure were hypothetically repeated? |
+| **Lecture 10: Hypothesis testing** | Null distribution of $T(\mathbf{X})$ under $H_0$ | Is the observed statistic compatible with a proposed parameter value $\theta_0$? |
 
 The progression is
 
@@ -61,12 +62,14 @@ In short, Lecture 7 derives the estimator, Lecture 9 characterizes its repeated-
 
 
 ## Learning objectives
+
 After completing the lecture and tutorial, students should be able to:
+
 1. Formulate appropriate null and alternative hypotheses for a population parameter and distinguish between one-sided and two-sided alternatives.
 2. Select and compute a test statistic for a simple one-sample mean problem.
 3. Define and correctly interpret a p-value as a probability calculated under the null model, and compare it with a prespecified significance level $\alpha$.
 4. Identify Type I and Type II errors in an applied scenario.
-5. Explain the relationships among \(\alpha\), \(\beta\), power, effect size, sample size, and variability.
+5. Explain the relationships among $\alpha$, $\beta$, power, effect size, sample size, and variability.
 6. Relate a two-sided hypothesis test to the corresponding confidence interval.
 7. Recognize limitations involving multiple testing, assumption violations, and data-dependent hypotheses.
 
@@ -214,8 +217,9 @@ Hypothesis testing asks a closely related question:
 
 > Is one particular proposed value $\mu_0$ reasonably compatible with the observed data?
 
-:::{admonition}
+:::{admonition} Why a Gaussian reference distribution?
 :class: important
+
 Why does a Gaussian reference distribution appear here? This follows directly from the sampling-distribution results in Lecture 9.
 
 If the observations themselves are Gaussian, then the sample mean is exactly Gaussian. More generally, under IID sampling with finite variance and a sufficiently large sample size, the central limit theorem implies that the sampling distribution of $\overline{X}$ is approximately Gaussian.
@@ -390,8 +394,9 @@ means it lies three standard errors away.
 A test statistic is not a p-value. The test statistic locates the observed result on a reference sampling distribution. The p-value is a tail probability computed from that reference distribution.
 :::
 
-:::{admonition}
+:::{admonition} Known versus estimated population standard deviation
 :class: important
+
 The statistic above is a **$z$ statistic** because the population standard deviation $\sigma$ is treated as known.
 
 If $\sigma$ is unknown, as is usually the case in practice, we estimate it using the sample standard deviation $S$ and instead use
@@ -474,7 +479,8 @@ $$
 1-\alpha=0.95.
 $$
 
-![Two-sided-t-test](images/2-sided-test.png).
+![Rejection regions for a two-sided z-test](images/2-sided-test.png)
+
 **Figure:** Rejection regions for a two-sided $z$-test at significance level $\alpha=0.05$. Under the standard normal null distribution, the critical values $\pm1.96$ leave probability $0.025$ in each tail and $0.95$ in the central region. Reject $H_0$ when the observed statistic falls beyond either critical value.
 
 **Where does 1.96 come from, and how do we find it?**
@@ -493,7 +499,7 @@ $$
 P(|Z|>1.96)\approx0.05.
 $$
 
-A calculator or statistical software can also find the cutoff using the **inverse normal cumulative distribution function**: enter the desired cumulative probability, $0.975$, to obtain approximately $1.96$. 
+A calculator or statistical software can also find the cutoff using the **inverse normal cumulative distribution function**: enter the desired cumulative probability, $0.975$, to obtain approximately $1.96$.
 
 In Python, SciPy provides `norm.ppf`, the inverse cumulative distribution function of the standard normal distribution:
 
@@ -593,6 +599,7 @@ P(|Z|\ge2\mid H_0).
 $$
 
 ![Rejection region for a two-sided z-test](images/rejection-region.png)
+
 **Figure:** The rejection region and p-value for an observed statistic $z_{\mathrm{obs}}=2$. Dashed lines mark the critical values $\pm1.96$ for $\alpha=0.05$; solid lines mark $\pm2$. The orange tails represent the two-sided p-value, $P(|Z|\ge2\mid H_0)\approx0.0455$. Because $p<0.05$, we reject $H_0$.
 
 For a symmetric standard normal reference distribution,
@@ -1131,7 +1138,7 @@ $$
 
 ![Geometry of alpha, beta, and power](images/alpha-beta-power.png)
 
-**Figure:** Geometry of a one-sided hypothesis test connecting, alpha,beta and power. The null sampling distribution is centered at $\mu_0$, and the alternative sampling distribution is centered at $\mu_1$. The same critical value $c$ separates the non-rejection region from the rejection region. Under the null distribution, the two areas are $1-\alpha$ and $\alpha$. Under the alternative distribution, the corresponding areas are $\beta$ and $1-\beta$, where $1-\beta$ is the statistical power.
+**Figure:** Geometry of a one-sided hypothesis test connecting $\alpha$, $\beta$, and power. The null sampling distribution is centered at $\mu_0$, and the alternative sampling distribution is centered at $\mu_1$. The same critical value $c$ separates the non-rejection region from the rejection region. Under the null distribution, the two areas are $1-\alpha$ and $\alpha$. Under the alternative distribution, the corresponding areas are $\beta$ and $1-\beta$, where $1-\beta$ is the statistical power.
 
 Thus the four regions can be summarized as
 
@@ -1278,10 +1285,10 @@ More recorded measurements do not automatically mean more independent informatio
 
 - John A. Rice (2007), *Mathematical Statistics and Data Analysis*, especially the chapters on confidence intervals and hypothesis testing.
 - Steven L. Brunton, statistical inference and hypothesis-testing video sequence:
-  - https://www.youtube.com/watch?v=bOrihOzYXWA&list=PLMrJAkhIeNNT14qn1c5qdL29A1UaHamjx&index=8
-  - https://www.youtube.com/watch?v=vVDahuv1bq8&list=PLMrJAkhIeNNT14qn1c5qdL29A1UaHamjx&index=9
-  - https://www.youtube.com/watch?v=WYifBkNg1r8&list=PLMrJAkhIeNNT14qn1c5qdL29A1UaHamjx&index=10
-  - https://www.youtube.com/watch?v=129NuU3A7rM&list=PLMrJAkhIeNNT14qn1c5qdL29A1UaHamjx&index=11
+  - [Video 8](https://www.youtube.com/watch?v=bOrihOzYXWA&list=PLMrJAkhIeNNT14qn1c5qdL29A1UaHamjx&index=8)
+  - [Video 9](https://www.youtube.com/watch?v=vVDahuv1bq8&list=PLMrJAkhIeNNT14qn1c5qdL29A1UaHamjx&index=9)
+  - [Video 10](https://www.youtube.com/watch?v=WYifBkNg1r8&list=PLMrJAkhIeNNT14qn1c5qdL29A1UaHamjx&index=10)
+  - [Video 11](https://www.youtube.com/watch?v=129NuU3A7rM&list=PLMrJAkhIeNNT14qn1c5qdL29A1UaHamjx&index=11)
 
 ## 11. Practice problems and solutions
 
@@ -1486,8 +1493,6 @@ This illustrates why very small effects may become statistically significant wit
 
 ---
 
----
-
 ## 12. Coding experiments to build intuition
 
 ### Experiment 1: p-values under the null
@@ -1565,5 +1570,3 @@ Generate autocorrelated observations but analyze them incorrectly as IID.
 Compare the empirical Type I error rate with the nominal significance level.
 
 This extends the dependence warning from Lecture 9.
-
----
