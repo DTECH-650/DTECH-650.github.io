@@ -454,7 +454,25 @@ $$
 +1.96.
 $$
 
-We had discussed this already before in Lecture 9. See also in the [figure](/images/2-sided-test.png)
+The two rejection regions contain a total probability of
+
+$$
+\alpha=0.05,
+$$
+
+with
+
+$$
+\frac{\alpha}{2}=0.025
+$$
+
+in each tail. The central region therefore contains probability
+
+$$
+1-\alpha=0.95.
+$$
+
+See also in the ![figure](/images/2-sided-test.png). As we had discussed this in Lecture 9, this can be looked up in standard statistics table. Since the Gaussian distribution is so common it is worthwhile remembering this value. 
 
 Thus,
 
@@ -525,6 +543,20 @@ P
 \right).
 }
 $$
+
+Geometrically speaking, the p-value is the total area in both tails corresponding to outcomes at least as extreme as the observed statistic.
+
+Let's take $z_{\mathrm{obs}}=2$,
+
+$$
+p
+=
+P(|Z|\ge2\mid H_0).
+$$
+
+The figure below shows this. 
+
+![](images/rejection-region.png)
 
 For a symmetric standard normal reference distribution,
 
