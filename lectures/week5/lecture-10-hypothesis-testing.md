@@ -1,4 +1,4 @@
-# Lecture 10 - Hypothesis Testing
+# Lecture 10 - Frequentist Uncertainty and Hypotheses Testing (II/II)
 
 Lecture 9 developed the frequentist account of **sampling uncertainty**. We distinguished populations from samples, treated the sample mean as a random estimator, derived its standard error, introduced the central limit theorem, and constructed confidence intervals. This lecture continues directly from that foundation.
 
