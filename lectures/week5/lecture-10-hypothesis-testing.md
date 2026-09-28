@@ -214,7 +214,8 @@ Hypothesis testing asks a closely related question:
 
 > Is one particular proposed value $\mu_0$ reasonably compatible with the observed data?
 
-:::{note}
+:::{admonition}
+:class: important
 Why does a Gaussian reference distribution appear here? This follows directly from the sampling-distribution results in Lecture 9.
 
 If the observations themselves are Gaussian, then the sample mean is exactly Gaussian. More generally, under IID sampling with finite variance and a sufficiently large sample size, the central limit theorem implies that the sampling distribution of $\overline{X}$ is approximately Gaussian.
@@ -389,7 +390,8 @@ means it lies three standard errors away.
 A test statistic is not a p-value. The test statistic locates the observed result on a reference sampling distribution. The p-value is a tail probability computed from that reference distribution.
 :::
 
-:::{note}
+:::{admonition}
+:class: important
 The statistic above is a **$z$ statistic** because the population standard deviation $\sigma$ is treated as known.
 
 If $\sigma$ is unknown, as is usually the case in practice, we estimate it using the sample standard deviation $S$ and instead use
@@ -555,6 +557,7 @@ P(|Z|\ge2\mid H_0).
 $$
 
 ![Rejection region for a two-sided z-test](images/rejection-region.png)
+**Figure:** This figure visualizes the rejection region.$.
 
 For a symmetric standard normal reference distribution,
 
@@ -927,7 +930,7 @@ $$
 
 ![Type I error and rejection region](images/type-I-error.png)
 
-*Figure instruction/caption: Plot only the null sampling distribution of $\overline{X}$, centered at $\mu_0$. Mark the critical value $c$ with a vertical dashed line. Shade the area to the right of $c$ and label it $\alpha$ (Type I error / rejection region). Label the area to the left of $c$ as $1-\alpha$ (non-rejection region). Also label $\mu_0$ at the center of the null distribution. Do not include the alternative distribution yet.*
+**Figure:** Null sampling distribution for an upper-tail test. The null distribution of $\overline{X}$ is centered at $\mu_0=85$. The significance level $\alpha=0.05$ determines the critical value $c=85.82$. Sample means with $\overline{X}>c$ fall in the rejection region. Thus, under $H_0$, the probability of a Type I error is $\alpha=0.05$, while the probability of remaining in the non-rejection region is $1-\alpha=0.95$.
 
 ### 6.2 Type II error
 
@@ -961,7 +964,13 @@ The key point is that the critical value $c$ does **not** move when we consider 
 
 ![Type II error under an alternative mean](images/type-II-error.png)
 
-*Figure instruction/caption: Plot both sampling distributions on the same sample-mean axis: the null distribution centered at $\mu_0$ and an alternative distribution centered at $\mu_1>\mu_0$. Mark the same critical value $c$ used in Section 6.1. Shade the area under the alternative distribution to the left of $c$ and label it $\beta$ (Type II error). Also show the $\alpha$ tail under the null distribution to the right of $c$ lightly, so students can see that $\alpha$ determined the cutoff while $\beta$ is measured under a different distribution. Label both means $\mu_0$ and $\mu_1$.*
+**Figure:** Type II error for an upper-tail test. The null hypothesis is tested using the same critical value $c=85.82$ determined earlier from the significance level $\alpha=0.05$. If the true mean is instead $\mu_1=86$, then the shaded area to the left of $c$ under the alternative sampling distribution is
+
+$$
+\beta(\mu_1)=P_{\mu_1}(\overline{X}\le c),
+$$
+
+the probability of failing to reject $H_0$ even though the alternative is true.
 
 ---
 
@@ -1086,7 +1095,7 @@ $$
 
 ![Geometry of alpha, beta, and power](images/alpha-beta-power.png)
 
-*Figure instruction/caption: Plot the null sampling distribution centered at $\mu_0$ and the alternative sampling distribution centered at $\mu_1$. Mark the single critical value $c$ on the sample-mean axis. Under the null distribution, label the area left of $c$ as $1-\alpha$ and the right-tail area as $\alpha$. Under the alternative distribution, label the area left of $c$ as $\beta$ and the area right of $c$ as $1-\beta=\operatorname{Power}$. Label $\mu_0$, $\mu_1$, the non-rejection region $\overline{X}\le c$, and the rejection region $\overline{X}>c$. This figure should visually emphasize that the cutoff $c$ is fixed while the probabilities are measured under different sampling distributions.*
+**Figure:** Geometry of a one-sided hypothesis test connecting, alpha,beta and power. The null sampling distribution is centered at $\mu_0$, and the alternative sampling distribution is centered at $\mu_1$. The same critical value $c$ separates the non-rejection region from the rejection region. Under the null distribution, the two areas are $1-\alpha$ and $\alpha$. Under the alternative distribution, the corresponding areas are $\beta$ and $1-\beta$, where $1-\beta$ is the statistical power.
 
 Thus the four regions can be summarized as
 

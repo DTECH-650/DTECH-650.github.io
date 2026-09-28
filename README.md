@@ -13,4 +13,4 @@ python -m http.server 8000 --bind 127.0.0.1 --directory _build/html
 
 Then open:
 
-http://127.0.0.1:8000/lectures/week5/lecture-9-sampling-statistics.html
+http://127.0.0.1:8000/
