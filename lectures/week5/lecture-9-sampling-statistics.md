@@ -1,6 +1,6 @@
 # Lecture 9 - Frequentist Uncertainty and Hypotheses Testing (I/II)
 
-In prior lectures, we have established a frequentist perspective towards paramater learning. In this lecturer, we deepen the classical frequentist perspective, with a focus on sampling statistics and hypotheses testing. Specifically, we focus on statistical decision theory for a special case where we might want to reject or accept a hypotheses for a population, given a finite number of sample data at hand. So some of this lecture draws upon concepts introduced in lectures of week 2, where we establish the notion of the sampling space $\Omega$.
+In prior lectures, we have established a frequentist perspective towards paramater learning. In this lecture, we deepen the classical frequentist perspective, with a focus on sampling statistics and hypotheses testing. Specifically, we focus on statistical decision theory for a special case where we might want to reject or accept a hypotheses for a population, given a finite number of sample data at hand. So some of this lecture draws upon concepts introduced in lectures of week 2, where we establish the notion of the sampling space $\Omega$.
 
 Thus, before we discuss the details of hypotheses testing, it is important to understand the mathematical foundations of **finite** sampling through the frequentist lens:
 
@@ -74,7 +74,7 @@ So keep in mind that:
 - $N$ is the number of units selected for the sample.
 
 :::{important}
-There are only two quantities here. Some statistics texts, including Rice (2007) (see references), use $N$ for population size and $n$ for sample size. In this course, we use $M$ for finite-population size and retain $N$ for sample size to remain consistent with Lecture 7. The difference is purely notational. What is important that you need to clearly define what your population statistic is as that impacts your inference.
+There are only two quantities here. Some statistics texts, including Rice (2007) (see references), use $N$ for population size and $n$ for sample size. In this course, we use $M$ for finite-population size and retain $N$ for sample size to remain consistent with Lecture 7. The difference is purely notational. What is important is that you need to clearly define what your population statistic is as that impacts your inference.
 :::
 
 | Concept | Notation in this course  |
@@ -364,7 +364,7 @@ The denominator $N-1$ will be explained after we introduce confidence intervals 
 
 ## 5. Finite-population correction
 
-### 5.1 Correction method when IDD assumption is violated 
+### 5.1 Correction method when IID assumption is violated
 
 The IID formula $\sigma/\sqrt{N}$ applies naturally to independent sampling, including sampling with replacement. When sampling without replacement from a finite population, the observations are dependent and uncertainty decreases slightly faster. We will discuss this next (A full derivation can be found in Rice (2007) see references below)
 
@@ -520,7 +520,15 @@ Z
 \approx\mathcal{N}(0,1).
 $$
 
-Let $z_{1-\alpha/2}$ denote the $(1-\alpha/2)$ quantile of the standard normal distribution. Then
+Let $Z_0\sim\mathcal N(0,1)$ be an exactly standard normal variable, and write $\Phi(z)=P(Z_0\leq z)$ for its cumulative distribution function. Its $p$-quantile, $z_p$, is the value satisfying $\Phi(z_p)=p$. For a two-sided interval with confidence level $1-\alpha$, we want probability $1-\alpha$ in the center of the standard normal distribution. That leaves total probability $\alpha$ outside the interval, or $\alpha/2$ in **each** tail. The upper cutoff therefore has $1-\alpha/2$ of the probability to its left:
+
+$$
+P(Z_0\leq z_{1-\alpha/2})
+=\Phi(z_{1-\alpha/2})
+=1-\frac{\alpha}{2}.
+$$
+
+The standard normal distribution is symmetric around zero, so the lower cutoff is $-z_{1-\alpha/2}$. Thus
 
 $$
 P\left(
@@ -549,11 +557,20 @@ $$
 z_{1-\alpha/2}\frac{\sigma}{\sqrt{N}}.
 $$
 
-For a $95\%$ confidence interval,
+For a $95\%$ confidence interval, $1-\alpha=0.95$, so $\alpha=0.05$. The two tails each contain $0.05/2=0.025$ of the probability. To find the **upper** cutoff, look for the value with $1-0.025=0.975$ of the standard normal probability to its left. The subscript $0.975$ is this *cumulative probability*, not the confidence level:
 
 $$
-z_{0.975}\approx 1.96.
+z_{1-\alpha/2}
+=z_{0.975}
+=\Phi^{-1}(0.975)
+\approx 1.96.
 $$
+
+Here $\Phi^{-1}(0.975)$ means the value whose standard normal cumulative probability is $0.975$. In a cumulative standard normal table, find the entry closest to $0.9750$: it is at row $1.9$ and column $0.06$, which combine to give $1.96$. A numerical inverse CDF gives $1.95996\ldots$, also rounded to $1.96$. As a check, $\Phi(1.96)\approx0.975$ and, by symmetry, $\Phi(-1.96)\approx0.025$. Hence the probability between the cutoffs is approximately $0.975-0.025=0.95$, and the interval above becomes $\overline{x}\pm1.96\,\sigma/\sqrt{N}$.
+
+![Standard normal curve with 95% between −1.96 and +1.96, 2.5% in each tail, and 97.5% to the left of +1.96.](images/normal-95-percent-interval.svg)
+
+*The upper cutoff has 97.5% of the area to its left because that includes the left 2.5% tail and the central 95%.*
 
 ### 7.2 Confidence interval when the variance is unknown
 
@@ -1091,4 +1108,3 @@ We can therefore ask:
 > Is the observed sample mean reasonably compatible with this proposed sampling distribution, or is it unusually far into its tails?
 
 We will discuss this in the next lecture.
-

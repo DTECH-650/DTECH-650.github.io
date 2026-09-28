@@ -32,6 +32,7 @@ parts:
         title: Week 6
         sections:
           - file: lectures/week6/lecture-11-machine-learning.basics
+          - file: lectures/week6/lecture-12-exponential-families
       - file: lectures/bayesian
   - caption: Code
     chapters:
