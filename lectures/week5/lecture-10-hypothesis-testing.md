@@ -1493,7 +1493,29 @@ This illustrates why very small effects may become statistically significant wit
 
 ---
 
-## 12. Coding experiments to build intuition
+## 12. Coding experiments to build intuition (optional)
+
+For Experiments 1–4, generate IID observations from a Gaussian population with known standard deviation $\sigma$. Use the two-sided $z$-test
+
+$$
+H_0:\mu=\mu_0,
+\qquad
+H_1:\mu\neq\mu_0,
+$$
+
+with significance level $\alpha=0.05$. For each simulated sample, calculate
+
+$$
+z_{\mathrm{obs}}
+=
+\frac{\overline{x}-\mu_0}{\sigma/\sqrt{N}},
+\qquad
+p=2\left[1-\Phi\left(|z_{\mathrm{obs}}|\right)\right],
+$$
+
+where $\Phi$ is the standard normal cumulative distribution function. In SciPy, calculate the two-sided p-value using `2 * norm.sf(abs(z_obs))`, where `norm.sf` gives the upper-tail probability.
+
+Repeat each simulation many times, for example 10,000 repetitions, to estimate rejection probabilities.
 
 ### Experiment 1: p-values under the null
 
@@ -1529,7 +1551,9 @@ $$
 \mu_1\neq\mu_0.
 $$
 
-Repeat the testing procedure many times under $\mu_1$.
+Generate repeated samples from $\mathcal{N}(\mu_1,\sigma^2)$, but continue testing the original null hypothesis $H_0:\mu=\mu_0$. In particular, use $\mu_0$ in the numerator of the test statistic.
+
+Estimate $\beta(\mu_1)$ as the fraction of repetitions that fail to reject $H_0$, and estimate power as the fraction that reject it.
 
 Estimate:
 
@@ -1555,7 +1579,9 @@ $$
 N\in\{10,30,100,500\}.
 $$
 
-Compare the empirical power.
+Keep $\mu_0$, $\mu_1$, $\sigma$, and $\alpha$ fixed while changing only the sample size $N$. Recalculate the standard error $\sigma/\sqrt{N}$ for each sample size.
+
+Compare the empirical power across sample sizes. Power should increase with $N$, although simulation estimates will vary because of Monte Carlo randomness.
 
 ### Experiment 4: Statistical versus practical significance
 
@@ -1565,8 +1591,10 @@ Observe that the p-value can become very small even when the effect magnitude re
 
 ### Experiment 5: Dependence and false positives
 
-Generate autocorrelated observations but analyze them incorrectly as IID.
+Generate observations with positive autocorrelation under the null hypothesis: the population mean must remain $\mu_0$. Keep the marginal population standard deviation $\sigma$ fixed.
 
-Compare the empirical Type I error rate with the nominal significance level.
+Analyze each sample as though its observations were IID, using the standard-error formula $\sigma/\sqrt{N}$. Repeat this procedure many times and estimate the Type I error rate as the fraction of repetitions that reject $H_0$.
+
+Compare this empirical rate with the nominal significance level $\alpha=0.05$. Positive autocorrelation can make the IID standard-error formula underestimate the variability of the sample mean, producing more false positives than the nominal level suggests.
 
 This extends the dependence warning from Lecture 9.
