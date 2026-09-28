@@ -27,6 +27,7 @@ parts:
         title: Week 5
         sections:
           - file: lectures/week5/lecture-9-sampling-statistics
+          - file: lectures/week5/lecture-10-hypothesis-testing
       # - file: lectures/bayesian
   - caption: Code
     chapters:
