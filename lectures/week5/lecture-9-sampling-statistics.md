@@ -1020,7 +1020,7 @@ The confidence level describes the procedure's coverage across repeated samples.
 
 The finite-population mean $\mu_M$ and a model's mean $\mu=\mathbb{E}[X]$ are different targets.
 
-## 13. Coding experiments to build intuitaion: making repeated sampling visible
+## Coding experiments to build intuitaion: making repeated sampling visible
 
 ### Experiment 1: Sampling distribution of the mean
 
