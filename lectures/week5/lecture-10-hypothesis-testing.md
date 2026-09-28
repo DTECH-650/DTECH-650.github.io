@@ -860,47 +860,41 @@ for a test constructed to have significance level $\alpha$.
 
 Thus, $\alpha$ is not simply a conventional threshold for the p-value. It is the long-run probability of falsely rejecting $H_0$ when the null model is true.
 
-To make this concrete, consider an **upper-tail test**. We first choose the significance level $\alpha$. This choice determines a critical boundary $c$ such that, under the null hypothesis,
+To make this concrete, consider an **upper-tail test**. We choose a **rejection region** of the form
 
 $$
-P_{\mu_0}(\overline{X}>c)
-=
-\alpha.
+\overline{X}>c.
 $$
 
-The boundary $c$ divides the possible sample means into two decision regions:
+The cutoff $c$ is called the **critical value**. It is chosen so that, when $H_0$ is true,
 
 $$
-\overline{X}\le c
-\quad\Longrightarrow\quad
-\text{fail to reject }H_0,
+\boxed{
+P_{\mu_0}(\overline{X}>c)=\alpha.
+}
 $$
 
-and
+Equivalently,
 
 $$
-\overline{X}>c
-\quad\Longrightarrow\quad
-\text{reject }H_0.
+P_{\mu_0}(\overline{X}\le c)=1-\alpha.
 $$
 
-Therefore, under $H_0$,
+Thus, $\alpha$ determines how far into the tail the rejection region begins.
+
+For a Gaussian sampling distribution,
 
 $$
-P_{\mu_0}(\overline{X}\le c)
-=
-1-\alpha
+\overline{X}\mid H_0
+\sim
+\mathcal{N}
+\left(
+\mu_0,
+\frac{\sigma^2}{N}
+\right),
 $$
 
-and
-
-$$
-P_{\mu_0}(\overline{X}>c)
-=
-\alpha.
-$$
-
-For a Gaussian sampling distribution with known $\sigma$, the boundary is
+and the critical value on the sample-mean scale is
 
 $$
 \boxed{
@@ -909,33 +903,43 @@ c
 \mu_0
 +
 z_{1-\alpha}
-\frac{\sigma}{\sqrt{N}}
+\frac{\sigma}{\sqrt{N}}.
 }
 $$
 
-for an upper-tail test. Thus, $\alpha$ determines how far into the null distribution's tail the rejection boundary is placed.
-
-For example, if $\alpha=0.05$, then
+For example, for an upper-tail test with $\alpha=0.05$,
 
 $$
 z_{1-\alpha}=z_{0.95}\approx1.645.
 $$
 
-:::{note}
-The number $1.645$ is used here because this is a **one-sided upper-tail test**. For the two-sided test with $\alpha=0.05$ discussed earlier, the rejection probability is split between two tails and the corresponding critical values are approximately $\pm1.96$.
-:::
+The same rejection rule can therefore be written either on the standardized scale,
+
+$$
+Z>z_{1-\alpha},
+$$
+
+or on the sample-mean scale,
+
+$$
+\overline{X}>c.
+$$
+
+![Type I error and rejection region](images/type-I-error.png)
+
+*Figure instruction/caption: Plot only the null sampling distribution of $\overline{X}$, centered at $\mu_0$. Mark the critical value $c$ with a vertical dashed line. Shade the area to the right of $c$ and label it $\alpha$ (Type I error / rejection region). Label the area to the left of $c$ as $1-\alpha$ (non-rejection region). Also label $\mu_0$ at the center of the null distribution. Do not include the alternative distribution yet.*
 
 ### 6.2 Type II error
 
-Now keep the same testing rule and the same critical boundary $c$, but suppose the null hypothesis is false and the true population mean is an alternative value
+Now keep the **same test and the same critical value $c$**, but suppose that the null hypothesis is false and the true population mean is a particular alternative value
 
 $$
 \mu_1>\mu_0.
 $$
 
-The sampling distribution of $\overline{X}$ is now centered at $\mu_1$ rather than $\mu_0$.
+The sampling distribution of $\overline{X}$ is then centered at $\mu_1$ rather than $\mu_0$.
 
-A **Type II error** occurs when this alternative is true but the observed sample mean still falls in the non-rejection region:
+A **Type II error** occurs when the alternative is true but the observed sample mean still falls in the non-rejection region:
 
 $$
 \overline{X}\le c.
@@ -947,15 +951,17 @@ $$
 \boxed{
 \beta(\mu_1)
 =
-P_{\mu_1}(\overline{X}\le c)
+P_{\mu_1}(\overline{X}\le c).
 }
 $$
 
-is the probability of failing to reject $H_0$ when the particular alternative mean $\mu_1$ is true.
+Unlike $\alpha$, the value of $\beta$ generally depends on which alternative value $\mu_1$ is actually true.
 
-Unlike $\alpha$, which is fixed when we design the test, $\beta$ depends on the alternative value $\mu_1$. If $\mu_1$ is only slightly different from $\mu_0$, the null and alternative sampling distributions overlap substantially and $\beta$ can be large. If $\mu_1$ is farther from $\mu_0$, the overlap decreases and $\beta$ becomes smaller.
+The key point is that the critical value $c$ does **not** move when we consider the alternative distribution. The testing rule was already fixed by the chosen significance level $\alpha$. We now ask how often data generated under $\mu_1$ fall on the non-rejection side of that same cutoff.
 
-The key idea is that the decision boundary $c$ does **not** move when we consider the alternative distribution. We keep the same test and ask how often data generated under $\mu_1$ fall on the wrong side of that boundary.
+![Type II error under an alternative mean](images/type-II-error.png)
+
+*Figure instruction/caption: Plot both sampling distributions on the same sample-mean axis: the null distribution centered at $\mu_0$ and an alternative distribution centered at $\mu_1>\mu_0$. Mark the same critical value $c$ used in Section 6.1. Shade the area under the alternative distribution to the left of $c$ and label it $\beta$ (Type II error). Also show the $\alpha$ tail under the null distribution to the right of $c$ lightly, so students can see that $\alpha$ determined the cutoff while $\beta$ is measured under a different distribution. Label both means $\mu_0$ and $\mu_1$.*
 
 ---
 
@@ -969,6 +975,24 @@ $$
 =
 1-\beta(\mu_1).
 }
+$$
+
+For the upper-tail test introduced above, this is
+
+$$
+\operatorname{Power}(\mu_1)
+=
+P_{\mu_1}(\overline{X}>c).
+$$
+
+Thus, $\beta(\mu_1)$ and power divide the alternative sampling distribution into two complementary regions:
+
+$$
+\beta(\mu_1)
++
+\operatorname{Power}(\mu_1)
+=
+1.
 $$
 
 Power is therefore a property of a testing procedure under a specified alternative.
@@ -1024,67 +1048,33 @@ The distinction between **effect size** and **statistical significance** is impo
 
 ## 8. The geometry of $\alpha$, $\beta$, and power
 
-Sections 6 and 7 introduced the four probabilities associated with the testing procedure. We can now bring them together geometrically.
-
-Consider again the upper-tail test
+We can now put the pieces together using the same upper-tail test:
 
 $$
-H_0:\mu=\mu_0
-$$
-
-against
-
-$$
+H_0:\mu=\mu_0,
+\qquad
 H_1:\mu>\mu_0.
 $$
 
-The null sampling distribution of $\overline{X}$ is centered at $\mu_0$. For a chosen significance level $\alpha$, the critical boundary $c$ is selected so that
+The significance level $\alpha$ determines the rejection region under the null distribution. The critical value $c$ is chosen so that
 
 $$
-P_{\mu_0}(\overline{X}>c)=\alpha.
+P_{\mu_0}(\overline{X}>c)=\alpha,
 $$
 
-The same boundary $c$ defines the decision rule for every sample:
+and therefore
 
 $$
-\overline{x}\le c
-\quad\Longrightarrow\quad
-\text{fail to reject }H_0,
+P_{\mu_0}(\overline{X}\le c)=1-\alpha.
 $$
 
-whereas
+Once $c$ has been fixed, the same cutoff is applied when an alternative mean $\mu_1>\mu_0$ is true. Under that alternative distribution,
 
 $$
-\overline{x}>c
-\quad\Longrightarrow\quad
-\text{reject }H_0.
+P_{\mu_1}(\overline{X}\le c)=\beta(\mu_1),
 $$
 
-Under the **null distribution**, the boundary divides the probability into
-
-$$
-P_{\mu_0}(\overline{X}\le c)=1-\alpha
-$$
-
-and
-
-$$
-P_{\mu_0}(\overline{X}>c)=\alpha.
-$$
-
-Now suppose a particular alternative mean
-
-$$
-\mu_1>\mu_0
-$$
-
-is actually true. The sampling distribution is then centered at $\mu_1$, but the decision boundary remains fixed at the same value $c$. Under this **alternative distribution**,
-
-$$
-P_{\mu_1}(\overline{X}\le c)=\beta(\mu_1)
-$$
-
-and
+while
 
 $$
 P_{\mu_1}(\overline{X}>c)
@@ -1094,12 +1084,16 @@ P_{\mu_1}(\overline{X}>c)
 \operatorname{Power}(\mu_1).
 $$
 
+![Geometry of alpha, beta, and power](images/alpha-beta-power.png)
+
+*Figure instruction/caption: Plot the null sampling distribution centered at $\mu_0$ and the alternative sampling distribution centered at $\mu_1$. Mark the single critical value $c$ on the sample-mean axis. Under the null distribution, label the area left of $c$ as $1-\alpha$ and the right-tail area as $\alpha$. Under the alternative distribution, label the area left of $c$ as $\beta$ and the area right of $c$ as $1-\beta=\operatorname{Power}$. Label $\mu_0$, $\mu_1$, the non-rejection region $\overline{X}\le c$, and the rejection region $\overline{X}>c$. This figure should visually emphasize that the cutoff $c$ is fixed while the probabilities are measured under different sampling distributions.*
+
 Thus the four regions can be summarized as
 
 $$
 \boxed{
 \begin{array}{c|cc}
-& \overline{X}\le c & \overline{X}>c \\[1mm]
+& \overline{X}\le c & \overline{X}>c \\
 \hline
 H_0\text{ true} & 1-\alpha & \alpha \\
 \mu_1\text{ true} & \beta(\mu_1) & 1-\beta(\mu_1)
@@ -1107,16 +1101,7 @@ H_0\text{ true} & 1-\alpha & \alpha \\
 }
 $$
 
-The geometric interpretation is therefore:
-
-- $1-\alpha$ is the probability of correctly failing to reject $H_0$ when $H_0$ is true;
-- $\alpha$ is the probability of a **Type I error** under the null distribution;
-- $\beta(\mu_1)$ is the probability of a **Type II error** under the alternative distribution centered at $\mu_1$;
-- $1-\beta(\mu_1)$ is the **power** of the test under that alternative.
-
-The same decision boundary $c$ appears in all four probabilities. What changes is the sampling distribution under which the area is measured.
-
-This also explains why $\beta$ and power depend on the alternative value $\mu_1$: moving $\mu_1$ farther from $\mu_0$ changes how much of the alternative sampling distribution falls on each side of the fixed boundary $c$.
+The same critical value $c$ is used throughout. What changes is the sampling distribution under which the probability is calculated.
 
 ## 9. Statistical significance, interpretation and common pitfalls
 
