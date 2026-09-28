@@ -474,15 +474,51 @@ $$
 1-\alpha=0.95.
 $$
 
-See also in the ![figure](images/2-sided-test.png). As we had discussed this in Lecture 9, this can be looked up in standard statistics table. Since the Gaussian distribution is so common it is worthwhile remembering this value.
+![Two-sided-t-test](images/2-sided-test.png).
+**Figure:** Rejection regions for a two-sided $z$-test at significance level $\alpha=0.05$. Under the standard normal null distribution, the critical values $\pm1.96$ leave probability $0.025$ in each tail and $0.95$ in the central region. Reject $H_0$ when the observed statistic falls beyond either critical value.
 
-Thus,
+**Where does 1.96 come from, and how do we find it?**
+
+Under the standard normal null model, $Z\sim\mathcal{N}(0,1)$. For a two-sided test with $\alpha=0.05$, we place probability $0.025$ in each tail. The upper cutoff therefore has probability $1-0.025=0.975$ to its left:
 
 $$
-|z_{\mathrm{obs}}|>1.96
+P(Z\le1.96)\approx0.975,
+\qquad
+P(Z>1.96)\approx0.025.
 $$
 
-falls in the rejection region.
+To find this cutoff, use a **cumulative standard normal table**, which reports $P(Z\le z)$. Locate **0.9750 inside the table**: its row ($1.9$) and column ($0.06$) give $z=1.96$. By symmetry, the lower cutoff is $-1.96$, so
+
+$$
+P(|Z|>1.96)\approx0.05.
+$$
+
+A calculator or statistical software can also find the cutoff using the **inverse normal cumulative distribution function**: enter the desired cumulative probability, $0.975$, to obtain approximately $1.96$. 
+
+In Python, SciPy provides `norm.ppf`, the inverse cumulative distribution function of the standard normal distribution:
+
+```python
+from scipy.stats import norm
+
+alpha = 0.05
+
+lower = norm.ppf(alpha / 2)
+upper = norm.ppf(1 - alpha / 2)
+
+print(f"Critical values: {lower:.2f}, {upper:.2f}")
+# Critical values: -1.96, 1.96
+```
+
+Here, `norm.ppf(0.975)` returns the value with 97.5% of the standard normal probability to its left, leaving 2.5% in the upper tail.
+
+The null model and the chosen significance level determine the cutoff. We calculate $z_{\mathrm{obs}}$ from the data and compare it with the critical values. If
+
+$$
+|z_{\mathrm{obs}}|>1.96,
+$$
+
+the observed sample mean lies more than $1.96$ standard errors from the hypothesized mean. The statistic falls in the most extreme 5% of the null distribution, so we reject $H_0$ at the 5% significance level.
+
 
 More generally, for a two-sided test,
 
@@ -557,7 +593,7 @@ P(|Z|\ge2\mid H_0).
 $$
 
 ![Rejection region for a two-sided z-test](images/rejection-region.png)
-**Figure:** This figure visualizes the rejection region.$.
+**Figure:** The rejection region and p-value for an observed statistic $z_{\mathrm{obs}}=2$. Dashed lines mark the critical values $\pm1.96$ for $\alpha=0.05$; solid lines mark $\pm2$. The orange tails represent the two-sided p-value, $P(|Z|\ge2\mid H_0)\approx0.0455$. Because $p<0.05$, we reject $H_0$.
 
 For a symmetric standard normal reference distribution,
 
@@ -1164,6 +1200,8 @@ $$
 
 The latter is a posterior probability and requires a different inferential framework.
 
+---
+
 **“A large p-value proves $H_0$.”**
 
 Incorrect.
@@ -1177,6 +1215,8 @@ This may occur because:
 - the observations are highly variable;
 - the effect is small; or
 - the assumptions of the test do not match the data-generating process.
+
+---
 
 **“A small p-value means a large effect.”**
 
@@ -1199,6 +1239,8 @@ $$
 $$
 
 decreases, so even very small effects may produce large test statistics.
+
+---
 
 
 **“$\alpha=0.05$ means that 5% of significant findings are false.”**
