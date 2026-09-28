@@ -1,6 +1,6 @@
 # Lecture 9 - Frequentist Uncertainty and Hypotheses Testing (I/II)
 
-In prior lectures, we have established a frequentist perspective towards paramater learning. In this lecturer, we deepen the classical frequentist perspective, with a focus on sampling statistics and hypotheses testing. Specifically, we focus on statistical decision theory for a special case where we might want to reject or accept a hypotheses for a population, given a finite number of sample data at hand. So some of this lecture draws upon concepts introduced in lectures of week 2, where we establish the notion of the sampling space $\Omega$.
+In prior lectures, we have established a frequentist perspective towards paramater learning. In this lecture, we deepen the classical frequentist perspective, with a focus on sampling statistics and hypotheses testing. Specifically, we focus on statistical decision theory for a special case where we might want to reject or accept a hypotheses for a population, given a finite number of sample data at hand. So some of this lecture draws upon concepts introduced in lectures of week 2, where we establish the notion of the sampling space $\Omega$.
 
 Thus, before we discuss the details of hypotheses testing, it is important to understand the mathematical foundations of **finite** sampling through the frequentist lens:
 
@@ -74,7 +74,7 @@ So keep in mind that:
 - $N$ is the number of units selected for the sample.
 
 :::{important}
-There are only two quantities here. Some statistics texts, including Rice (2007) (see references), use $N$ for population size and $n$ for sample size. In this course, we use $M$ for finite-population size and retain $N$ for sample size to remain consistent with Lecture 7. The difference is purely notational. What is important that you need to clearly define what your population statistic is as that impacts your inference.
+There are only two quantities here. Some statistics texts, including Rice (2007) (see references), use $N$ for population size and $n$ for sample size. In this course, we use $M$ for finite-population size and retain $N$ for sample size to remain consistent with Lecture 7. The difference is purely notational. What is important is that you need to clearly define what your population statistic is as that impacts your inference.
 :::
 
 | Concept | Notation in this course  |
@@ -358,15 +358,15 @@ $$
 - $S$ estimates the variability of individual observations.
 - $S/\sqrt{N}$ estimates the variability of the sample mean across repeated samples.
 
-The latter should not be called the standard deviation of the data. It is the estimated standard deviation of the estimator's sampling distribution.
+The latter should not be called the standard deviation of the data. It is the **estimated standard deviation of the estimator's sampling distribution**.
 
 The denominator $N-1$ will be explained after we introduce confidence intervals with unknown variance.
 
 ## 5. Finite-population correction
 
-## 5.1 Correction method when IDD assumption is violated 
+### 5.1 Correction method when IID assumption is violated
 
-The IID formula $\sigma/\sqrt{N}$ applies naturally to independent sampling, including sampling with replacement. When sampling without replacement from a finite population, the observations are dependent and uncertainty decreases slightly faster. We will discuss this next (A full derivation can be found in RICE)
+The IID formula $\sigma/\sqrt{N}$ applies naturally to independent sampling, including sampling with replacement. When sampling without replacement from a finite population, the observations are dependent and uncertainty decreases slightly faster. We will discuss this next (A full derivation can be found in Rice (2007) see references below)
 
 Let us define the finite-population variance using denominator $M$:
 
@@ -404,9 +404,10 @@ The correction has an intuitive interpretation:
 - if $N=M$, the correction equals $0$ because observing the entire population eliminates sampling uncertainty;
 - if $N/M$ is very small, the correction is close to $1$ and the IID standard-error formula is a good approximation.
 
-## 5.2 Estimating the standard error from one sample
+### 5.2 Estimating the standard error from one sample
 
-Usually, we do not know all the fleet temperatures, so we cannot calculate the population standard deviation $\sigma_M$. Instead, we calculate the sample standard deviation $s$ from the selected engines, using denominator $N-1$.
+Usually, we cannot calculate the population standard deviation $\sigma_M$ (e.g. in the case of our fleet we do not know all the fleet temperatures).
+Instead, we calculate the sample standard deviation $s$ from the samples we observe (e.g. the selected engines), using the denominator $N-1$.
 
 For simple random sampling without replacement, the estimated standard error is
 
@@ -415,7 +416,18 @@ $$
 =\frac{s}{\sqrt{N}}\sqrt{1-\frac{N}{M}}.
 $$
 
-Here, lowercase $s$ is the numerical sample standard deviation calculated from the observed data.
+In Section 4.5, we defined the sample standard deviation $S$. Before collecting data, $S$ is a random variable: its value depends on which observations enter the sample. After observing a particular sample, we write its calculated value as lowercase $s$.
+
+This follows the same convention as $\overline{X}$ for the random sample mean and $\overline{x}$ for its observed value:
+
+$$
+S=\sqrt{\frac{1}{N-1}\sum_{i=1}^{N}(X_i-\overline{X})^2}
+\qquad\longrightarrow\qquad
+s=\sqrt{\frac{1}{N-1}\sum_{i=1}^{N}(x_i-\overline{x})^2}.
+$$
+
+For example, before selecting 50 engines, $S$ is unknown and varies across possible samples. After measuring the selected engines, we might calculate $s=10$ °C.
+The lowercase $s$ is the numerical sample standard deviation calculated from the observed data.
 
 For example, if $M=1000$, $N=50$, and $s=10$ °C, then
 
@@ -508,7 +520,15 @@ Z
 \approx\mathcal{N}(0,1).
 $$
 
-Let $z_{1-\alpha/2}$ denote the $(1-\alpha/2)$ quantile of the standard normal distribution. Then
+Let $Z_0\sim\mathcal N(0,1)$ be an exactly standard normal variable, and write $\Phi(z)=P(Z_0\leq z)$ for its cumulative distribution function. Its $p$-quantile, $z_p$, is the value satisfying $\Phi(z_p)=p$. For a two-sided interval with confidence level $1-\alpha$, we want probability $1-\alpha$ in the center of the standard normal distribution. That leaves total probability $\alpha$ outside the interval, or $\alpha/2$ in **each** tail. The upper cutoff therefore has $1-\alpha/2$ of the probability to its left:
+
+$$
+P(Z_0\leq z_{1-\alpha/2})
+=\Phi(z_{1-\alpha/2})
+=1-\frac{\alpha}{2}.
+$$
+
+The standard normal distribution is symmetric around zero, so the lower cutoff is $-z_{1-\alpha/2}$. Thus
 
 $$
 P\left(
@@ -537,11 +557,20 @@ $$
 z_{1-\alpha/2}\frac{\sigma}{\sqrt{N}}.
 $$
 
-For a $95\%$ confidence interval,
+For a $95\%$ confidence interval, $1-\alpha=0.95$, so $\alpha=0.05$. The two tails each contain $0.05/2=0.025$ of the probability. To find the **upper** cutoff, look for the value with $1-0.025=0.975$ of the standard normal probability to its left. The subscript $0.975$ is this *cumulative probability*, not the confidence level:
 
 $$
-z_{0.975}\approx 1.96.
+z_{1-\alpha/2}
+=z_{0.975}
+=\Phi^{-1}(0.975)
+\approx 1.96.
 $$
+
+Here $\Phi^{-1}(0.975)$ means the value whose standard normal cumulative probability is $0.975$. In a cumulative standard normal table, find the entry closest to $0.9750$: it is at row $1.9$ and column $0.06$, which combine to give $1.96$. A numerical inverse CDF gives $1.95996\ldots$, also rounded to $1.96$. As a check, $\Phi(1.96)\approx0.975$ and, by symmetry, $\Phi(-1.96)\approx0.025$. Hence the probability between the cutoffs is approximately $0.975-0.025=0.95$, and the interval above becomes $\overline{x}\pm1.96\,\sigma/\sqrt{N}$.
+
+![Standard normal curve with 95% between −1.96 and +1.96, 2.5% in each tail, and 97.5% to the left of +1.96.](images/normal-95-percent-interval.svg)
+
+*The upper cutoff has 97.5% of the area to its left because that includes the left 2.5% tail and the central 95%.*
 
 ### 7.2 Confidence interval when the variance is unknown
 
@@ -991,7 +1020,7 @@ The confidence level describes the procedure's coverage across repeated samples.
 
 The finite-population mean $\mu_M$ and a model's mean $\mu=\mathbb{E}[X]$ are different targets.
 
-## 13. Coding experiments to build intuitaion: making repeated sampling visible
+## Coding experiments to build intuitaion: making repeated sampling visible
 
 ### Experiment 1: Sampling distribution of the mean
 
@@ -1050,7 +1079,7 @@ Generate an autocorrelated sequence and incorrectly treat its observations as II
 
 ## References and supplementary resources
 
-- John A. Rice, *Mathematical Statistics and Data Analysis*, especially Sections 5.3 and 7.2–7.3.
+- John A. Rice (2007) [*Mathematical Statistics and Data Analysis*, especially Sections 5.3 and 7.2–7.3. ](https://korivernon.com/documents/MathematicalStatisticsandDataAnalysis3ed.pdf)
 - Steven L. Brunton, [Population Statistics and Random Sampling](https://www.youtube.com/watch?v=OlkL1YatyHI).
 - Steven L. Brunton, [Expected Value and Variance of the Sample Mean](https://www.youtube.com/watch?v=Gg3d-rn9eEU).
 - Steven L. Brunton, [Random Sampling Without Replacement](https://www.youtube.com/watch?v=IDvp3pMm16k).
@@ -1079,4 +1108,3 @@ We can therefore ask:
 > Is the observed sample mean reasonably compatible with this proposed sampling distribution, or is it unusually far into its tails?
 
 We will discuss this in the next lecture.
-
