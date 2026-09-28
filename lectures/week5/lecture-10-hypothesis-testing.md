@@ -1,7 +1,7 @@
 # Lecture 10 - Hypothesis Testing
 Lecture 9 developed the frequentist account of **sampling uncertainty**. We distinguished populations from samples, treated the sample mean as a random estimator, derived its standard error, introduced the central limit theorem, and constructed confidence intervals. This lecture continues directly from that foundation.
 
-In Lecture 7, we treated model parameters as **fixed but unknown** and learned them from observed data using likelihood and maximum-likelihood estimation. 
+In Lecture 7, we treated model parameters as **fixed but unknown** and learned them from observed data using likelihood and maximum-likelihood estimation.
 
 In Lecture 9, we then asked how a statistic such as the sample mean varies across hypothetical repeated samples. We now use that sampling distribution to evaluate claims about the unknown population parameter.
 
@@ -19,7 +19,7 @@ Thus, the guiding question for this lecture is:
 
 > How can we use sampling distributions to evaluate a statistical hypothesis, quantify the strength of evidence against it, and understand the errors associated with a testing procedure?
 
-The prior lectures 7,9, help you to perform the the hypotheses testing in focus for this lecture. 
+Lectures 7 and 9 provide the foundations for the hypothesis testing developed in this lecture.
 
 :::{admonition} How Lectures 7, 9, and 10 connect
 :class: important
@@ -60,7 +60,7 @@ In short, Lecture 7 derives the estimator, Lecture 9 characterizes its repeated-
 :::
 
 
-# Learning objectives
+## Learning objectives
 After completing the lecture and tutorial, students should be able to:
 1. Formulate appropriate null and alternative hypotheses for a population parameter and distinguish between one-sided and two-sided alternatives.
 2. Select and compute a test statistic for a simple one-sample mean problem.
@@ -214,10 +214,10 @@ Hypothesis testing asks a closely related question:
 
 > Is one particular proposed value $\mu_0$ reasonably compatible with the observed data?
 
-:::{note} 
+:::{note}
 Why does a Gaussian reference distribution appear here? This follows directly from the sampling-distribution results in Lecture 9.
 
-If the observations themselves are Gaussian, then the sample mean is Gaussian exactly. More generally, under IID sampling with finite variance and a sufficiently large sample size, the central limit theorem implies that the sampling distribution of $\overline{X}$ is approximately Gaussian.
+If the observations themselves are Gaussian, then the sample mean is exactly Gaussian. More generally, under IID sampling with finite variance and a sufficiently large sample size, the central limit theorem implies that the sampling distribution of $\overline{X}$ is approximately Gaussian.
 
 Under the null hypothesis $H_0:\mu=\mu_0$, this sampling distribution is centered at the proposed value $\mu_0$.
 
@@ -234,7 +234,7 @@ $$
 $$
 
 The normal distribution is therefore used because it describes the repeated-sampling behavior of the estimator under the null model. It does **not** require the individual observations themselves to be approximately Gaussian when an adequate central-limit approximation applies.
-::: 
+:::
 
 ---
 
@@ -416,7 +416,7 @@ This is the same $z$ versus Student-$t$ distinction introduced for confidence in
 
 ## 5. Significance level, rejection regions and p-values
 
-## 5.1. Significance level 
+### 5.1 Significance level
 
 Before examining the test result, we select a **significance level**
 
@@ -453,6 +453,8 @@ $$
 \qquad\text{and}\qquad
 +1.96.
 $$
+
+We had discussed this already before in Lecture 9. See also in the [figure](/images/2-sided-test.png)
 
 Thus,
 
@@ -496,7 +498,7 @@ The significance level $\alpha$ is chosen as part of the testing procedure. It i
 
 ---
 
-### 5.2. The p-value
+### 5.2 The p-value
 
 Rather than comparing only with a fixed critical value, we can quantify how extreme the observed test statistic is under the null hypothesis.
 
@@ -560,7 +562,7 @@ Z\le z_{\mathrm{obs}}
 \right).
 $$
 
-### 5.3. Interpretation and decision rules
+### 5.3 Interpretation and decision rules
 
 A useful interpretation is:
 
@@ -601,9 +603,9 @@ It does not give the probability that the null hypothesis is true.
 
 ---
 
-### 5.4. Working example 
+### 5.4 Working example
 
-We continue the engine-temperature setting used in prior lectures. 
+We continue the engine-temperature setting used in prior lectures.
 
 Suppose a manufacturer proposes that the mean operating temperature under a standardized test is
 
@@ -714,9 +716,9 @@ The conclusion does not imply:
 - that the assumptions of the test are automatically satisfied.
 :::
 
-### 5.5. Confidence intervals and hypothesis tests
+### 5.5 Confidence intervals and hypothesis tests
 
-The same example can be examined using the confidence interval from Lecture 9 and relate it to hypopthesis testing. 
+The same example can be examined using the confidence interval from Lecture 9 and related to hypothesis testing.
 
 A 95% confidence interval is
 
@@ -980,7 +982,7 @@ This geometric view is important:
 - $\beta$ is an area under an **alternative distribution**;
 - power is the remaining rejection-region area under that alternative distribution.
 
-## 9. Statistical significance, interpretation and common pittfalls 
+## 9. Statistical significance, interpretation and common pitfalls
 
 A hypothesis test answers a narrow statistical question:
 
@@ -1032,7 +1034,7 @@ $$
 
 The latter is a posterior probability and requires a different inferential framework.
 
-**14.2 “A large p-value proves $H_0$.”**
+**“A large p-value proves $H_0$.”**
 
 Incorrect.
 
@@ -1046,7 +1048,7 @@ This may occur because:
 - the effect is small; or
 - the assumptions of the test do not match the data-generating process.
 
-**14.3 “A small p-value means a large effect.”**
+**“A small p-value means a large effect.”**
 
 Incorrect.
 
@@ -1069,7 +1071,7 @@ $$
 decreases, so even very small effects may produce large test statistics.
 
 
-**14.5 “$\alpha=0.05$ means that 5% of significant findings are false.”**
+**“$\alpha=0.05$ means that 5% of significant findings are false.”**
 
 Incorrect.
 
@@ -1098,9 +1100,9 @@ The physical-system warning from Lecture 9 remains important.
 If $10{,}000$ sensor measurements are strongly autocorrelated, treating them as $10{,}000$ independent observations may underestimate the true standard error and produce misleadingly small p-values.
 
 More recorded measurements do not automatically mean more independent information.
-::: 
+:::
 
-## References and supplementary resources
+## 10. References and supplementary resources
 
 - John A. Rice (2007), *Mathematical Statistics and Data Analysis*, especially the chapters on confidence intervals and hypothesis testing.
 - Steven L. Brunton, statistical inference and hypothesis-testing video sequence:
@@ -1109,7 +1111,7 @@ More recorded measurements do not automatically mean more independent informatio
   - https://www.youtube.com/watch?v=WYifBkNg1r8&list=PLMrJAkhIeNNT14qn1c5qdL29A1UaHamjx&index=10
   - https://www.youtube.com/watch?v=129NuU3A7rM&list=PLMrJAkhIeNNT14qn1c5qdL29A1UaHamjx&index=11
 
-## 16. Practice problems and solutions
+## 11. Practice problems and solutions
 
 Attempt each problem before opening its solution.
 
@@ -1312,210 +1314,9 @@ This illustrates why very small effects may become statistically significant wit
 
 ---
 
-
-## Practice problems and solutions
-
-Attempt each problem before opening its solution.
-
-### 1. Test a population mean
-
-A process is designed to produce components with mean lifetime
-
-$$
-\mu_0=500\text{ hours}.
-$$
-
-A sample of
-
-$$
-N=100
-$$
-
-components has
-
-$$
-\overline{x}=506\text{ hours}.
-$$
-
-Assume
-
-$$
-\sigma=20\text{ hours}
-$$
-
-is known.
-
-Test
-
-$$
-H_0:\mu=500
-$$
-
-against
-
-$$
-H_1:\mu\neq500
-$$
-
-at
-
-$$
-\alpha=0.05.
-$$
-
-1. Calculate the standard error.
-2. Calculate the test statistic.
-3. Calculate the two-sided p-value.
-4. State the statistical decision.
-5. Construct the corresponding 95% confidence interval.
-6. Verify the confidence-interval/test duality.
-
-```{admonition} Solution
-:class: dropdown
-
-The standard error is
-
-$$
-\operatorname{SE}(\overline{X})
-=
-\frac{20}{\sqrt{100}}
-=
-2.
-$$
-
-The observed test statistic is
-
-$$
-z_{\mathrm{obs}}
-=
-\frac{506-500}{2}
-=
-3.
-$$
-
-The two-sided p-value is
-
-$$
-p
-=
-2P(Z\ge3)
-\approx
-0.0027.
-$$
-
-Since
-
-$$
-p<0.05,
-$$
-
-we reject $H_0$.
-
-The 95% confidence interval is
-
-$$
-506
-\pm
-1.96(2),
-$$
-
-or
-
-$$
-[502.08,\;509.92].
-$$
-
-The null value 500 is outside the confidence interval, which is consistent with rejecting the corresponding two-sided test at the 5% level.
-```
-
-### 2. Interpret a p-value
-
-A study reports
-
-$$
-p=0.03
-$$
-
-for a test of
-
-$$
-H_0:\mu=\mu_0.
-$$
-
-Explain why each statement is incorrect:
-
-1. “There is a 3% probability that $H_0$ is true.”
-2. “There is a 97% probability that the alternative is true.”
-3. “The effect must be practically important.”
-4. “If the study were repeated, 97% of future studies would reject $H_0$.”
-
-```{admonition} Solution
-:class: dropdown
-
-A p-value is a probability of data at least as extreme as those observed, calculated under the assumption that $H_0$ is true.
-
-It is not a posterior probability for $H_0$ or $H_1$, it does not measure practical importance, and it is not the probability that a future study will reject the null hypothesis.
-```
-
-### 3. Type I and Type II errors
-
-For each situation, identify whether it represents a Type I error, Type II error, or correct decision.
-
-1. $H_0$ is true and the test rejects it.
-2. $H_0$ is false and the test fails to reject it.
-3. $H_0$ is true and the test fails to reject it.
-4. $H_0$ is false and the test rejects it.
-
-```{admonition} Solution
-:class: dropdown
-
-1. Type I error.
-2. Type II error.
-3. Correct decision.
-4. Correct decision.
-```
-
-### 4. Sample size and statistical significance
-
-Suppose the true mean differs from the null value by a fixed amount
-
-$$
-\delta=\mu-\mu_0.
-$$
-
-Explain what happens to the magnitude of the standardized test statistic
-
-$$
-Z
-=
-\frac{\overline{X}-\mu_0}
-{\sigma/\sqrt{N}}
-$$
-
-as $N$ becomes large, assuming the observed sample mean remains close to the true mean.
-
-```{admonition} Solution
-:class: dropdown
-
-The standard error
-
-$$
-\frac{\sigma}{\sqrt{N}}
-$$
-
-decreases as $N$ grows.
-
-For a fixed nonzero difference $\delta$, the standardized distance from the null therefore tends to increase approximately as
-
-$$
-\sqrt{N}.
-$$
-
-This illustrates why very small effects may become statistically significant with sufficiently large samples.
-```
-
 ---
-## Coding experiments to build intuition
+
+## 12. Coding experiments to build intuition
 
 ### Experiment 1: p-values under the null
 

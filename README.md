@@ -6,10 +6,11 @@ Book-style course site built with Jupyter Book and deployed with GitHub Pages.
 
 ```bash
 git switch dev
-source .venv/bin/activate
-
-jupyter-book clean . --html
-jupyter-book build .
-
+./.venv/bin/jupyter-book clean . --html
+./.venv/bin/jupyter-book build .
 python -m http.server 8000 --bind 127.0.0.1 --directory _build/html
 ```
+
+Then open:
+
+http://127.0.0.1:8000/lectures/week5/lecture-9-sampling-statistics.html
