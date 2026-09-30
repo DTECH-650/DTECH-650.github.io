@@ -1,6 +1,6 @@
 # Assignment 2 — Learning, Information, and Uncertainty
 
-This draft covers **Lectures 7, 8, 9, 10, and 11**. It contains **five questions worth 100 points**.
+This assignment covers material from Weeks 4–6. It contains **five questions worth 100 points total**.
 
 ## Purdue Honor Pledge
 
@@ -16,7 +16,8 @@ This draft covers **Lectures 7, 8, 9, 10, and 11**. It contains **five questions
 - Use natural logarithms for likelihood calculations in Question 1. Use logarithms to base 2 for Question 2, so information quantities are measured in bits.
 - You may write your answers on paper or a tablet, or type them using a word processor or LaTeX. Make sure your work is legible and equations are clearly presented.
 - Submit the assignment on Gradescope as a PDF, using the link on the course website or in the syllabus.
-- **Please link your answers to the questions on Gradescope when submitting your PDF.**
+- **Please link your answers to the questions on Gradescope when submitting your PDF - This helps us save a lot of time while grading around 40 papers.**
+- **Please do your best to not rely on any LLM (eg ChatGPT) to solve these questions.**
 
 ## Questions
 
