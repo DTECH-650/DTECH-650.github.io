@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="445" viewBox="0 0 620 445" role="img" aria-labelledby="title desc">
+  <title id="title">Two paths with different separation rules</title>
+  <desc id="desc">The upper path is a chain X to M to Y. The lower path is a collider X to C from Y. C has a descendant W.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 1 1 L 11 6 L 1 11 Z" fill="#334155"/>
+    </marker>
+  </defs>
+  <rect width="620" height="445" rx="12" fill="#ffffff"/>
+  <g stroke="#334155" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+    <path d="M 120 160 L 278 107"/>
+    <path d="M 341 106 L 498 160"/>
+    <path d="M 120 185 L 279 248"/>
+    <path d="M 500 185 L 341 248"/>
+    <path d="M 310 292 L 310 344"/>
+  </g>
+  <g fill="#f8fafc" stroke="#334155" stroke-width="2.5">
+    <circle cx="90" cy="173" r="32"/>
+    <circle cx="310" cy="95" r="32"/>
+    <circle cx="530" cy="173" r="32"/>
+    <circle cx="310" cy="260" r="32"/>
+    <circle cx="310" cy="377" r="32"/>
+  </g>
+  <g fill="#0f172a" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <g font-size="25" font-weight="600">
+      <text x="90" y="182">X</text><text x="310" y="104">M</text><text x="530" y="182">Y</text>
+      <text x="310" y="269">C</text><text x="310" y="386">W</text>
+    </g>
+    <g font-size="18" fill="#475569">
+      <text x="310" y="39">Chain path</text>
+      <text x="440" y="288">Collider path</text>
+      <text x="453" y="383">Descendant of C</text>
+      <text x="310" y="433">Check both paths for each observed set.</text>
+    </g>
+  </g>
+</svg>

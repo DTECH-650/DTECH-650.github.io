@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="390" viewBox="0 0 1080 390" role="img" aria-labelledby="title desc">
+  <title id="title">A collider opens when it or a descendant is observed</title>
+  <desc id="desc">Three copies of X and Y pointing into Z, with Z pointing to W. Nothing observed blocks the X to Y path. Observing Z or observing its descendant W opens the path.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 1 1 L 11 6 L 1 11 Z" fill="#334155"/>
+    </marker>
+  </defs>
+  <rect width="1080" height="390" rx="12" fill="#ffffff"/>
+  <g stroke="#e2e8f0" stroke-width="2">
+    <line x1="360" y1="22" x2="360" y2="341"/>
+    <line x1="720" y1="22" x2="720" y2="341"/>
+  </g>
+  <g stroke="#334155" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+    <path d="M 103 119 L 157 164"/>
+    <path d="M 257 119 L 203 164"/>
+    <path d="M 180 212 L 180 243"/>
+    <path d="M 463 119 L 517 164"/>
+    <path d="M 617 119 L 563 164"/>
+    <path d="M 540 212 L 540 243"/>
+    <path d="M 823 119 L 877 164"/>
+    <path d="M 977 119 L 923 164"/>
+    <path d="M 900 212 L 900 243"/>
+  </g>
+  <g fill="#f8fafc" stroke="#334155" stroke-width="2.5">
+    <circle cx="80" cy="100" r="29"/><circle cx="280" cy="100" r="29"/>
+    <circle cx="180" cy="183" r="29"/><circle cx="180" cy="273" r="29"/>
+    <circle cx="440" cy="100" r="29"/><circle cx="640" cy="100" r="29"/>
+    <circle cx="540" cy="183" r="29" fill="#dbeafe" stroke="#2563eb"/>
+    <circle cx="540" cy="273" r="29"/>
+    <circle cx="800" cy="100" r="29"/><circle cx="1000" cy="100" r="29"/>
+    <circle cx="900" cy="183" r="29"/>
+    <circle cx="900" cy="273" r="29" fill="#dbeafe" stroke="#2563eb"/>
+  </g>
+  <g fill="#0f172a" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <g font-size="21" font-weight="600">
+      <text x="180" y="44">Nothing observed</text>
+      <text x="540" y="44">Observe the collider Z</text>
+      <text x="900" y="44">Observe descendant W</text>
+    </g>
+    <g font-size="24" font-weight="600">
+      <text x="80" y="108">X</text><text x="280" y="108">Y</text><text x="180" y="191">Z</text><text x="180" y="281">W</text>
+      <text x="440" y="108">X</text><text x="640" y="108">Y</text><text x="540" y="191">Z</text><text x="540" y="281">W</text>
+      <text x="800" y="108">X</text><text x="1000" y="108">Y</text><text x="900" y="191">Z</text><text x="900" y="281">W</text>
+    </g>
+    <g font-size="18" fill="#475569">
+      <text x="180" y="335">Blocked path: X ⟂ Y</text>
+      <text x="540" y="335">Active: dependence is possible</text>
+      <text x="900" y="335">Active: dependence is possible</text>
+      <text x="540" y="378">Blue fill = observed / conditioned on</text>
+    </g>
+  </g>
+</svg>
