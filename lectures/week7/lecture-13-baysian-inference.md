@@ -52,11 +52,12 @@ Based on this example, we can now define the following objectives for our lectur
 
 After completing this lecture, you should be able to:
 
-1. Distinguish frequentist parameter estimation from Bayesian inference.
+1. Distinguish frequentist parameter estimation from Bayesian parameter learning.
 2. Identify and interpret the prior, likelihood, evidence, and posterior.
-3. Calculate a posterior and its evidence in a simple discrete-parameter example.
-4. Explain posterior prediction and distinguish credible intervals from
-   confidence intervals.
+3. Calculate the evidence and posterior for a discrete set of candidate parameter values.
+4. Apply Bayes' rule to a continuous success-probability parameter using a Beta prior.
+5. Interpret the results of Baysian updates and how it affects your uncertainty. 
+
 
 ## 1. From parameter estimation to parameter uncertainty
 
@@ -97,9 +98,9 @@ The parameter is not assumed to physically change when we collect data. What cha
 |---|---|---|---|
 | Lecture 7: maximum likelihood | Fixed but unknown | Candidate parameter values in the likelihood calculation | Which value maximizes the likelihood of this dataset? |
 | Lecture 9: sampling uncertainty | Fixed but unknown | Samples and estimators across hypothetical repetitions | How would the estimator vary across samples? |
-| Lecture 13: Bayesian inference | Described by a distribution representing uncertainty | Possible parameter values conditional on the observed dataset | How plausible are different values after observing these data? |
+| Lecture 13: Bayesian inference*| Described by a distribution representing uncertainty | Possible parameter values conditional on the observed dataset | How plausible are different values after observing these data? |
 
-Bayesian inference conditions on the dataset actually observed. It does not require collecting repeated datasets.
+*Bayesian inference conditions on the dataset actually observed. It does not require collecting repeated datasets.
 :::
 
 
@@ -121,7 +122,6 @@ The pieces have useful names:
 
 You may want to go back and refresh your memory on this theorem so that this lecture is easy to follow. 
 
-We use a working example, assuming we have Bernoulli distribution (discussed in lecture 4 in the section on discrete random variables). 
 
 ### 2.1 Observed data and the sampling model
 
