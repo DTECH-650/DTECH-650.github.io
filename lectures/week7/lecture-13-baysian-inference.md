@@ -79,6 +79,7 @@ $$
 
 This returns one value. It does not, by itself, provide a probability distribution over possible parameter values.
 
+
 ### 1.2 Connection to Lecture 9: uncertainty across repeated samples
 
 Before observing data, an estimator $\widehat\theta=g(\mathbf X)$ is random because the sample $\mathbf X$ is random. Lecture 9 asked how that estimator would vary if the entire data-collection procedure were repeated under the same fixed parameter.
@@ -169,11 +170,6 @@ p(\theta,\mathcal D)=p(\mathcal D\mid\theta)p(\theta).
 $$
 
 This joint model is the starting point for both parameter learning and prediction.
-
-:::{warning}
-[Distinguish a likelihood function from a probability distribution
-over the parameter.]
-:::
 
 ## 3. Bayes’ rule for parameter learning
 
