@@ -36,7 +36,11 @@ parts:
         title: Week 7
         sections:
           - file: lectures/week7/lecture-12-exponential-families
-      # - file: lectures/bayesian
+          - file: lectures/week7/lecture-13-baysian-inference
+      - file: lectures/week9/index
+        title: Week 9
+        sections:
+          - file: lectures/week9/lecture-14-probabilistic-graphical-models
   - caption: Code
     chapters:
       - file: codes/intro-to-python
