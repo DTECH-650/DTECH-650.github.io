@@ -1,8 +1,22 @@
 # Lecture 12 - Exponential Families
 
-Lectures 6 and 7 treated the Bernoulli, Poisson, and Gaussian distributions separately. They describe different kinds of observations: binary outcomes, counts, and continuous measurements. Yet each can be written in the same mathematical form. Recognizing that form gives us a common way to find moments, identify what a sample tells us about unknown parameters, and derive maximum-likelihood estimates.
+Lectures 6 and 7 treated the Bernoulli, Poisson, and Gaussian distributions separately. They describe different kinds of observations: binary outcomes, counts, and continuous measurements. Yet each can be written in the same mathematical form. Recognizing that form gives us a common way to find moments, identify what a sample tells us about unknown parameters, and derive maximum-likelihood estimates. It is very important for Baysian inference as well, as we will see in in Lecture 13. 
+
+This lecture answers the following question: **What common structure makes these probability models useful for statistical inference?**
 
 We will use the notation from earlier lectures: $X$ is a random variable, $x$ is one realized value, and $\mathcal D=(x_1,\ldots,x_N)$ is an observed IID sample. Parameters are fixed but unknown in the frequentist calculations below. Natural parameters describe the same distributions using a different coordinate system - they are not additional random variables.
+
+
+
+# Learning objectives: 
+
+After completing this lecture, you should be able to: 
+1. Explain sufficiency: describe what a sufficient statistic retains about an unknown parameter under an assumed probability model.
+2. Recognize exponential-family structure: express Bernoulli, Poisson, and Gaussian models in exponential-family form and identify their components.
+3. Calculate moments: use derivatives of the log normalizer to obtain expectations and variances of sufficient-statistic functions.
+4. Derive maximum-likelihood estimates: explain and apply the moment-matching equations for exponential-family models.
+5. Connect likelihood and KL divergence: explain how maximizing sample log-likelihood relates to minimizing a population-level KL divergence.
+
 
 ## A common form for probability models
 

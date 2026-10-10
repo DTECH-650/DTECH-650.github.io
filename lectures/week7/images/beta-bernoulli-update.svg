@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="410" viewBox="0 0 760 410" role="img" aria-labelledby="title desc">
+  <title id="title">Beta–Bernoulli prior and posterior</title>
+  <desc id="desc">The Beta(2,2) prior density is symmetric around theta one half. After three successes and one failure, the Beta(5,3) posterior density is taller and shifted toward larger theta.</desc>
+  <rect width="760" height="410" rx="14" fill="#ffffff"/>
+  <text x="80" y="40" fill="#0f172a" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Learning a Bernoulli success probability</text>
+  <text x="80" y="65" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="16">Prior + 3 successes and 1 failure → posterior</text>
+  <g stroke="#e2e8f0" stroke-width="1.5">
+    <line x1="80" y1="125" x2="690" y2="125"/>
+    <line x1="80" y1="220" x2="690" y2="220"/>
+    <line x1="80" y1="315" x2="690" y2="315"/>
+  </g>
+  <g fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="15" text-anchor="end">
+    <text x="70" y="320">0</text><text x="70" y="225">1</text><text x="70" y="130">2</text>
+  </g>
+  <line x1="80" y1="90" x2="80" y2="315" stroke="#64748b" stroke-width="2"/>
+  <line x1="80" y1="315" x2="690" y2="315" stroke="#64748b" stroke-width="2"/>
+  <g stroke="#64748b" stroke-width="2">
+    <line x1="80" y1="315" x2="80" y2="322"/><line x1="232.5" y1="315" x2="232.5" y2="322"/>
+    <line x1="385" y1="315" x2="385" y2="322"/><line x1="537.5" y1="315" x2="537.5" y2="322"/>
+    <line x1="690" y1="315" x2="690" y2="322"/>
+  </g>
+  <g fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="15" text-anchor="middle">
+    <text x="80" y="344">0</text><text x="232.5" y="344">0.25</text><text x="385" y="344">0.5</text>
+    <text x="537.5" y="344">0.75</text><text x="690" y="344">1</text>
+  </g>
+  <text x="385" y="380" fill="#334155" font-family="Arial, Helvetica, sans-serif" font-size="17" text-anchor="middle">Success probability θ</text>
+  <text x="25" y="210" fill="#334155" font-family="Arial, Helvetica, sans-serif" font-size="17" text-anchor="middle" transform="rotate(-90 25 210)">Density</text>
+  <path d="M 80.0 315.0 L 86.1 309.4 L 92.2 303.8 L 98.3 298.4 L 104.4 293.1 L 110.5 287.9 L 116.6 282.9 L 122.7 277.9 L 128.8 273.0 L 134.9 268.3 L 141.0 263.7 L 147.1 259.2 L 153.2 254.8 L 159.3 250.5 L 165.4 246.4 L 171.5 242.3 L 177.6 238.4 L 183.7 234.6 L 189.8 230.9 L 195.9 227.3 L 202.0 223.8 L 208.1 220.4 L 214.2 217.2 L 220.3 214.1 L 226.4 211.0 L 232.5 208.1 L 238.6 205.3 L 244.7 202.7 L 250.8 200.1 L 256.9 197.6 L 263.0 195.3 L 269.1 193.1 L 275.2 191.0 L 281.3 189.0 L 287.4 187.1 L 293.5 185.3 L 299.6 183.7 L 305.7 182.1 L 311.8 180.7 L 317.9 179.4 L 324.0 178.2 L 330.1 177.1 L 336.2 176.1 L 342.3 175.3 L 348.4 174.6 L 354.5 173.9 L 360.6 173.4 L 366.7 173.0 L 372.8 172.7 L 378.9 172.6 L 385.0 172.5 L 391.1 172.6 L 397.2 172.7 L 403.3 173.0 L 409.4 173.4 L 415.5 173.9 L 421.6 174.6 L 427.7 175.3 L 433.8 176.1 L 439.9 177.1 L 446.0 178.2 L 452.1 179.4 L 458.2 180.7 L 464.3 182.1 L 470.4 183.7 L 476.5 185.3 L 482.6 187.1 L 488.7 189.0 L 494.8 191.0 L 500.9 193.1 L 507.0 195.3 L 513.1 197.6 L 519.2 200.1 L 525.3 202.7 L 531.4 205.3 L 537.5 208.1 L 543.6 211.0 L 549.7 214.1 L 555.8 217.2 L 561.9 220.4 L 568.0 223.8 L 574.1 227.3 L 580.2 230.9 L 586.3 234.6 L 592.4 238.4 L 598.5 242.3 L 604.6 246.4 L 610.7 250.5 L 616.8 254.8 L 622.9 259.2 L 629.0 263.7 L 635.1 268.3 L 641.2 273.0 L 647.3 277.9 L 653.4 282.9 L 659.5 287.9 L 665.6 293.1 L 671.7 298.4 L 677.8 303.8 L 683.9 309.4 L 690.0 315.0" fill="none" stroke="#2563eb" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M 80.0 315.0 L 86.1 315.0 L 92.2 315.0 L 98.3 315.0 L 104.4 315.0 L 110.5 314.9 L 116.6 314.9 L 122.7 314.8 L 128.8 314.7 L 134.9 314.5 L 141.0 314.2 L 147.1 313.8 L 153.2 313.4 L 159.3 312.8 L 165.4 312.2 L 171.5 311.4 L 177.6 310.4 L 183.7 309.3 L 189.8 308.0 L 195.9 306.5 L 202.0 304.8 L 208.1 302.9 L 214.2 300.8 L 220.3 298.4 L 226.4 295.9 L 232.5 293.1 L 238.6 290.0 L 244.7 286.8 L 250.8 283.2 L 256.9 279.4 L 263.0 275.4 L 269.1 271.1 L 275.2 266.6 L 281.3 261.9 L 287.4 256.9 L 293.5 251.8 L 299.6 246.4 L 305.7 240.8 L 311.8 235.0 L 317.9 229.1 L 324.0 223.1 L 330.1 216.9 L 336.2 210.6 L 342.3 204.2 L 348.4 197.8 L 354.5 191.3 L 360.6 184.8 L 366.7 178.3 L 372.8 171.8 L 378.9 165.4 L 385.0 159.1 L 391.1 153.0 L 397.2 147.0 L 403.3 141.1 L 409.4 135.5 L 415.5 130.2 L 421.6 125.1 L 427.7 120.3 L 433.8 115.9 L 439.9 111.8 L 446.0 108.2 L 452.1 104.9 L 458.2 102.2 L 464.3 99.9 L 470.4 98.1 L 476.5 96.9 L 482.6 96.2 L 488.7 96.1 L 494.8 96.6 L 500.9 97.7 L 507.0 99.5 L 513.1 101.8 L 519.2 104.8 L 525.3 108.5 L 531.4 112.8 L 537.5 117.7 L 543.6 123.3 L 549.7 129.5 L 555.8 136.3 L 561.9 143.7 L 568.0 151.6 L 574.1 160.0 L 580.2 168.9 L 586.3 178.2 L 592.4 187.9 L 598.5 197.8 L 604.6 208.1 L 610.7 218.4 L 616.8 228.9 L 622.9 239.3 L 629.0 249.6 L 635.1 259.6 L 641.2 269.3 L 647.3 278.4 L 653.4 287.0 L 659.5 294.7 L 665.6 301.4 L 671.7 307.1 L 677.8 311.3 L 683.9 314.0 L 690.0 315.0" fill="none" stroke="#ea580c" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="95" y="80" width="242" height="65" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <line x1="110" y1="101" x2="141" y2="101" stroke="#2563eb" stroke-width="4"/>
+  <line x1="110" y1="126" x2="141" y2="126" stroke="#ea580c" stroke-width="4"/>
+  <g fill="#0f172a" font-family="Arial, Helvetica, sans-serif" font-size="15">
+    <text x="150" y="106">Prior: Beta(2,2)</text>
+    <text x="150" y="131">Posterior: Beta(5,3)</text>
+  </g>
+</svg>

@@ -406,7 +406,7 @@ The correction has an intuitive interpretation:
 
 ### 5.2 Estimating the standard error from one sample
 
-Usually, we cannot calculate the population standard deviation $\sigma_M$ (e.g. in the case of our fleet we do not know all the fleet temperatures).
+Usually, we cannot calculate the population standard deviation $\sigma_M$ (e.g. in the case of our fleet we do not know all the fleet temperatures). 
 Instead, we calculate the sample standard deviation $s$ from the samples we observe (e.g. the selected engines), using the denominator $N-1$.
 
 For simple random sampling without replacement, the estimated standard error is
