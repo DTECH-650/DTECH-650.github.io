@@ -36,7 +36,7 @@ parts:
         title: Week 7
         sections:
           - file: lectures/week7/lecture-12-exponential-families
-          - file: lectures/week7/lecture-13-bayesian-parameter-learning
+          - file: lectures/week7/lecture-13-baysian-inference
       - file: lectures/week9/index
         title: Week 9
         sections:

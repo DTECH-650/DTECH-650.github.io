@@ -10,8 +10,43 @@ Today, we go back to an earlier discussion in lecture 3, namely the probability 
 
 Thus, the guiding question for this lecture is:
 
-> How can we represent uncertainty about an unknown parameter and update
-> that uncertainty after observing data?
+> How can we represent uncertainty about an unknown parameter and update that uncertainty after observing data?
+
+**So why does this matter?**
+Suppose we are evaluating an engine under a specified operating condition.
+During each standardized test, we record whether its maximum temperature
+exceeds a chosen monitoring threshold:
+
+$$
+X=
+\begin{cases}
+1, & \text{if the temperature exceeds the threshold},\\
+0, & \text{otherwise}.
+\end{cases}
+$$
+
+Let $\theta$ denote the unknown probability of an exceedance under these
+conditions.
+
+Lecture 7 would estimate $\theta$ from the observed fraction of exceedances.
+Lecture 9 would ask how that estimate varies across hypothetical repeated
+datasets.
+
+Now suppose we have prior information from earlier tests, but only a small
+number of new observations. We want to ask:
+
+> What should we believe about the exceedance probability before testing,
+> how should an observed exceedance change that belief, and what should we
+> predict for the next test?
+
+These are three related questions about the **prior**, **posterior**, and
+**posterior predictive distribution**.
+
+This is just one motivating example, why you might want to adopt a Bayesian perspective, when you draw conclusions from data! 
+
+> Thought experiment: Think about a problem in our organization or one of your ongoing research projects, where you could create a similar thought experiment? Why would that be important for data-driven decision making? 
+
+Based on this example, we can now define the following objectives for our lecture: 
 
 ## Learning objectives
 
