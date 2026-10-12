@@ -24,7 +24,6 @@ After completing this lecture, you should be able to:
 2. Apply sequential updating and show why it agrees with batch updating under the same model.
 3. Interpret the mean and concentration of a Beta prior and assess prior sensitivity.
 4. Recognize several common likelihood–conjugate-prior pairs.
-5. Estimate a Beta prior's mean from related datasets in a simple empirical Bayes example with fixed concentration.
 
 ## 1. Conjugate priors and the Beta–Bernoulli update
 
@@ -206,65 +205,6 @@ Dividing by the evidence means multiplying by its reciprocal. The factor $B(a,b)
 The **prior's normalizing factor** cancels with the matching factor in the evidence. The evidence itself is not simply discarded: dividing by it produces the normalized posterior. The likelihood remains incorporated in the updated exponents through $S$ and $F$.
 :::
 
-**Step 4: Check the numerical example.**
-
-For $a=b=2$, $S=3$, and $F=1$, the likelihood and prior are
-
-$$
-p(\mathcal D\mid\theta)=\theta^3(1-\theta),
-\qquad
-p(\theta\mid 2,2)=6\theta(1-\theta).
-$$
-
-Since $B(2,2)=1/6$ and $B(5,3)=1/105$, the evidence is
-
-$$
-p(\mathcal D\mid 2,2)
-=\frac{1/105}{1/6}=\frac{2}{35}.
-$$
-
-Substituting these three quantities into Bayes' rule gives
-
-$$
-\begin{aligned}
-p(\theta\mid\mathcal D,2,2)
-&=\frac{
-\underbrace{\theta^3(1-\theta)}_{\text{likelihood}}
-\underbrace{6\theta(1-\theta)}_{\text{prior}}
-}{\underbrace{2/35}_{\text{evidence}}}\\[6pt]
-&=6\theta^4(1-\theta)^2\frac{35}{2}\\
-&=105\theta^4(1-\theta)^2.
-\end{aligned}
-$$
-
-Its integral is $105B(5,3)=1$, confirming that it is normalized.
-
-**If the data are a count rather than a particular sequence.**
-
-Let $S$ denote the observed count of periods with no flag in $N$ trials, with $F=N-S$. The count likelihood and its evidence both contain the binomial coefficient:
-
-$$
-p(S\mid N,\theta)=\binom NS\theta^S(1-\theta)^F,
-\qquad
-p(S\mid N,a,b)=\binom NS\frac{B(a+S,b+F)}{B(a,b)}.
-$$
-
-Consequently,
-
-$$
-\begin{aligned}
-p(\theta\mid S,N,a,b)
-&=\frac{
-\displaystyle \binom NS\frac{\theta^{a+S-1}(1-\theta)^{b+F-1}}{B(a,b)}
-}{
-\displaystyle \binom NS\frac{B(a+S,b+F)}{B(a,b)}
-}\\[6pt]
-&=\frac{\theta^{a+S-1}(1-\theta)^{b+F-1}}{B(a+S,b+F)}.
-\end{aligned}
-$$
-
-Both the binomial coefficient and the prior normalizing factor cancel. A count and one particular sequence have different evidence values, but they produce the same posterior for $\theta$ under this model.
-
 ### 1.5 Connection to sufficient statistics
 
 The likelihood depends on the sequence through $S$ and $F$. For known $N$, knowing $S$ also determines $F$. Thus $S$ is sufficient for $\theta$ in this Bernoulli model, connecting this update to Lecture 12. 
@@ -289,7 +229,31 @@ The current posterior summarizes what we have learned about the same parameter. 
 
 ### 2.2 Continue the engine-monitoring example
 
-After the first four monitoring periods, the posterior is Beta(5,3). No flag is recorded in the fifth period, and a flag is recorded in the sixth:
+After the first four monitoring periods, let $\mathcal D_4=(1,1,0,1)$. The posterior is Beta(5,3), with density proportional to $\theta^4(1-\theta)^2$.
+
+No flag is recorded in the fifth period, so $X_5=1$. The new likelihood is
+
+$$
+\mathcal L(\theta;X_5=1)=p(X_5=1\mid\theta)=\theta.
+$$
+
+Multiplying it by the previous posterior gives
+
+$$
+\begin{aligned}
+\underbrace{p(\theta\mid\mathcal D_4,X_5=1)}_{\text{new posterior}}
+&\propto
+\underbrace{\theta}_{\text{new likelihood}}
+\underbrace{\theta^4(1-\theta)^2}_{\text{previous posterior, up to normalization}}\\
+&=\theta^5(1-\theta)^2.
+\end{aligned}
+$$
+
+After normalization, this is Beta(6,3). The likelihood contributes the extra power of $\theta$; it has not disappeared. The proportionality sign leaves the normalizing constant implicit, as in Section 1.3.
+
+A flag is then recorded in the sixth period. Its likelihood is $p(X_6=0\mid\theta)=1-\theta$, so multiplying by the current Beta(6,3) density produces a density proportional to $\theta^5(1-\theta)^3$. After normalization, this is Beta(6,4).
+
+The sequence of updates is therefore:
 
 $$
 \operatorname{Beta}(5,3)
@@ -301,10 +265,16 @@ $$
 |---|---:|---:|---|
 | Before monitoring begins | 0 | 0 | Beta(2,2) |
 | First four outcomes $(1,1,0,1)$ | 3 | 1 | Beta(5,3) |
-| Additional period without a flag | 4 | 1 | Beta(6,3) |
-| Additional period with a flag | 4 | 2 | Beta(6,4) |
+| Additional period without a flag $(1,1,0,1,1)$ | 4 | 1 | Beta(6,3) |
+| Additional period with a flag $(1,1,0,1,1,0)$ | 4 | 2 | Beta(6,4) |
 
-**Figure caption:** I need to Plot Beta(5,3), Beta(6,3), and Beta(6,4) on common axes. Labels - “After four monitoring periods,” “After one additional period without a flag,” and “After one additional period with a flag.” 
+Counts are cumulative. Each row shows the distribution after incorporating all outcomes listed in that row. The first row is the original prior; each subsequent row is a posterior that becomes the prior for the next update.
+
+
+
+![Bayesian Learning](images/prior_distribution.png)
+
+**Figure caption:** Sequential Bayesian updating. Starting from Beta(2,2), three periods without a flag and one with a flag yield Beta(5,3). An additional period without a flag gives Beta(6,3); a subsequent period with a flag gives Beta(6,4). Each update multiplies the current density by the likelihood of the new observation and normalizes the result. Label the axes “Probability of no engine-health flag, $\theta$” and “Probability density.”
 
 ### 2.3 Why sequential and batch updates agree
 
@@ -321,7 +291,7 @@ $$
 $$
 
 The additions give the same result regardless of the grouping or order of observations. 
-**Important**: This only holds both calculation routes start from the same original prior and use the same model with a fixed parameter $\theta$.
+**Important**: This holds when both calculation routes start from the same original prior and use the same model with a fixed parameter $\theta$.
 
 :::{warning}
 When the current posterior becomes the next prior, do not multiply by the likelihood of the old data again. Their information is already included in that posterior.
@@ -387,7 +357,9 @@ Return to the original four outcomes $(1,1,0,1)$. Do not include the two additio
 
 Every row uses the same likelihood. Differences between posterior curves therefore arise from the prior assumptions. With four observations, those assumptions can have a substantial effect.
 
-**Figure caption:** Five small panels with common horizontal and vertical scales. Each panel shows one prior and its posterior from the table. Also I will add a code snippet underneath to reproduce the figure. 
+![Sensitivity analysis](images/sensitivity_prior.png)
+
+**Figure caption:** Effect of prior choice with the observations held fixed at $(1,1,0,1)$. Each panel shows a prior (dashed blue) and its posterior (solid orange), using common horizontal and vertical scales. Differences between the posteriors reflect different prior assumptions. Label the axes “Probability of no engine-health flag, $\theta$” and “Probability density.” 
 
 ### 3.4 Explain the relative influence of prior and data
 
@@ -417,24 +389,14 @@ A prior-sensitivity analysis compares scientifically plausible priors using the 
 ## 4. Other conjugate families, and benefits and limits of conjugacy
 
 ### 4.1 Overview
-Conjugacy also occurs in other familiar sampling models. The table gives an overview. Above, we have used the Beta–Bernoulli model as an example. We encourage you to explore other priors as well as you advance your statistical knowledge. However, for this class, we will primarily use Beta–Bernoulli and Normal–Normal models. 
+Conjugacy also occurs in other familiar sampling models. The table gives an overview. Above, we have used the Beta–Bernoulli model as an example. We encourage you to explore other priors as well as you advance your statistical knowledge about the update process without the need to compute the evidence. However, for this class, we will primarily use Beta–Bernoulli model for illustration purposes. 
 
 | Sampling model | Unknown parameter | Conjugate prior | Posterior update |
 |---|---|---|---|
-| Bernoulli or Binomial | Probability of $X=1$ $\theta$ | Beta$(a,b)$ | Beta$(a+S,b+F)$ |
-| Categorical or Multinomial | Category-probability vector $\boldsymbol\theta$ | Dirichlet$(\alpha_1,\ldots,\alpha_K)$ | Dirichlet$(\alpha_1+n_1,\ldots,\alpha_K+n_K)$ |
+| Bernoulli or Binomial | $\theta=P(X=1)$ | Beta$(a,b)$ | Beta$(a+S,b+F)$ |
+| Categorical or Multinomial | Category-probability vector $\boldsymbol\theta$ | Dirichlet$(\alpha_1,\ldots,\alpha_K)$ | Dirichlet with updated alpha |
 | Poisson, equal unit observation periods | Event rate $\lambda$ | Gamma$(a,b)$, shape–rate convention | Gamma$(a+\sum_i x_i,b+N)$ |
 | Normal, known observation variance $\sigma^2$ | Mean $\mu$ | Normal$(m_0,\tau_0^2)$ | Normal with updated mean and variance |
-
-Here $n_k$ is the observed count in category $k$. The Dirichlet distribution extends the Beta distribution to a vector of probabilities that sum to one. For the Gamma row, the density is proportional to $\lambda^{a-1}e^{-b\lambda}$; $b$ is a rate, not a scale.
-
-For the Normal row, the sampling model is $X_i\mid\mu\sim\mathcal N(\mu,\sigma^2)$ with conditionally independent observations. The posterior parameters are
-
-$$
-\tau_N^2=\left(\frac{1}{\tau_0^2}+\frac{N}{\sigma^2}\right)^{-1},
-\qquad
-m_N=\tau_N^2\left(\frac{m_0}{\tau_0^2}+\frac{\sum_i x_i}{\sigma^2}\right).
-$$
 
 
 ### 4.2 What conjugacy does and does not provide
@@ -455,130 +417,11 @@ However, there are a few things to keep in mind:
 
 **Textbook reference for more details:** Bishop §2.1.1 for Beta priors, §2.2 for the Dirichlet family, §2.3.6 for inference on Gaussian parameters, and §2.4.2 for general conjugacy.
 
-## 5. Simple empirical Bayes 
-
-### 5.1 Learning a prior from related engine records 
-
-Until now, we have specified $a$ and $b$ ourselves (assuming we have expert knowledge). But you may also rely on data to define your prior. Suppose we have engine-monitoring records from several comparable engines and want a prior for another engine monitored under the same conditions. Those records can help us learn where a plausible prior should be centered.
-
-This introduces a new assumption: different engines may have different probabilities of no flag, but these probabilities are modeled as draws from one shared distribution. Write
-
-$$
-\theta_j\mid a,b\sim\operatorname{Beta}(a,b),
-\qquad
-S_j\mid\theta_j\sim\operatorname{Binomial}(n_j,\theta_j),
-$$
-
-for historical engines $j=1,\ldots,J$. Assume independent engines under this model and conditionally independent period outcomes within each engine. All records use the same monitoring duration and flagging rule under comparable operating conditions. Each engine's $\theta_j$ stays fixed during its recorded monitoring periods.
-
-The shared Beta distribution describes variation in probabilities of no flag across comparable engines. It supplies a prior for the unknown probability of no flag for a new engine from the same population.
-
-**Empirical Bayes** estimates prior hyperparameters from observed data and then uses those estimates in a Bayesian update. We will estimate only the prior mean and specify the concentration explicitly.
-
-### 5.2 Historical data as a small teaching example
-
-Consider these illustrative records, collected separately from the new engine's monitoring periods:
-
-| Historical engine $j$ | Monitoring periods $n_j$ | Periods without a flag $S_j$ | Observed proportion $S_j/n_j$ |
-|---|---:|---:|---:|
-| A | 20 | 12 | 0.60 |
-| B | 20 | 14 | 0.70 |
-| C | 20 | 16 | 0.80 |
-| D | 20 | 14 | 0.70 |
-
-Each observed proportion is a noisy estimate of that engine's probability of no flag. These proportions measure the frequency of periods without flags, not true engine health. They are not direct observations of the latent parameters $\theta_j$.
-
-### 5.3 Estimate the shared prior mean
-
-Under the model, with fixed numbers of monitoring periods,
-
-$$
-\mathbb E\!\left[\frac{S_j}{n_j}\,\middle|\,\theta_j\right]=\theta_j.
-$$
-
-Averaging also over the population of engines gives
-
-$$
-\mathbb E\!\left[\frac{S_j}{n_j}\right]
-=\mathbb E[\theta_j]=m.
-$$
-
-We can therefore estimate $m$ by matching this expectation to the average observed proportion:
-
-$$
-\widehat m=\frac1J\sum_{j=1}^J\frac{S_j}{n_j}
-=\frac{0.60+0.70+0.80+0.70}{4}=0.70.
-$$
-
-This is a simple **method-of-moments** estimate. Because every historical engine has the same number of monitoring periods, it also equals the pooled proportion $56/80$. For unequal numbers of monitoring periods, an unweighted average of engine proportions and a pooled proportion generally differ; they weight the engines differently.
-
-### 5.4 Specify concentration and construct the fitted prior
-
-The estimated mean does not determine the prior's spread. For this introductory example, choose $\kappa=10$ and state that choice explicitly. Then
-
-$$
-\widehat a=\widehat m\kappa=7,
-\qquad
-\widehat b=(1-\widehat m)\kappa=3.
-$$
-
-The fitted prior for the new engine is
-
-$$
-\theta_{\mathrm{new}}\mid\widehat m,\kappa
-\sim\operatorname{Beta}(7,3).
-$$
-
-Its variance is $0.7(0.3)/11\approx0.0191$. We estimated its center from historical data; we did not estimate this concentration from those data. The historical total of 80 monitoring periods is not the concentration assigned to the new engine's prior.
-
-:::{admonition} What was learned and what was chosen?
-:class: important
-
-The Beta family was chosen as a model. Its mean was estimated from historical engine records. Its concentration was fixed at 10 for the teaching example. All three choices should be visible in the analysis.
-:::
-
-### 5.5 Update using the new engine's observations
-
-Suppose we observe the new engine for four monitoring periods with outcomes
-
-$$
-\mathcal D_{\mathrm{new}}=(1,1,0,1).
-$$
-
-These are this new engine's data in a separate worked example. They are not additional observations appended to the six monitoring periods in Section 2.
-
-Its likelihood is
-
-$$
-\mathcal L(\theta_{\mathrm{new}};\mathcal D_{\mathrm{new}})
-=\theta_{\mathrm{new}}^3(1-\theta_{\mathrm{new}}).
-$$
-
-Using the fitted prior gives
-
-$$
-\begin{aligned}
-p_{\mathrm{EB}}(\theta_{\mathrm{new}}\mid\mathcal D_{\mathrm{new}},\widehat m,\kappa)
-&\propto\theta_{\mathrm{new}}^3(1-\theta_{\mathrm{new}})
-\theta_{\mathrm{new}}^{7-1}(1-\theta_{\mathrm{new}})^{3-1}\\
-&=\theta_{\mathrm{new}}^{10-1}(1-\theta_{\mathrm{new}})^{4-1}.
-\end{aligned}
-$$
-
-Thus the empirical Bayes posterior, conditional on the fitted hyperparameters, is Beta(10,4). Its mean is $10/14\approx0.714$, between the fitted prior mean 0.70 and the new engine's observed proportion 0.75.
-
-**Figure instruction/caption:** Use two panels. Left: show the historical proportions 0.60, 0.70, 0.80, and 0.70, with a horizontal line at their mean 0.70; label them as observed proportions, not true parameter values. Right: show the fitted Beta(7,3) prior and Beta(10,4) posterior on the parameter axis. State “Prior mean estimated from historical engines; concentration fixed at 10.”
-
-### Limitations of this simple approach 
-
-The method relies on historical engines being relevant to the new engine. It also treats the estimated hyperparameters as fixed during the update. The Beta(10,4) posterior therefore represents uncertainty conditional on those fitted values; it does not propagate uncertainty in estimating the shared prior mean from only four historical engines.
-
-
-## Summary: Benefits and downside of conjugate priors
+## Summary
 
 Conjugacy lets us express the posterior in the same family as the prior. For Beta–Bernoulli learning, counts of periods without and with flags update the two shape parameters by addition. 
 
-Mean and concentration provide an interpretable way to specify a Beta prior and examine sensitivity. 
+Mean and concentration provide an interpretable way to specify a Beta prior and examine sensitivity. Conjugacy simplifies computation, but it does not guarantee that a prior represents appropriate assumptions. Empirical Bayes can estimate a prior hyperparameter from related records; the plug-in update then treats that estimate as fixed. 
 
 
 In Lecture 15, we will use these posterior distributions to construct credible intervals, calculate probabilities for parameter hypotheses, and interpret Bayes factors.
@@ -641,21 +484,6 @@ $$
 The count evidence is $3/12=1/4$. In both cases, normalization gives $12\theta^2(1-\theta)$, the Beta(3,2) density. The extra factor is constant in $\theta$ and cancels.
 ::::
 
-### 4. A simple empirical Bayes update
-
-Three comparable historical engines were each observed for 10 monitoring periods, with 6, 8, and 7 periods with no flag. Fix the shared prior concentration at 10. A new engine then records one period with no flag and one with a flag.
-
-1. Estimate the shared prior mean.
-2. Construct the fitted prior and update it for the new engine.
-3. Identify one modeling assumption and one source of uncertainty omitted by the plug-in calculation.
-
-::::{admonition} Solution 4
-:class: dropdown
-
-The estimated mean is $(0.6+0.8+0.7)/3=0.7$. With concentration 10, the fitted prior is Beta(7,3). The new engine's two observations give Beta(8,4).
-
-A modeling assumption is that the historical engines and the new engine have probabilities of no flag drawn from the same relevant population distribution. The plug-in posterior does not propagate uncertainty in the mean estimated from the three historical engines. The concentration was chosen rather than estimated.
-::::
 
 ## Readings and references
 
@@ -674,8 +502,6 @@ Bishop uses $\mu$ for the Bernoulli parameter in §2.1.1; this lecture retains $
 ### Supplemental reading
 
 Johnson, A. A., Ott, M. Q., and Dogucu, M. (2022). *Bayes Rules! An Introduction to Applied Bayesian Modeling*. Chapman & Hall/CRC. [Chapter 4: Balance and Sequentiality in Bayesian Analyses](https://www.bayesrulesbook.com/chapter-4.html). Use §§4.1–4.3 for prior influence and §4.4 for sequential updating.
-
-For further background on learning Beta prior hyperparameters from related Binomial datasets, see the empirical Bayes example in [Chapter 2 coding materials for *Bayesian Statistics: A Primer for Data Scientists, with R and Python*](https://statistique.cuso.ch/fileadmin/statistique/user_upload/CODE_CH2.html), by Agresti, Kateri, and Mira. That example estimates both Beta parameters through a marginal Beta–Binomial likelihood. Our fixed-concentration example estimates only the mean to keep the calculation introductory.
 
 ### Accompanying video
 
