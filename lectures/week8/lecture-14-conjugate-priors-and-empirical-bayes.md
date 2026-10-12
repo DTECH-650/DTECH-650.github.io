@@ -191,10 +191,12 @@ $$
 |---|---:|---:|---|
 | Before any mission | 0 | 0 | Beta(2,2) |
 | First four outcomes $(1,1,0,1)$ | 3 | 1 | Beta(5,3) |
-| Additional success | 4 | 1 | Beta(6,3) |
-| Additional failure | 4 | 2 | Beta(6,4) |
+| Additional success $(1,1,0,1,1)$| 4 | 1 | Beta(6,3) |
+| Additional failure $(1,1,0,1,1,0)$| 4 | 2 | Beta(6,4) |
 
-**Figure caption:** I need to Plot Beta(5,3), Beta(6,3), and Beta(6,4) on common axes. Labels - “After four missions,” “After one additional success,” and “After one additional failure.” 
+![Sequential learning](images/prior_distribution.png)
+
+**Figure caption:** Starting from a Beta(2,2) prior, three periods without a flag and one period with a flag yield a Beta(5,3) posterior. An additional period without a flag gives Beta(6,3); a subsequent period with a flag gives Beta(6,4). Each update multiplies the current density by the likelihood of the new observation and normalizes the result.
 
 ### 2.3 Why sequential and batch updates agree
 
@@ -277,7 +279,8 @@ Return to the original four outcomes $(1,1,0,1)$. Do not include the two additio
 
 Every row uses the same likelihood. Differences between posterior curves therefore arise from the prior assumptions. With four observations, those assumptions can have a substantial effect.
 
-**Figure caption:** Five small panels with common horizontal and vertical scales. In each panel, shows one prior and its posterior from the table. Also I will add a code snippet underneath to reproduce the figure. 
+![Sensitivity analysis](images/sensitivity_prior.png)
+**Figure caption:** Each panel shows one prior and its posterior from the table above. It illustrates the sensitivity to the prior. 
 
 ### 3.4 Explain the relative influence of prior and data
 
@@ -302,7 +305,7 @@ $$
 
 For fixed $\kappa$, the prior's weight decreases as $N$ increases. This describes the center of the posterior; the full posterior also represents uncertainty around it. We are not introducing an optimization rule or replacing the distribution with a single estimate.
 
-A prior-sensitivity analysis compares scientifically plausible priors using the same data. If the resulting distributions differ substantially, report that dependence rather than selecting a prior to obtain a preferred answer. Lecture 15 will extend the comparison to intervals and hypothesis probabilities.
+A prior-sensitivity analysis compares plausible priors using the same data. It is recommended that when you engage in data-driven decision making that, if the resulting distributions differ substantially, report that dependence rather than selecting a prior to obtain a preferred answer. Lecture 15 will extend the comparison to intervals and hypothesis probabilities.
 
 ## 4. Other conjugate families, and benefits and limits of conjugacy
 
@@ -326,6 +329,7 @@ $$
 m_N=\tau_N^2\left(\frac{m_0}{\tau_0^2}+\frac{\sum_i x_i}{\sigma^2}\right).
 $$
 
+> this is still not clear and requires more explanation! 
 
 ### 4.2 What conjugacy does and does not provide
 
@@ -458,18 +462,6 @@ $$
 Thus the empirical Bayes posterior, conditional on the fitted hyperparameters, is Beta(10,4). Its mean is $10/14\approx0.714$, between the fitted prior mean 0.70 and the new drone's observed proportion 0.75.
 
 **Figure instruction/caption:** Use two panels. Left: show the historical proportions 0.60, 0.70, 0.80, and 0.70, with a horizontal line at their mean 0.70; label them as observed proportions, not true parameter values. Right: show the fitted Beta(7,3) prior and Beta(10,4) posterior on the parameter axis. State “Prior mean estimated from historical drones; concentration fixed at 10.”
-
-### 5.6 Check the concentration assumption
-
-Keep $\widehat m=0.70$ and the new drone's four outcomes fixed:
-
-| Chosen concentration | Fitted prior | Posterior |
-|---|---|---|
-| $\kappa=2$ | Beta(1.4,0.6) | Beta(4.4,1.6) |
-| $\kappa=10$ | Beta(7,3) | Beta(10,4) |
-| $\kappa=20$ | Beta(14,6) | Beta(17,7) |
-
-These priors share a mean but differ in spread and shape. The comparison makes clear that estimating the prior mean does not eliminate the need to justify other assumptions.
 
 ### 5.7 Limitations of this simple approach and looking ahead. 
 
