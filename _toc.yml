@@ -38,7 +38,7 @@ parts:
           - file: lectures/week7/lecture-12-exponential-families
           - file: lectures/week7/lecture-13-baysian-inference
       - file: lectures/week8/index
-              title: Week 8
+        title: Week 8
         sections:
           - file: lectures/week8/lecture-14-bayesian-conjugacy
       - file: lectures/week9/index
