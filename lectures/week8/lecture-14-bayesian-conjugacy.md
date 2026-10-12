@@ -187,7 +187,7 @@ $$
 so Beta(2,2) becomes Beta(5,3). This gives us the same distribution like the one we discussed in Lecture 13. The question we ask next! How can we simplify the computation of the posterior distribution if the prior and the posterior are from the same family? 
 
 ![One-step update](images/one-step-update.png)
-**Figure**  Posterior update for four outcomes $(1,1,0,1)$ - recap on Lecture 13. The two curves belong to the same family; the observations change their shape parameters.
+**Figure 1**  Posterior update for four outcomes $(1,1,0,1)$ - recap on Lecture 13. The two curves belong to the same family; the observations change their shape parameters.
 
 #### 1.4 How conjugacy simplifies normalization
 
@@ -391,7 +391,7 @@ Counts are cumulative. Each row shows the distribution after incorporating all o
 
 ![Bayesian Learning](images/prior_distribution.png)
 
-**Figure caption:** Sequential Bayesian updating. Starting from Beta(2,2), three periods without a flag and one with a flag yield Beta(5,3). An additional period without a flag gives Beta(6,3); a subsequent period with a flag gives Beta(6,4). Each update multiplies the current density by the likelihood of the new observation and normalizes the result. Label the axes “Probability of no engine-health flag, $\theta$” and “Probability density.”
+**Figure 2** Sequential Bayesian updating. Starting from Beta(2,2), three periods without a flag and one with a flag yield Beta(5,3). An additional period without a flag gives Beta(6,3); a subsequent period with a flag gives Beta(6,4). Each update multiplies the current density by the likelihood of the new observation and normalizes the result. Label the axes “Probability of no engine-health flag, $\theta$” and “Probability density.”
 
 ### 2.3 Why sequential and batch updates agree
 
@@ -478,7 +478,7 @@ Every row uses the same likelihood. Differences between posterior curves therefo
 
 ![Sensitivity analysis](images/sensitivity_prior.png)
 
-**Figure caption:** Effect of prior choice with the observations held fixed at $(1,1,0,1)$. Each panel shows a prior (dashed blue) and its posterior (solid orange), using common horizontal and vertical scales. Differences between the posteriors reflect different prior assumptions. Label the axes “Probability of no engine-health flag, $\theta$” and “Probability density.” 
+**Figure 3:** Effect of prior choice with the observations held fixed at $(1,1,0,1)$. Each panel shows a prior (dashed blue) and its posterior (solid orange), using common horizontal and vertical scales. Differences between the posteriors reflect different prior assumptions. 
 
 ### 3.4 Explain the relative influence of prior and data
 
