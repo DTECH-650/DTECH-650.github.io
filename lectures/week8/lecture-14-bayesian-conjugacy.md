@@ -200,19 +200,57 @@ $$
 
 Dividing by the evidence means multiplying by its reciprocal. The factor $B(a,b)$ then cancels, leaving the normalizing factor $1/B(a+S,b+F)$. This is exactly the Beta$(a+S,b+F)$ density.
 
-:::{admonition} What cancels, and what remains?
+:::{admonition} What cancels, and what remains, and why the computation becomes simplier! 
 :class: important
 
 The **prior's normalizing factor** cancels with the matching factor in the evidence. The evidence itself is not simply discarded: dividing by it produces the normalized posterior. The likelihood remains incorporated in the updated exponents through $S$ and $F$.
+**What do we actually calculate in the next update?** Once we have established the conjugate updating rule, obtaining the posterior requires only counting the observations and updating two parameters:
+
+$$
+a_{\mathrm{post}}=a+S,
+\qquad
+b_{\mathrm{post}}=b+F.
+$$
+
+For our example,
+
+$$
+a_{\mathrm{post}}=2+3=5,
+\qquad
+b_{\mathrm{post}}=2+1=3.
+$$
+
+We can therefore write the full posterior immediately:
+
+$$
+\theta\mid\mathcal D\sim\operatorname{Beta}(5,3).
+$$
+
+If we need its density explicitly, we use the known Beta normalizing
+constant:
+
+$$
+p(\theta\mid\mathcal D)
+=\frac{\theta^4(1-\theta)^2}{B(5,3)}
+=105\theta^4(1-\theta)^2,
+\qquad 0<\theta<1.
+$$
+
+We do not need to calculate the evidence separately merely to identify
+this normalized posterior. If we need the evidence itself, it is also
+available:
+
+$$
+p(\mathcal D\mid a=2,b=2)
 :::
 
 ### 1.5 Connection to sufficient statistics
 
-The likelihood depends on the sequence through $S$ and $F$. For known $N$, knowing $S$ also determines $F$. Thus $S$ is sufficient for $\theta$ in this Bernoulli model, connecting this update to Lecture 12. 
+The likelihood depends on the sequence through $S$ and $F$. For known $N$, knowing $S$ also determines $F$. Thus $S$ is sufficient for $\theta$ in this Bernoulli model. So that is why we covered sufficient statistics in Lecture 12. 
 
-For example, $(1,1,0,1)$ and $(0,1,1,1)$ produce the same posterior from the same prior. Order does not change the likelihood under the shared-parameter, conditionally independent model. If the flag probability changes over time or outcomes remain dependent given $\theta$, we need a different model.
+> Note: For example, $(1,1,0,1)$ and $(0,1,1,1)$ produce the same posterior from the same prior. Order does not change the likelihood under the shared-parameter, conditionally independent model. If the flag probability changes over time or outcomes remain dependent given $\theta$, we need a different model.
 
-**Textbook reference for more details** Bishop, §§2.1.1 and 2.4.2; sufficient statistics in §2.4.1.
+**Textbook reference for more details:** Bishop, §§2.1.1 and 2.4.2; sufficient statistics in §2.4.1.
 
 ## 2. Bayesian learning as a sequential process
 
