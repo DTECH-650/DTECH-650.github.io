@@ -1,4 +1,4 @@
-# Lecture 14 — Conjugate Priors, Prior Choice, and Empirical Bayes
+# Lecture 14 — Conjugate Priors, Prior Choice, and Prior Sensitivty 
 
 ## Introduction and guiding question
 
@@ -14,7 +14,7 @@ A sensor flag is an observed indicator, not a direct observation of true engine 
 
 > How can we choose a prior, update it efficiently as data arrive, and assess how sensitive the posterior is to that choice?
 
-This lecture develops conjugate updating, prior specification, and prior sensitivity. We also introduce a simple empirical Bayes example that estimates a prior mean from historical engine records while fixing its concentration. This calculation does not require Monte Carlo sampling. Lecture 15 will use posterior distributions to construct credible intervals and evaluate hypotheses.
+This lecture develops conjugate updating, prior specification, and prior sensitivity. It sets the stage for Lecture 15. Lecture 15 will use posterior distributions to construct credible intervals and evaluate hypotheses.
 
 ## Learning objectives
 
@@ -139,7 +139,8 @@ $$
 
 so Beta(2,2) becomes Beta(5,3).
 
-**Figure**  I will reuse the original Lecture 13 figure showing the Beta(2,2) prior and Beta(5,3) posterior, relabeled for the engine-monitoring scenario, for the four outcomes $(1,1,0,1)$. Horizontal axis “Probability of no engine-health flag, $\theta$” and the vertical axis “Probability density.” The two curves belong to the same family; the observations change their shape parameters.
+![One-step update](images/one-step-update.png)
+**Figure**  Posterior update for four outcomes $(1,1,0,1)$ - recap on Lecture 13. The two curves belong to the same family; the observations change their shape parameters.
 
 ### 1.4 Where did the evidence go?
 
@@ -150,7 +151,7 @@ In Section 1.3, we recognized the shape of the posterior using proportionality. 
 $$
 \underbrace{p(\theta\mid\mathcal D,a,b)}_{\text{posterior}}
 =\frac{
-\underbrace{p(\mathcal D\mid\theta)}_{\text{likelihood}}
+\underbrace{\mathcal L(\theta;\mathcal D)}_{\text{likelihood}}
 \underbrace{p(\theta\mid a,b)}_{\text{prior}}
 }{
 \underbrace{p(\mathcal D\mid a,b)}_{\text{evidence}}
@@ -173,7 +174,7 @@ $$
 $$
 \begin{aligned}
 p(\mathcal D\mid a,b)
-&=\int_0^1 p(\mathcal D\mid t)p(t\mid a,b)\,dt\\
+&=\int_0^1 \mathcal L(t;\mathcal D)p(t\mid a,b)\,dt\\
 &=\frac{1}{B(a,b)}\int_0^1 t^{a+S-1}(1-t)^{b+F-1}\,dt\\
 &=\frac{B(a+S,b+F)}{B(a,b)}.
 \end{aligned}
@@ -221,13 +222,13 @@ We now collect additional engine-monitoring observations over time. Suppose we h
 
 $$
 p(\theta\mid\mathcal D_{\mathrm{old}},\mathcal D_{\mathrm{new}})
-\propto p(\mathcal D_{\mathrm{new}}\mid\theta)
+\propto \mathcal L(\theta;\mathcal D)
 \,p(\theta\mid\mathcal D_{\mathrm{old}}).
 $$
 
 The current posterior summarizes what we have learned about the same parameter. It supplies the prior distribution for the next update. The new likelihood contains only the new observations.
 
-### 2.2 Continue the engine-monitoring example
+### 2.2 Illustrative example (continuing the drone/engine example)
 
 After the first four monitoring periods, let $\mathcal D_4=(1,1,0,1)$. The posterior is Beta(5,3), with density proportional to $\theta^4(1-\theta)^2$.
 
@@ -269,8 +270,6 @@ $$
 | Additional period with a flag $(1,1,0,1,1,0)$ | 4 | 2 | Beta(6,4) |
 
 Counts are cumulative. Each row shows the distribution after incorporating all outcomes listed in that row. The first row is the original prior; each subsequent row is a posterior that becomes the prior for the next update.
-
-
 
 ![Bayesian Learning](images/prior_distribution.png)
 
