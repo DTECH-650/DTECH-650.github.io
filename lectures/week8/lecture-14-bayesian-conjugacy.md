@@ -237,11 +237,21 @@ p(\theta\mid\mathcal D)
 $$
 
 We do not need to calculate the evidence separately merely to identify
-this normalized posterior. If we need the evidence itself, it is also
-available:
+this normalized posterior. 
+
+If we need the evidence itself, it is also available:
 
 $$
 p(\mathcal D\mid a=2,b=2)
+=\frac{B(5,3)}{B(2,2)}
+=\frac{1/105}{1/6}
+=\frac{2}{35}.
+$$
+
+Conjugacy therefore gives us both a simple parameter update and a known
+normalization formula. It does not remove the evidence from Bayes' rule;
+it lets us account for normalization without repeating the integral
+calculation from scratch.
 :::
 
 ### 1.5 Connection to sufficient statistics
