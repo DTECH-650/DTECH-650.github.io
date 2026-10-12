@@ -549,7 +549,6 @@ For example, a chosen mean of 0.7 and concentration of 10 give $a=7$, $b=3$. A m
 
 Although the update adds counts to $a$ and $b$, prior shape parameters need not be integers or represent literal historical observations. Likewise, a uniform density in $\theta$ does not imply a uniform density after a nonlinear change of parameter.
 
-:::{admonition}
 We can now distinguish two aspects of prior choice:
 
 - **Prior mean:** Which values of $\theta$ does the prior center on?
@@ -558,7 +557,6 @@ We can now distinguish two aspects of prior choice:
 
 To understand their effects on the posterior, we will vary one aspect
 at a time while keeping the observed data fixed.
-:::
 
 ### 3.3 How sensitive is the posterior to the prior?
 
@@ -624,13 +622,17 @@ mean that no learning occurred.
 
 ![Sensitivity analysis](images/sensitivity_prior.png)
 
-**Figure 3:** Effect of prior choice with the observations held fixed at $(1,1,0,1)$. Each panel shows a prior (dashed blue) and its posterior (solid orange), using common horizontal and vertical scales. Differences between the posteriors reflect different prior assumptions. Compare the first three panels to examine the effect of prior concentration at a fixed mean. Compare the last two panels
+**Figure 3:** Prior sensitivity for the same four observations
+$(1,1,0,1)$. Dashed blue curves show priors; solid orange curves show
+posteriors. Compare the first three panels to examine the effect of
+prior concentration at a fixed mean. Compare the last two panels
 to examine the effect of prior mean at a fixed concentration.
 All panels use the same axis scales.
 
 ### 3.4 Why do these differences occur?
 
-The posterior mean explains the patterns in Figure 3. Writing the prior mean as $m$ and its concentration as $\kappa$ gives: 
+The posterior mean explains the patterns in Figure 3.
+Writing the prior mean as $m$ and its concentration as $\kappa$ gives: 
 
 $$
 \begin{aligned}
@@ -660,6 +662,7 @@ Sensitivity concerns the full posterior distribution, including its
 spread and shape. The mean is one useful summary for explaining the
 figure. In Lecture 15, we will also compare credible intervals and
 posterior probabilities under different priors.
+
 
 :::{admonition} Recommendation for your research and decision making:
 A prior-sensitivity analysis compares "plausible priors" using the same data. If the resulting distributions differ substantially, report that dependence rather than selecting a prior to obtain a preferred answer. Lecture 15 will extend the comparison to intervals and hypothesis probabilities.
