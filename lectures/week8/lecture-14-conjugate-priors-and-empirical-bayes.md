@@ -4,13 +4,14 @@
 
 In Lecture 13, we used Bayes' rule to update a distribution over an unknown mission-success probability. Starting with a Beta(2,2) prior and observing three successful missions and one failure, we obtained a Beta(5,3) posterior.
 
-That calculation raises two practical questions. Why did the posterior remain a Beta distribution? And where did the original values 2 and 2 come from?
+That calculation raises two practical questions. **Why did the posterior remain a Beta distribution? And where did the original values 2 and 2 come from?**
 
-Imagine that we are evaluating a drone in a defined set of operating conditions. We observe mission outcomes over time and want to update our knowledge after each new mission. We may also have results from other comparable drones. Those results could help us choose a prior for the drone we are now evaluating.
+**Scenario**: Imagine that we are evaluating an engine of a drone (or a car or another physical system of your imagination) in a defined set of operating conditions. We observe engine health state over time (e.g. flagged by an onboard sensors) and want to update our knowledge after each new mission about the number of times the engine has been flagged as "unhealthy" (we can label this as true/false in this scenario). We may also have results from other comparable drones using the same engine. You have just been introduced to Baysian updating, and wonder: What prior should I use to calculate the posterior as I am collecting more data? 
 
-> How can we choose a prior, update it efficiently as data arrive, and use related datasets to inform its parameters?
+So the guiding question for this lecture is: 
+> How can we choose a prior, update it efficiently as data arrive, and how sensitive is the posterior and the quantification of uncertainty to the choice of my prior? 
 
-This lecture develops conjugate updating, prior specification, and a simple empirical Bayes approach. Lecture 15 will use posterior distributions to construct credible intervals and evaluate hypotheses.
+This lecture develops conjugate updating, prior specification, and also helps you understand how sensitive a posterior is to the choice of a prior. We will also discuss how we can use empirical data to calculate an empirial prior (but we will not cover this in detail as this is an advanced topic requiring deeper understanding of sampling techniques like Monte-Carlo sampling). Lecture 15 will use posterior distributions to construct credible intervals and evaluate hypotheses.
 
 ## Learning objectives
 
@@ -21,27 +22,28 @@ After completing this lecture, you should be able to:
 3. Interpret the mean and concentration of a Beta prior and assess prior sensitivity.
 4. Recognize several common likelihood–conjugate-prior pairs.
 5. Estimate a Beta prior's mean from related datasets in a simple empirical Bayes example with fixed concentration.
-6. Distinguish empirical Bayes from sequential updating, bootstrapping, and numerical posterior approximation.
 
 ## 1. Conjugate priors and the Beta–Bernoulli update
 
-### 1.1 Recall the model and Bayes' rule
+### 1.1 Recap on Bayes' rule
 
-Let $X_i=1$ indicate a successful mission and $X_i=0$ a failed mission. The parameter $\theta$ is the success probability under the modeled operating conditions. Assume the mission outcomes are conditionally independent given the same $\theta$:
+As we had discussed in lecture 13, Bayes rule is important for Baysian updating. We will use the scenario above to develop our intutation on Bayesian updating. 
+
+Let $X_i=1$ indicate a successful mission of the drone (meaning now flag of the engine health) and $X_i=0$ a flagged mission. The parameter $\theta$ is the success probability under the modeled operating conditions. Assume the mission outcomes are conditionally independent given the same $\theta$:
 
 $$
 p(X_i=x_i\mid\theta)=\theta^{x_i}(1-\theta)^{1-x_i},
 \qquad x_i\in\{0,1\}.
 $$
 
-For the observed sequence $\mathcal D=(x_1,\ldots,x_N)$, define the success and failure counts
+For the observed sequence $\mathcal D=(x_1,\ldots,x_N)$, we can define the success and failure counts as: 
 
 $$
 S=\sum_{i=1}^N x_i,
 \qquad F=N-S.
 $$
 
-We write the likelihood as
+We can now write the likelihood as
 
 $$
 \mathcal L(\theta;\mathcal D)
@@ -68,15 +70,15 @@ $$
 | $p(\mathcal D)$ | Evidence, which normalizes the posterior |
 | $p(\theta\mid\mathcal D)$ | Posterior density over parameter values after observing the data |
 
-The likelihood is not a probability distribution over $\theta$. The prior and posterior are distributions over $\theta$.
+> Remember: The likelihood is not a probability distribution over $\theta$. The prior and posterior are distributions over $\theta$.
 
 ### 1.2 What makes a prior conjugate?
 
-A prior family is **conjugate to a likelihood** when updating any prior in that family produces a posterior in the same family.
+Now we turn to conjugacy: A prior family is **conjugate to a likelihood** when updating any prior in that family produces a posterior in the same family.
 
-For a Bernoulli likelihood, a Beta prior produces a Beta posterior. The shape parameters change, but the distribution family stays the same. This lets us express the posterior using a small number of updated parameters.
+For a Bernoulli likelihood, a Beta prior produces a Beta posterior. The shape parameters change, but the distribution family stays the same. This lets us express the posterior using a small number of updated parameters, and makes computation very efficient. 
 
-Conjugacy is a relationship between a prior family and a likelihood. It does not establish that the prior is appropriate for an application; that still depends on the assumptions it represents.
+What is important: Conjugacy is a relationship between a prior family and a likelihood. It does not establish that the prior is appropriate for an application; that still depends on the assumptions it represents.
 
 ### 1.3 Derive the general update
 
