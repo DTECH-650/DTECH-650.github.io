@@ -1,4 +1,4 @@
-# Lecture 14 — Conjugate Priors, Prior Choice, and Prior Sensitivty 
+# Lecture 14 — Conjugate Priors, Prior Choice, and Prior Sensitivity 
 
 ## Introduction and guiding question
 
@@ -102,7 +102,7 @@ $$
 
 is the normalizing constant. The positive numbers $a$ and $b$ are **hyperparameters**: parameters of the prior distribution for $\theta$.
 
-You can calculate the normalizing constant with scipy. Try this in your notebook, and vary the parameters:  
+You can calculate the normalizing constant with the python library scipy. Try the code below and vary the parameters:  
 ```
 from scipy.special import beta
 
@@ -111,7 +111,7 @@ print(f"Normalizing denominator B(5,3): {B:.6f}")
 print(f"Multiplicative factor 1/B(5,3): {1/B:.0f}")
 ```
 
-:::{Hint}
+::{admonition} Formula for the Beta normalizing denominator
 :class: dropdown
 For those of you, who want to know the formula of the normalizing denominator of the Beta function:
 
@@ -244,12 +244,18 @@ $$
 
 The last step uses the definition of the Beta function from Section 1.3. We use $t$ as the integration variable to distinguish it from the candidate parameter value $\theta$ in the posterior density. The evidence is a number for the fixed data and prior hyperparameters; it does not depend on $\theta$.
 
-:::{admonition} 
-This is the computational benefit of recognizing the Beta form:
-the integral is a Beta function with updated parameters. We do not
-need to develop a new integration method for this likelihood–prior
-product. Its value is already given by a known function,
-$B(a+S,b+F)$.
+:::{admonition} How conjugacy simplifies this calculation
+
+The integral in Step 2 has the form of a Beta function.
+We can therefore evaluate the evidence using
+
+$$
+p(\mathcal D\mid a,b)
+=\frac{B(a+S,b+F)}{B(a,b)},
+$$
+
+rather than integrating the likelihood–prior product from scratch.
+Both Beta functions can be evaluated using the formula or SciPy.
 :::
 
 **Step 3: Substitute the evidence and simplify.**
@@ -340,7 +346,8 @@ We now collect additional engine-monitoring observations over time. Suppose we h
 
 $$
 p(\theta\mid\mathcal D_{\mathrm{old}},\mathcal D_{\mathrm{new}})
-\propto \mathcal L(\theta;\mathcal D)
+\propto
+\mathcal L(\theta;\mathcal D_{\mathrm{new}})
 \,p(\theta\mid\mathcal D_{\mathrm{old}}).
 $$
 
@@ -509,8 +516,7 @@ A prior-sensitivity analysis compares "plausible priors" using the same data. If
 
 ## 4. Other conjugate families, and benefits and limits of conjugacy
 
-### 4.1 Overview
-Conjugacy also occurs in other familiar sampling models. The table gives an overview. Above, we have used the Beta–Bernoulli model as an example. We encourage you to explore other priors as well as you advance your statistical knowledge about the update process without the need to compute the evidence. However, for this class, we will primarily use Beta–Bernoulli model for illustration purposes. 
+Conjugacy also occurs in other sampling models. In each pair below, multiplying the likelihood by the prior produces a posterior in the same distribution family, with updated parameters and a known normalization formula. This lecture focuses on the Beta–Bernoulli pair; the other pairs illustrate how the same principle extends to different types of observations.
 
 | Sampling model | Unknown parameter | Conjugate prior | Posterior update |
 |---|---|---|---|
