@@ -398,7 +398,7 @@ Conjugacy also occurs in other familiar sampling models. The table gives an over
 | Normal, known observation variance $\sigma^2$ | Mean $\mu$ | Normal$(m_0,\tau_0^2)$ | Normal with updated mean and variance |
 
 
-### 4.2 What conjugacy does and does not provide
+## Summary
 
 Conjugacy makes Bayesian updating easier to calculate and repeat: the posterior belongs to the same distribution family as the prior.
 Its main benefits are:
@@ -415,13 +415,6 @@ However, there are a few things to keep in mind:
 > Keep in mind that Bayes' rule also applies to nonconjugate priors. The posterior may then require numerical integration or another approximation. Choosing an appropriate prior and computing its posterior are separate tasks.
 
 **Textbook reference for more details:** Bishop §2.1.1 for Beta priors, §2.2 for the Dirichlet family, §2.3.6 for inference on Gaussian parameters, and §2.4.2 for general conjugacy.
-
-## Summary
-
-Conjugacy lets us express the posterior in the same family as the prior. For Beta–Bernoulli learning, counts of periods without and with flags update the two shape parameters by addition. 
-
-Mean and concentration provide an interpretable way to specify a Beta prior and examine sensitivity. Conjugacy simplifies computation, but it does not guarantee that a prior represents appropriate assumptions. Empirical Bayes can estimate a prior hyperparameter from related records; the plug-in update then treats that estimate as fixed. 
-
 
 In Lecture 15, we will use these posterior distributions to construct credible intervals, calculate probabilities for parameter hypotheses, and interpret Bayes factors.
 
