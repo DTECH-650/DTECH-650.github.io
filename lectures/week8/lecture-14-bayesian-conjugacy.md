@@ -4,17 +4,19 @@
 
 In Lecture 13, we used Bayes' rule with a Beta(2,2) prior and three observations coded 1 and one coded 0 to obtain a Beta(5,3) posterior. We now use the same binary model to study engine-health flags.
 
-That calculation raises two practical questions. **Why did the posterior remain a Beta distribution? And where did the original values 2 and 2 come from?**
+That calculation raises two practical questions. **Why did the posterior remain a Beta distribution? How would the choice of 2,2 change the posterior, and how can I assess the uncertainty efficiently as I collect more data over time?**
 
-**Scenario:** We monitor an engine using a fixed sensor-based rule for raising an engine-health flag. For each monitoring period of the same duration, we record whether at least one flag was raised. We restrict attention to comparable operating conditions and assume the engine's condition and the flagging rule remain stable during the observations.
-
-We code a period with no flag as $X_i=1$ and a period with a flag as $X_i=0$. Our unknown parameter $\theta$ is the probability of no flag during one such period. We want to update our knowledge of this probability as observations arrive. Records from other comparable engines may also help us specify a prior.
-
+:::{admonition} Scenario
+**Scenario:** We monitor an engine using a fixed sensor-based rule for raising an engine-health flag. For each monitoring period of the same duration, we record whether at least one flag was raised. We restrict attention to comparable operating conditions and assume the engine's condition and the flagging rule remain stable during the observations. We code a period with no flag as $X_i=1$ and a period with a flag as $X_i=0$. Our unknown parameter $\theta$ is the probability of no flag during one such period. We want to update our knowledge of this probability as observations arrive. Records from other comparable engines may also help us specify a prior.
 A sensor flag is an observed indicator, not a direct observation of true engine health. This model describes flag occurrence; it does not estimate the probability of a fault given sensor measurements.
+:::
+
+Using the scenario, this lecture now asks: 
 
 > How can we choose a prior, update it efficiently as data arrive, and assess how sensitive the posterior is to that choice?
 
 This lecture develops conjugate updating, prior specification, and prior sensitivity. It sets the stage for Lecture 15. Lecture 15 will use posterior distributions to construct credible intervals and evaluate hypotheses.
+:::
 
 ## Learning objectives
 
@@ -182,7 +184,7 @@ $$
 \mathcal D=(1,1,0,1),\qquad S=3,\quad F=1,
 $$
 
-so Beta(2,2) becomes Beta(5,3).
+so Beta(2,2) becomes Beta(5,3). This gives us the same distribution like the one we discussed in Lecture 13. The question we ask next! How can we simplify the computation of the posterior distribution if the prior and the posterior are from the same family? 
 
 ![One-step update](images/one-step-update.png)
 **Figure**  Posterior update for four outcomes $(1,1,0,1)$ - recap on Lecture 13. The two curves belong to the same family; the observations change their shape parameters.
@@ -322,7 +324,7 @@ it lets us account for normalization without repeating the integral
 calculation from scratch.
 :::
 
-### 1.5 Connection to sufficient statistics
+### 1.5 Connection to sufficient statistics (Lecture 12)
 
 The likelihood depends on the sequence through $S$ and $F$. For known $N$, knowing $S$ also determines $F$. Thus $S$ is sufficient for $\theta$ in this Bernoulli model. So that is why we covered sufficient statistics in Lecture 12. 
 
@@ -458,9 +460,11 @@ For example, a chosen mean of 0.7 and concentration of 10 give $a=7$, $b=3$. A m
 
 Although the update adds counts to $a$ and $b$, prior shape parameters need not be integers or represent literal historical observations. Likewise, a uniform density in $\theta$ does not imply a uniform density after a nonlinear change of parameter.
 
-### 3.3 Hold the observations fixed and vary the prior
+### 3.3 Sensitivity analysis
 
-Return to the original four outcomes $(1,1,0,1)$. Do not include the two additional monitoring periods from Section 2 in this comparison.
+We now learned that the hyperparameters affect the shape of the prior, we now want to also understand how the choice of the prior effects the posterior. 
+
+Leset return to the original four outcomes $(1,1,0,1)$. Do not include the two additional monitoring periods from Section 2 in this comparison.
 
 | Illustrative prior | Posterior after three periods with no flag and one with a flag |
 |---|---|
@@ -499,7 +503,9 @@ $$
 
 For fixed $\kappa$, the prior's weight decreases as $N$ increases. This describes the center of the posterior; the full posterior also represents uncertainty around it. We are not introducing an optimization rule or replacing the distribution with a single estimate.
 
-A prior-sensitivity analysis compares scientifically plausible priors using the same data. If the resulting distributions differ substantially, report that dependence rather than selecting a prior to obtain a preferred answer. Lecture 15 will extend the comparison to intervals and hypothesis probabilities.
+:::{admonition} Recommendation for your research and decision making:
+A prior-sensitivity analysis compares "plausible priors" using the same data. If the resulting distributions differ substantially, report that dependence rather than selecting a prior to obtain a preferred answer. Lecture 15 will extend the comparison to intervals and hypothesis probabilities.
+:::
 
 ## 4. Other conjugate families, and benefits and limits of conjugacy
 
@@ -530,9 +536,7 @@ However, there are a few things to keep in mind:
 
 > Keep in mind that Bayes' rule also applies to nonconjugate priors. The posterior may then require numerical integration or another approximation. Choosing an appropriate prior and computing its posterior are separate tasks.
 
-**Textbook reference for more details:** Bishop §2.1.1 for Beta priors, §2.2 for the Dirichlet family, §2.3.6 for inference on Gaussian parameters, and §2.4.2 for general conjugacy.
-
-In Lecture 15, we will use these posterior distributions to construct credible intervals, calculate probabilities for parameter hypotheses, and interpret Bayes factors.
+In Lecture 15, we will use this knowledge about how to compute posterior distributions to construct credible intervals, calculate probabilities for parameter hypotheses, and interpret Bayes factors.
 
 ## Practice examples 
 
