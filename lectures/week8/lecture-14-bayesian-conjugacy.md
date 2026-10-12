@@ -100,6 +100,51 @@ $$
 
 is the normalizing constant. The positive numbers $a$ and $b$ are **hyperparameters**: parameters of the prior distribution for $\theta$.
 
+You can calculate the normalizing constant with scipy. Try this in your notebook, and vary the parameters:  
+```
+from scipy.special import beta
+
+B = beta(5, 3)
+print(f"Normalizing denominator B(5,3): {B:.6f}")
+print(f"Multiplicative factor 1/B(5,3): {1/B:.0f}")
+```
+
+:::{Hint}
+:class: dropdown
+For those of you, who want to know the formula of the normalizing denominator of the Beta function:
+
+$$
+B(a,b)
+=\int_0^1 t^{a-1}(1-t)^{b-1}\,dt
+=\frac{\Gamma(a)\Gamma(b)}{\Gamma(a+b)},
+\qquad a,b>0.
+$$
+
+For positive integer parameters, $\Gamma(a)=(a-1)!$, so this simplifies to
+
+$$
+B(a,b)=\frac{(a-1)!(b-1)!}{(a+b-1)!}.
+$$
+
+For our posterior, $a=5$ and $b=3$:
+
+$$
+B(5,3)=\frac{4!\,2!}{7!}=\frac{1}{105}.
+$$
+
+The multiplicative normalizing factor is therefore $1/B(5,3)=105$,
+giving the posterior density
+
+$$
+p(\theta\mid\mathcal D)
+=105\theta^4(1-\theta)^2,
+\qquad 0<\theta<1.
+$$
+
+See [Wikipedia: Beta function](https://en.wikipedia.org/wiki/Beta_function)
+for further details.
+:::
+
 Multiply the likelihood by the prior:
 
 $$
@@ -142,9 +187,24 @@ so Beta(2,2) becomes Beta(5,3).
 ![One-step update](images/one-step-update.png)
 **Figure**  Posterior update for four outcomes $(1,1,0,1)$ - recap on Lecture 13. The two curves belong to the same family; the observations change their shape parameters.
 
-### 1.4 Where did the evidence go?
+#### 1.4 How conjugacy simplifies normalization
 
-In Section 1.3, we recognized the shape of the posterior using proportionality. We now keep all the constants and substitute the evidence into Bayes' rule to obtain the normalized density.
+Bayes' rule requires a normalized posterior: its density must integrate
+to one. In general, this means calculating the evidence,
+
+$$
+p(\mathcal D\mid a,b)
+=\int_0^1 \mathcal L(\theta;\mathcal D)p(\theta\mid a,b)\,d\theta.
+$$
+
+Conjugacy makes this calculation easier. Multiplying the Bernoulli
+likelihood by the Beta prior produces the same mathematical form as
+another Beta density. Because we already know how a Beta density is
+normalized, we can identify the posterior's normalizing constant directly.
+
+We first show this using all four components of Bayes' rule. Then we
+explain the shortcut this gives us for future updates.
+
 
 **Step 1: Write Bayes' rule with all four components.**
 
@@ -181,6 +241,14 @@ p(\mathcal D\mid a,b)
 $$
 
 The last step uses the definition of the Beta function from Section 1.3. We use $t$ as the integration variable to distinguish it from the candidate parameter value $\theta$ in the posterior density. The evidence is a number for the fixed data and prior hyperparameters; it does not depend on $\theta$.
+
+:::{admonition} 
+This is the computational benefit of recognizing the Beta form:
+the integral is a Beta function with updated parameters. We do not
+need to develop a new integration method for this likelihood–prior
+product. Its value is already given by a known function,
+$B(a+S,b+F)$.
+:::
 
 **Step 3: Substitute the evidence and simplify.**
 
