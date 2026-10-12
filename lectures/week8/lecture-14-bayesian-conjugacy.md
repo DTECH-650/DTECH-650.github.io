@@ -187,7 +187,7 @@ $$
 so Beta(2,2) becomes Beta(5,3). This gives us the same distribution like the one we discussed in Lecture 13. The question we ask next! How can we simplify the computation of the posterior distribution if the prior and the posterior are from the same family? 
 
 ![One-step update](images/one-step-update.png)
-**Figure 1**  Posterior update for four outcomes $(1,1,0,1)$ - recap on Lecture 13. The two curves belong to the same family; the observations change their shape parameters.
+**Figure 1:**  Posterior update for four outcomes $(1,1,0,1)$ - recap on Lecture 13. The two curves belong to the same family; the observations change their shape parameters.
 
 #### 1.4 How conjugacy simplifies normalization
 
@@ -398,28 +398,110 @@ Counts are cumulative. Each row shows the distribution after incorporating all o
 
 ![Bayesian Learning](images/prior_distribution.png)
 
-**Figure 2** Sequential Bayesian updating. Starting from Beta(2,2), three periods without a flag and one with a flag yield Beta(5,3). An additional period without a flag gives Beta(6,3); a subsequent period with a flag gives Beta(6,4). Each update multiplies the current density by the likelihood of the new observation and normalizes the result. Label the axes “Probability of no engine-health flag, $\theta$” and “Probability density.”
+**Figure 2:** Sequential Bayesian updating. Starting from Beta(2,2), three periods without a flag and one with a flag yield Beta(5,3). An additional period without a flag gives Beta(6,3); a subsequent period with a flag gives Beta(6,4). Each update multiplies the current density by the likelihood of the new observation and normalizes the result.
 
-### 2.3 Why sequential and batch updates agree
+### 2.3 When and why sequential and batch updates agree
 
-Updating once with all six observations gives
-
-$$
-\operatorname{Beta}(2+4,2+2)=\operatorname{Beta}(6,4).
-$$
-
-More generally, batches with counts $(S_1,F_1)$ and $(S_2,F_2)$ give
+We have observed six monitoring outcomes:
 
 $$
-\operatorname{Beta}(a+S_1+S_2,b+F_1+F_2).
+\mathcal D=(1,1,0,1,1,0).
 $$
 
-The additions give the same result regardless of the grouping or order of observations. 
-**Important**: This holds when both calculation routes start from the same original prior and use the same model with a fixed parameter $\theta$.
+We can incorporate these observations all at once or in two batches.
+Both approaches start with the same Beta(2,2) prior.
 
-:::{warning}
-When the current posterior becomes the next prior, do not multiply by the likelihood of the old data again. Their information is already included in that posterior.
+**Approach 1: Update once using all six observations.**
+
+There are four periods without a flag and two with a flag.
+The likelihood is therefore
+
+$$
+\mathcal L(\theta;\mathcal D)=\theta^4(1-\theta)^2.
+$$
+
+Multiplying by the original prior gives
+
+$$
+p(\theta\mid\mathcal D)
+\propto
+\underbrace{\theta^4(1-\theta)^2}_{\text{all six observations}}
+\underbrace{\theta(1-\theta)}_{\text{Beta(2,2) prior, up to normalization}}
+=
+\theta^5(1-\theta)^3.
+$$
+
+Recognizing the Beta form gives a Beta(6,4) posterior.
+
+**Approach 2: Update using the first four observations, then the last two.**
+
+The first batch is $\mathcal D_1=(1,1,0,1)$.
+Its likelihood is $\theta^3(1-\theta)$, so
+
+$$
+p(\theta\mid\mathcal D_1)
+\propto
+\underbrace{\theta^3(1-\theta)}_{\text{first-batch likelihood}}
+\underbrace{\theta(1-\theta)}_{\text{original prior, up to normalization}}
+=
+\theta^4(1-\theta)^2.
+$$
+
+This is the Beta(5,3) posterior. It becomes the prior for the next update.
+
+The second batch is $\mathcal D_2=(1,0)$.
+Its likelihood is $\theta(1-\theta)$. Multiplying this new likelihood
+by the current posterior gives
+
+$$
+p(\theta\mid\mathcal D_1,\mathcal D_2)
+\propto
+\underbrace{\theta(1-\theta)}_{\text{second-batch likelihood}}
+\underbrace{\theta^4(1-\theta)^2}_{\text{current posterior, up to normalization}}
+=
+\theta^5(1-\theta)^3.
+$$
+
+We obtain the same Beta(6,4) posterior.
+
+**Why do the results agree?**
+
+Under conditional independence given $\theta$, the full likelihood
+is the product of the two batch likelihoods:
+
+$$
+\begin{aligned}
+\mathcal L(\theta;\mathcal D)
+&=\mathcal L(\theta;\mathcal D_1)
+  \mathcal L(\theta;\mathcal D_2)\\
+&=\bigl[\theta^3(1-\theta)\bigr]
+  \bigl[\theta(1-\theta)\bigr]\\
+&=\theta^4(1-\theta)^2.
+\end{aligned}
+$$
+
+Both approaches therefore multiply the original prior by exactly
+the same likelihood factors. They produce the same posterior shape
+and, after normalization, the same posterior density.
+
+:::{admonition} What must stay the same?
+:class: important
+
+Both approaches use the same original prior and assume that all
+observations are conditionally independent given the same fixed
+parameter $\theta$. Each observation is included once. In sequential updating, the first batch is already incorporated
+in the current posterior. The next likelihood contains only the
+second batch.
+
+If observations remain dependent given $\theta$, or the flag probability
+changes over time, the simple Beta count update is generally no longer
+valid. Bayesian updating is still possible, but requires a model
+that represents that dependence or change.
 :::
+
+This agreement follows from Bayes' rule and conditional independence.
+Conjugacy makes the calculations simple: multiplying the likelihood
+factors becomes adding counts to the two Beta parameters.
 
 ## 3. Choosing a Beta prior and checking sensitivity
 
