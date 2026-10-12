@@ -549,29 +549,90 @@ For example, a chosen mean of 0.7 and concentration of 10 give $a=7$, $b=3$. A m
 
 Although the update adds counts to $a$ and $b$, prior shape parameters need not be integers or represent literal historical observations. Likewise, a uniform density in $\theta$ does not imply a uniform density after a nonlinear change of parameter.
 
-### 3.3 Sensitivity analysis
+We can now distinguish two aspects of prior choice:
 
-We now learned that the hyperparameters affect the shape of the prior, we now want to also understand how the choice of the prior effects the posterior. 
+- **Prior mean:** Which values of $\theta$ does the prior center on?
+- **Prior concentration:** How tightly is the prior distributed around
+  that mean?
 
-Leset return to the original four outcomes $(1,1,0,1)$. Do not include the two additional monitoring periods from Section 2 in this comparison.
+To understand their effects on the posterior, we will vary one aspect
+at a time while keeping the observed data fixed.
 
-| Illustrative prior | Posterior after three periods with no flag and one with a flag |
-|---|---|
-| Beta(1,1) | Beta(4,2) |
-| Beta(2,2) | Beta(5,3) |
-| Beta(10,10) | Beta(13,11) |
-| Beta(2,6) | Beta(5,7) |
-| Beta(6,2) | Beta(9,3) |
+### 3.3 How sensitive is the posterior to the prior?
 
-Every row uses the same likelihood. Differences between posterior curves therefore arise from the prior assumptions. With four observations, those assumptions can have a substantial effect.
+With only a few observations, different prior assumptions can produce
+different posterior distributions. A prior-sensitivity analysis asks:
+
+> Would our conclusions change if we used another reasonable prior?
+
+For this comparison, use only the original four outcomes:
+
+$$
+\mathcal D=(1,1,0,1),\qquad S=3,\quad F=1.
+$$
+
+Every prior is therefore updated using the same likelihood,
+
+$$
+\mathcal L(\theta;\mathcal D)=\theta^3(1-\theta),
+$$
+
+and the same conjugate rule:
+
+$$
+\operatorname{Beta}(a,b)
+\longrightarrow
+\operatorname{Beta}(a+3,b+1).
+$$
+
+**Comparison A: Keep the prior mean fixed and vary its concentration.**
+
+The first three priors all have mean $0.5$:
+
+| Prior | Prior mean | Concentration | Posterior | Posterior mean |
+|---|---:|---:|---|---:|
+| Beta(1,1) | 0.50 | 2 | Beta(4,2) | 0.667 |
+| Beta(2,2) | 0.50 | 4 | Beta(5,3) | 0.625 |
+| Beta(10,10) | 0.50 | 20 | Beta(13,11) | 0.542 |
+
+The observed proportion of periods without a flag is $3/4=0.75$.
+All three posterior means move toward this value, but by different amounts.
+
+The more concentrated prior keeps the posterior mean closer to $0.5$.
+Four observations have less influence on the posterior mean when the
+prior concentration is large.
+
+**Comparison B: Keep the concentration fixed and vary the prior mean.**
+
+The last two priors both have concentration $8$:
+
+| Prior | Prior mean | Concentration | Posterior | Posterior mean |
+|---|---:|---:|---|---:|
+| Beta(2,6) | 0.25 | 8 | Beta(5,7) | 0.417 |
+| Beta(6,2) | 0.75 | 8 | Beta(9,3) | 0.750 |
+
+These priors begin with different assumptions about the probability
+of no flag. After observing the same data, their posterior means
+remain substantially different.
+
+For Beta(6,2), the prior mean already equals the observed proportion,
+$0.75$. Its posterior mean therefore stays at $0.75$, but the
+distribution becomes more concentrated. An unchanged mean does not
+mean that no learning occurred.
 
 ![Sensitivity analysis](images/sensitivity_prior.png)
 
-**Figure 3:** Effect of prior choice with the observations held fixed at $(1,1,0,1)$. Each panel shows a prior (dashed blue) and its posterior (solid orange), using common horizontal and vertical scales. Differences between the posteriors reflect different prior assumptions. 
+**Figure 3:** Prior sensitivity for the same four observations
+$(1,1,0,1)$. Dashed blue curves show priors; solid orange curves show
+posteriors. Compare the first three panels to examine the effect of
+prior concentration at a fixed mean. Compare the last two panels
+to examine the effect of prior mean at a fixed concentration.
+All panels use the same axis scales.
 
-### 3.4 Explain the relative influence of prior and data
+### 3.4 Why do these differences occur?
 
-The posterior mean provides one simple way to describe the center of each curve:
+The posterior mean explains the patterns in Figure 3.
+Writing the prior mean as $m$ and its concentration as $\kappa$ gives: 
 
 $$
 \begin{aligned}
@@ -590,7 +651,18 @@ $$
 =\frac58.
 $$
 
-For fixed $\kappa$, the prior's weight decreases as $N$ increases. This describes the center of the posterior; the full posterior also represents uncertainty around it. We are not introducing an optimization rule or replacing the distribution with a single estimate.
+The weights explain both comparisons:
+
+- At the same prior mean, increasing $\kappa$ gives that mean more
+  weight relative to the observed proportion.
+- At the same concentration, the weights stay fixed, but changing
+  the prior mean changes the posterior mean.
+
+Sensitivity concerns the full posterior distribution, including its
+spread and shape. The mean is one useful summary for explaining the
+figure. In Lecture 15, we will also compare credible intervals and
+posterior probabilities under different priors.
+
 
 :::{admonition} Recommendation for your research and decision making:
 A prior-sensitivity analysis compares "plausible priors" using the same data. If the resulting distributions differ substantially, report that dependence rather than selecting a prior to obtain a preferred answer. Lecture 15 will extend the comparison to intervals and hypothesis probabilities.
