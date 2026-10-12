@@ -111,7 +111,7 @@ print(f"Normalizing denominator B(5,3): {B:.6f}")
 print(f"Multiplicative factor 1/B(5,3): {1/B:.0f}")
 ```
 
-::{admonition} Formula for the Beta normalizing denominator
+:::{admonition} Formula for the Beta normalizing denominator
 :class: dropdown
 For those of you, who want to know the formula of the normalizing denominator of the Beta function:
 
