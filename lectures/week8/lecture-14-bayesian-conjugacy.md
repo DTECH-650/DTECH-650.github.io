@@ -143,7 +143,7 @@ p(\theta\mid\mathcal D)
 \qquad 0<\theta<1.
 $$
 
-See [Wikipedia: Beta function](https://en.wikipedia.org/wiki/Beta_function)
+
 for further details.
 :::
 

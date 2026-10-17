@@ -381,10 +381,10 @@ $$
 
 This density is symmetric around $1/2$ and highest there. The choice is an illustrative modeling assumption. In an application, the shape of the prior should reflect relevant knowledge about the mission and its operating conditions.
 
-:::{admonition} Textbook connection
+:::{admonition} Related textbook readings. 
 :class: note
 
-See Bishop (2006), *Pattern Recognition and Machine Learning*, Section 2.1.1, “The beta distribution,” pp. 71–72, through Equation (2.18). This reading introduces the Beta prior and derives its posterior update. Figure 2.2 illustrates different Beta density shapes.
+See Bishop (2006), *Pattern Recognition and Machine Learning*, Section 2.1.1, “The beta distribution,” pp. 71–72, through Equation (2.18). More background on the beta distribution on Wikipedia can be found here: See [Wikipedia: Beta function](https://en.wikipedia.org/wiki/Beta_function). 
 
 :::
 
