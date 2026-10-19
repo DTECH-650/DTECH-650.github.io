@@ -1,8 +1,9 @@
 # Lecture 15 — Bayesian Hypotheses Testing
 
-In prior lecture, we learned about conjugate priors for our drone testing scenario. We learned how the choice of your prior affects the posterior. 
-In other words, as you engage in data-driven decision the prior belief impacts the uncertainty that you drive after you have seen more data. Or in other words, after you have gathered more evidence.
-In this lecture, we now take these insights to the next level, and return to data-driven decision making and hypothesis testing. However, in this lecture, we learn about the Baysian way of hypotheses testing, and contrast it with the frequentist way that have covered in lecture 6. 
+In Lecture 14, we learned how conjugate priors simplify Bayesian updating and how prior assumptions affect the posterior distribution.
+
+In this lecture, we use the posterior to summarize uncertainty with credible intervals and evaluate hypotheses about an unknown parameter.
+We then compare these Bayesian interpretations with confidence intervals and the frequentist hypothesis tests introduced earlier in the course.
 
 :::{admonition} Scenario: Engine-start testing
 
@@ -26,8 +27,6 @@ So this leads to the following practically motivated question:
 **Guiding question:** What do your test results tell you about the engine's unknown start-success probability, and how much support do they provide for the claim that it exceeds your threshold?
 
 ## Key learning outcomes
-
-After completing Lecture 15, you should be able to: 
 
 After completing Lecture 15, you should be able to:
 
@@ -135,14 +134,19 @@ to the requested cumulative probabilities:
 from scipy import stats
 
 lower, upper = stats.beta.ppf([0.025,0.975],a=17,b=3)
-print(f"95% credible interval: [{lower:.3f},{upper:.3f}")
+print(f"95% credible interval: [{lower:.3f},{upper:.3f}]")
 ```
 The input '0.025` and `0.975` are cumulative probabilities. The outputs `lower` and `upper` are possible values of the engines start-success probability $\theta$. 
 
 
 ### 1.3 Interpret the result
 
-Conditional on the observed data, prior, and sampling model, the credible interval contains the unknown success probability with posterior probability 0.95. Note that this concerns the parameter, not the fraction of future successful missions.
+For our Beta(17,3) posterior, the equal-tailed 95% credible interval
+is approximately $[0.669,0.966]$.
+
+Given the observed data, prior, and sampling model, we assign 95% posterior probability to the engine's unknown start-success probability lying between these bounds.
+
+This describes uncertainty about $\theta$. It does not mean that 95% of future engine starts will succeed.
 
 ![One-step update](images/credible-interval.png)
 
@@ -206,9 +210,9 @@ For our engine-start example, we ask:
 > Given the test results, how much posterior probability do we assign
 > to the claim that the start-success probability exceeds 0.8?
 
-### 2.1 State complementary hypotheses
+### 2.1 Stating the complementary hypotheses
 
-Using the benchmark $\theta_c=0.8$ specified in our scenario, define
+Using the benchmark $\theta_c=0.8$ specified in our scenario, we define
 
 $$
 H_0:\theta\leq0.8,
@@ -225,7 +229,7 @@ Their probabilities therefore sum to one.
 The benchmark is a requirement chosen before examining the data.
 It is not a posterior quantile or a critical value of a test statistic.
 
-### 2.2 Calculate posterior hypothesis probabilities
+### 2.2 Posterior hypothesis probabilities
 
 From Section 1, our posterior is
 
@@ -319,10 +323,28 @@ After testing, they favor $H_1$ by about 3.22 to 1.
 
 ### 2.4 Bayes factor
 
-How much did the observations change these odds?
+Now you might as: **How much did the observations change these odds?** 
 
-The Bayes factor is the multiplier that converts prior odds
-into posterior odds:
+This is where the Bayes factor is helpful. 
+
+To derive it lets first apply Bayes' rule separately to the two hypotheses: 
+
+$$
+P(H_j\mid\mathcal D)
+=\frac{p(\mathcal D\mid H_j)P(H_j)}{p(\mathcal D)},
+\qquad j\in\{0,1\}.
+$$
+
+Taking their ratio cancels the common evidence $p(\mathcal D)$:
+
+$$
+\frac{P(H_1\mid\mathcal D)}{P(H_0\mid\mathcal D)}
+=
+\frac{p(\mathcal D\mid H_1)}{p(\mathcal D\mid H_0)}
+\frac{P(H_1)}{P(H_0)}.
+$$
+
+The Bayes factor is the multiplier that converts prior odds into posterior odds:
 
 $$
 O_{10}^{\mathrm{post}}
@@ -346,8 +368,7 @@ $$
        {p(\mathcal D\mid H_0)}.
 $$
 
-Each evidence averages the likelihood over the parameter values
-allowed by that hypothesis, using its conditional prior.
+Each evidence averages the likelihood over the parameter values allowed by that hypothesis, using its conditional prior.
 
 For our region hypotheses, those conditional priors come from
 the original Beta(8,2) prior:
@@ -381,11 +402,13 @@ $$
 This connects to Lecture 14: evidence is obtained by integrating
 a likelihood–prior product. Here, we calculate it under each hypothesis.
 
+Here is how the Bayes factor helps you answer the question we asked in the beginning of 2.4. 
+
 - $\mathrm{BF}_{10}>1$: the data increase the odds of $H_1$ relative to $H_0$.
 - $\mathrm{BF}_{10}<1$: the data decrease those odds.
 - $\mathrm{BF}_{10}=1$: the odds remain unchanged.
 
-A Bayes factor is not a posterior probability.
+
 
 ### 2.5 Worked example: What did the engine tests change?
 
@@ -427,7 +450,10 @@ support for exceeding the benchmark without establishing certainty.
 
 ![One-step update](images/HP-interpretation.png)
 
-**Figure 2** Beta(8,2) prior (left) and Beta(17,3) posterior (right). The “Prior probability: 0.564” of $\theta >0.8$ has changed to “Posterior probability: 0.763.” after observing 9 successes and 1 failures. 
+**Figure 2:** Beta(8,2) prior (left) and Beta(17,3) posterior (right).
+Shading marks $\theta>0.8$. Its probability increases from 0.564
+before observing the tests to 0.763 after nine successful starts
+and one unsuccessful start.
 
 
 ### 2.6 Interpretation, sensitivity, and decisions
@@ -445,50 +471,7 @@ is approximately 0.763. The Bayes factor is approximately 2.49:
 the observations multiply the prior odds of exceeding the benchmark
 by this factor.
 
-Neither number alone specifies whether to approve the engine,
-inspect it, or collect additional observations. That decision also
-depends on the consequences of approving an engine whose start-success
-probability does not meet the requirement.
-
-#### Revisit prior sensitivity
-
-As in Lecture 14, we can examine how our conclusions depend on the
-prior. Keep the observations and benchmark fixed:
-
-$$
-S=9,\qquad F=1,\qquad \theta_c=0.8.
-$$
-
-Consider the following alternative prior assumptions:
-
-| Prior | Prior mean | Prior concentration | Posterior |
-|---|---:|---:|---|
-| Beta(4,1) | 0.8 | 5 | Beta(13,2) |
-| Beta(8,2) | 0.8 | 10 | Beta(17,3) |
-| Beta(16,4) | 0.8 | 20 | Beta(25,5) |
-| Beta(5,5) | 0.5 | 10 | Beta(14,6) |
-
-Compare the first three rows to examine concentration at a fixed
-prior mean. Compare the second and fourth rows to examine the
-prior mean at a fixed concentration.
-
-For each prior, calculate:
-
-1. The equal-tailed 95% credible interval.
-2. The posterior probability $P(\theta>0.8\mid\mathcal D)$.
-3. The prior odds, posterior odds, and Bayes factor.
-
-When changing the prior, recalculate both the prior and posterior
-odds. The Bayes factor depends on the conditional priors within
-the hypotheses; it is not independent of prior assumptions.
-
-:::{admonition} What should we report?
-:class: important
-
-Report how the conclusions change across reasonable prior assumptions.
-If the conclusions depend substantially on the prior, explain that
-dependence rather than choosing a prior to obtain a preferred answer.
-:::
+Neither number alone specifies whether to approve the engine, inspect it, or collect additional observations. That decision also depends on the consequences of approving an engine whose start-success probability does not meet the requirement.
 
 ### 2.7 Bayesian and frequentist hypothesis testing
 
@@ -610,7 +593,6 @@ $\theta>0.8$ is approximately 0.763?
 
 ## Practice questions and coding exercises
 
-## Practice questions and coding exercises
 
 ### 1. Construct and interpret a credible interval
 
