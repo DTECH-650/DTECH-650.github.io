@@ -1,0 +1,56 @@
+digraph DiagnosticNetwork {
+  graph [
+    rankdir=TB,
+    bgcolor="transparent",
+    pad="0.25",
+    nodesep="0.30",
+    ranksep="0.80",
+    splines=true,
+    outputorder=edgesfirst
+  ];
+  node [
+    shape=box,
+    style="rounded,filled",
+    fontname="DejaVu Sans",
+    fontsize=11,
+    color="#506581",
+    fillcolor="#EAF2FB",
+    margin="0.15,0.09"
+  ];
+  edge [color="#405B79", penwidth=1.5, arrowsize=0.8];
+
+  B [label="B  Software defect"];
+  G [label="G  Grid disturbance"];
+  H [label="H  Mechanical wear"];
+  E [label="E  Hot environment"];
+  O [label="O  Operator report"];
+
+  C [label="C  Controller fault"];
+  V [label="V  Excess vibration"];
+  U [label="U  High temperature"];
+  Q [label="Q  Wear-test flag"];
+
+  A [label="A  Automated alarm", fillcolor="#FFF0D8"];
+  D [label="D  Machine downtime", fillcolor="#FFF0D8"];
+  R [label="R  Service ticket", fillcolor="#E8F5E9"];
+
+  {rank=same; B; G; H; E; O;}
+  {rank=same; C; V; U; Q;}
+  {rank=same; A; D;}
+
+  B -> C;
+  G -> C;
+  H -> V;
+  H -> U;
+  E -> U;
+  H -> Q;
+  C -> A;
+  V -> A;
+  U -> A;
+  C -> D;
+  V -> D;
+  U -> D;
+  A -> R;
+  D -> R;
+  O -> R;
+}

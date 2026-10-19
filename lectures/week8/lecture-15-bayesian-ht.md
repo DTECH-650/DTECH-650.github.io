@@ -324,7 +324,6 @@ After testing, they favor $H_1$ by about 3.22 to 1.
 ### 2.4 Bayes factor
 
 Now we can ask: **How much did the observations change these odds?**
-
 The Bayes factor measures this change. To derive it, apply Bayes'
 rule separately to the two hypotheses:
 
