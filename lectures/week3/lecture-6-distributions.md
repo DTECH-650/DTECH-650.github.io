@@ -109,7 +109,7 @@ It is natural to ask why we do not simply evaluate this integral directly. The d
 
 There is also no need to solve a different numerical integration problem for every possible $\mu$, $\sigma$, and $x$. Every Gaussian curve has the same basic shape; changing $\mu$ shifts that shape and changing $\sigma$ rescales it. We can remove those two changes of location and scale through an exact change of variables.
 
-#### Why We Standardize
+#### Why We Standardize: The Z-score
 
 Inside the CDF integral, define
 
@@ -149,13 +149,19 @@ Z=\frac{X-\mu}{\sigma},
 Z\sim\mathcal{N}(0,1).
 $$
 
-Subtracting $\mu$ centers the variable at zero. Dividing by $\sigma$ expresses distance in units of standard deviations. Thus the standardized threshold
+Subtracting $\mu$ centers the variable at zero. Dividing by the standard deviation $\sigma>0$ expresses distance in units of standard deviations. For a particular value $x$, the resulting number
 
 $$
 z=\frac{x-\mu}{\sigma}
 $$
 
-tells us how many standard deviations $x$ lies above or below the mean.
+is called its **z-score**. It is dimensionless: if $x$ and $\mu$ are measured in millimeters, their difference and $\sigma$ are both measured in millimeters, so the units cancel. A z-score of $0$ is the mean, $1.5$ is one and a half standard deviations above the mean, and $-1$ is one standard deviation below it.
+
+Be careful about the two related symbols: $Z=(X-\mu)/\sigma$ is a **random variable**, while $z=(x-\mu)/\sigma$ is the z-score of one specified value or threshold $x$. A z-score is a location on the standard Gaussian scale, **not** a probability. To turn it into a probability, we evaluate the area to its left or right under the standard Gaussian curve. This is what $\Phi$, $\operatorname{erf}$, and $\operatorname{erfc}$ do below. For a Gaussian $X$, two thresholds with the same z-score (even if their original units and Gaussian parameters differ) have the same left-tail probability.
+
+![Two standard Gaussian curves: a z-score of +1 marks a 0.1587 right tail, while z-scores of −1 and +1 enclose 0.6827 in the center and leave 0.3173 in both tails](images/z-score-erf-erfc.svg)
+
+**Figure:** A z-score marks a position on the horizontal axis, not a probability. The shaded **areas** show how $\Phi$ and $\operatorname{erf}$ measure probability to the left or in a symmetric center, while $\operatorname{erfc}$ measures the complementary tail area. The formulas below derive these relationships.
 
 #### The Standard Gaussian CDF
 
@@ -281,6 +287,8 @@ $$
 
 The factor of $1/2$ and the $\sqrt{2}$ in the argument are not arbitrary constants. They arise from matching the standard Gaussian integral, which contains $e^{-s^2/2}$, to the definition of $\operatorname{erfc}$, which contains $e^{-t^2}$.
 
+The conversion from a threshold to a tail probability therefore has two steps: calculate its z-score $z=(x-\mu)/\sigma$, then evaluate $P(Z>z)=\tfrac12\operatorname{erfc}(z/\sqrt{2})$. The z-score measures **how far** the threshold lies from the mean; $\operatorname{erfc}$ converts that distance into **area in the right tail**. For a left-tail probability, use $P(Z\leq z)=\Phi(z)=\tfrac12[1+\operatorname{erf}(z/\sqrt{2})]$. The $\sqrt{2}$ is part of the conversion between Gaussian and error-function scales; it is not another standard deviation.
+
 #### Example: An Unusually High Vibration Reading
 
 Suppose a machine's vibration amplitude in millimeters per second is modeled as
@@ -295,7 +303,7 @@ $$
 z=\frac{13-10}{2}=1.5.
 $$
 
-This says that $13$ is $1.5$ standard deviations above the mean. Because the question asks for a right-tail probability,
+The z-score says that $13$ is $1.5$ standard deviations above the mean; $1.5$ itself is not the probability of exceeding $13$. Because the question asks for a right-tail probability,
 
 $$
 \begin{aligned}
@@ -399,12 +407,23 @@ P(a<X\leq b)
 -\Phi\left(\frac{a-\mu}{\sigma}\right).
 $$
 
-For a symmetric two-sided tail $k$ standard deviations from the mean,
+For a symmetric interval extending $k$ standard deviations on either side of the mean, where $k\geq0$, the corresponding z-scores are $-k$ and $k$. Symmetry and the error-function formula give
+
+$$
+P(|X-\mu|\leq k\sigma)
+=P(-k\leq Z\leq k)
+=\Phi(k)-\Phi(-k)
+=\operatorname{erf}\left(\frac{k}{\sqrt{2}}\right).
+$$
+
+The complementary probability is the two-sided tail:
 
 $$
 P(|X-\mu|>k\sigma)
 =\operatorname{erfc}\left(\frac{k}{\sqrt{2}}\right).
 $$
+
+For example, at $k=1$, about $0.6827$ of Gaussian observations lie within one standard deviation of the mean, while about $0.3173$ lie outside it. These are probabilities for **both** sides together; $\tfrac12\operatorname{erfc}(1/\sqrt{2})\approx0.1587$ is the probability in just the right tail beyond a z-score of $1$.
 
 Because a continuous random variable assigns probability zero to any single point, using $<$ instead of $\leq$, or $>$ instead of $\geq$, does not change these probabilities.
 
