@@ -13,9 +13,10 @@ This assignment covers Lectures 12–16 from Weeks 7–9. It contains **five que
 - Show the main steps in your reasoning. A correct numerical answer without supporting work may receive only partial credit.
 - Unless explicitly stated otherwise, **compute** means work through the steps by hand. Show the algebra, differentiation, and probability calculations. You may use an arithmetic calculator to evaluate expressions after setting them up, but do not use code or a symbolic calculator to do the derivations.
 - There is **no coding question** in this assignment. Use natural logarithms throughout; information quantities are measured in nats.
-- Treat observations as conditionally independent given the model parameter where the question states this assumption. State any additional assumption you use.
-- Submit a legible PDF on Gradescope and link each answer to its question.
-- Please do your best to solve the questions without relying on an LLM. The goal is to be able to explain and apply the same ideas independently in a short follow-up quiz.
+- Treat observations as conditionally independent given the model parameter where the question states this assumption. State any additional assumptions you use.
+- Submit the assignment on Gradescope as a PDF using the link on the course website or in the syllabus.
+- **Please link your answers to the questions on Gradescope when submitting your PDF - This helps us save a lot of time while grading around 40 papers.**
+- **Please do your best to not rely on any LLM (eg ChatGPT) to solve these questions.**
 
 ## Questions
 
