@@ -41,10 +41,11 @@ parts:
         title: Week 8
         sections:
           - file: lectures/week8/lecture-14-bayesian-conjugacy
+          - file: lectures/week8/lecture-15-bayesian-ht
       - file: lectures/week9/index
         title: Week 9
         sections:
-          - file: lectures/week9/lecture-14-probabilistic-graphical-models
+          - file: lectures/week9/lecture-16-probabilistic-graphical-models
   - caption: Code
     chapters:
       - file: codes/intro-to-python

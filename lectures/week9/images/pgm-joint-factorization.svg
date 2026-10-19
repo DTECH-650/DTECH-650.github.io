@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="420" viewBox="0 0 680 420" role="img" aria-labelledby="title desc">
+  <title id="title">A Bayesian network for faults, alarms, and tickets</title>
+  <desc id="desc">Software bug B and hardware fault F are independent roots. Both point to alarm A, which points to support ticket T.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 1 1 L 11 6 L 1 11 Z" fill="#334155"/>
+    </marker>
+  </defs>
+  <rect width="680" height="420" rx="12" fill="#ffffff"/>
+  <g stroke="#334155" stroke-width="2.5" fill="none" marker-end="url(#arrow)">
+    <path d="M 207 108 L 313 190"/>
+    <path d="M 473 108 L 367 190"/>
+    <path d="M 340 248 L 340 312"/>
+  </g>
+  <g fill="#f8fafc" stroke="#334155" stroke-width="2.5">
+    <circle cx="180" cy="87" r="34"/>
+    <circle cx="500" cy="87" r="34"/>
+    <circle cx="340" cy="214" r="34"/>
+    <circle cx="340" cy="346" r="34"/>
+  </g>
+  <g fill="#0f172a" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <g font-size="26" font-weight="600">
+      <text x="180" y="96">B</text>
+      <text x="500" y="96">F</text>
+      <text x="340" y="223">A</text>
+      <text x="340" y="355">T</text>
+    </g>
+    <g font-size="18" fill="#475569">
+      <text x="180" y="37">Software bug</text>
+      <text x="500" y="37">Hardware fault</text>
+      <text x="436" y="220">Alarm</text>
+      <text x="464" y="352">Support ticket</text>
+    </g>
+    <text x="340" y="404" font-size="19">p(b, f, a, t) = p(b) p(f) p(a | b, f) p(t | a)</text>
+  </g>
+</svg>
