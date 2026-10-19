@@ -323,15 +323,15 @@ After testing, they favor $H_1$ by about 3.22 to 1.
 
 ### 2.4 Bayes factor
 
-Now you might as: **How much did the observations change these odds?** 
+Now we can ask: **How much did the observations change these odds?**
 
-This is where the Bayes factor is helpful. 
-
-To derive it lets first apply Bayes' rule separately to the two hypotheses: 
+The Bayes factor measures this change. To derive it, apply Bayes'
+rule separately to the two hypotheses:
 
 $$
 P(H_j\mid\mathcal D)
-=\frac{p(\mathcal D\mid H_j)P(H_j)}{p(\mathcal D)},
+=
+\frac{p(\mathcal D\mid H_j)P(H_j)}{p(\mathcal D)},
 \qquad j\in\{0,1\}.
 $$
 
@@ -344,71 +344,58 @@ $$
 \frac{P(H_1)}{P(H_0)}.
 $$
 
-The Bayes factor is the multiplier that converts prior odds into posterior odds:
+The left-hand side is the posterior odds. On the right-hand side,
+the prior odds are multiplied by a ratio of hypothesis-specific
+evidences. This ratio is the **Bayes factor**:
 
 $$
-O_{10}^{\mathrm{post}}
-=\mathrm{BF}_{10}\,O_{10}^{\mathrm{prior}}.
+\mathrm{BF}_{10}
+=
+\frac{p(\mathcal D\mid H_1)}{p(\mathcal D\mid H_0)}.
 $$
 
 Therefore,
 
 $$
+O_{10}^{\mathrm{post}}
+=
+\mathrm{BF}_{10}\,O_{10}^{\mathrm{prior}},
+$$
+
+and we can calculate the Bayes factor directly from the odds:
+
+$$
 \boxed{
 \mathrm{BF}_{10}
-=\frac{O_{10}^{\mathrm{post}}}{O_{10}^{\mathrm{prior}}}.
+=
+\frac{O_{10}^{\mathrm{post}}}{O_{10}^{\mathrm{prior}}}.
 }
 $$
 
-It can also be written as a ratio of hypothesis-specific evidences:
+For our engine-start example,
 
 $$
 \mathrm{BF}_{10}
-=\frac{p(\mathcal D\mid H_1)}
-       {p(\mathcal D\mid H_0)}.
+=
+\frac{3.22138}{1.29249}
+\approx2.49.
 $$
 
-Each evidence averages the likelihood over the parameter values allowed by that hypothesis, using its conditional prior.
+The observations multiply the prior odds of $\theta>0.8$ by
+approximately 2.49.
 
-For our region hypotheses, those conditional priors come from
-the original Beta(8,2) prior:
-
-$$
-p(\theta\mid H_1)
-=\frac{p(\theta)}{P(H_1)},
-\qquad 0.8<\theta<1,
-$$
-
-$$
-p(\theta\mid H_0)
-=\frac{p(\theta)}{P(H_0)},
-\qquad 0<\theta\leq0.8,
-$$
-
-and each is zero outside its stated region. Consequently,
-
-$$
-p(\mathcal D\mid H_1)
-=\int_{0.8}^{1}
-\mathcal L(\theta;\mathcal D)p(\theta\mid H_1)\,d\theta,
-$$
-
-$$
-p(\mathcal D\mid H_0)
-=\int_0^{0.8}
-\mathcal L(\theta;\mathcal D)p(\theta\mid H_0)\,d\theta.
-$$
-
-This connects to Lecture 14: evidence is obtained by integrating
-a likelihood–prior product. Here, we calculate it under each hypothesis.
-
-Here is how the Bayes factor helps you answer the question we asked in the beginning of 2.4. 
-
-- $\mathrm{BF}_{10}>1$: the data increase the odds of $H_1$ relative to $H_0$.
-- $\mathrm{BF}_{10}<1$: the data decrease those odds.
+- $\mathrm{BF}_{10}>1$: the observations increase the odds of $H_1$
+  relative to $H_0$.
+- $\mathrm{BF}_{10}<1$: the observations decrease those odds.
 - $\mathrm{BF}_{10}=1$: the odds remain unchanged.
 
+A Bayes factor measures a change in odds, not a posterior probability.
+Here, $\mathrm{BF}_{10}\approx2.49$, while
+$P(H_1\mid\mathcal D)\approx0.763$.
 
+**Textbook connection:** Bayes Rules!, Section 8.2.1, calculates the
+Bayes factor using posterior and prior odds. Bishop (2006),
+Section 3.4, defines it as a ratio of model evidences. The derivation above shows why these expressions agree.
 
 ### 2.5 Worked example: What did the engine tests change?
 
@@ -491,8 +478,21 @@ or a more extreme result, would be under the null hypothesis.
 
 #### A frequentist test using the same observations
 
-Let $S$ denote the number of successful starts in ten attempts.
-Under our conditionally independent Bernoulli model,
+As in our earlier frequentist tests, we first choose a sample statistic and determine its sampling distribution under the null hypothesis.
+Here, our test statistic is the total number of successful starts,
+
+$$
+S=\sum_{i=1}^{10}X_i.
+$$
+
+Its observed value is $S_{\mathrm{obs}}=9$. 
+
+> Because the outcomes are independent Bernoulli observations under
+a fixed $\theta$, we know the exact sampling distribution of $S$:
+it is binomial. We do not need a Z- or t-statistic.
+
+We also know that our samples are conditionally independent.
+Thus, under a  conditionally independent Bernoulli model,
 
 $$
 S\mid\theta\sim\operatorname{Binomial}(10,\theta).
