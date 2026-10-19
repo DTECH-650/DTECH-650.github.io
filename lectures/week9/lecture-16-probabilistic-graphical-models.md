@@ -81,7 +81,26 @@ $$
 
 This identity does not assume independence. Each new factor can depend on every variable appearing earlier in the chosen order.
 
-A directed graphical model makes a more structured assumption: once a node's parents are known, the other variables earlier in a topological order do not provide additional information about that node. Its joint distribution therefore takes the form
+### The Markov property behind the factorization
+
+A DAG becomes a useful probability model when we make a **local Markov assumption**: once we know a node's parents, learning its other **non-descendants** tells us nothing more about that node. Here, a non-descendant is another node that cannot be reached by following arrows forward from the node. If $\operatorname{nd}(i)$ denotes the indices of the non-descendants of $X_i$, excluding $X_i$ itself, the assumption is
+
+$$
+X_i\perp\!\!\!\perp
+\mathbf X_{\operatorname{nd}(i)\setminus\operatorname{pa}(i)}
+\mid\mathbf X_{\operatorname{pa}(i)}.
+$$
+
+The set difference removes the parents: we **condition on** them rather than claiming independence from them. For a root, the parent set is empty. This is a modeling assumption encoded by the graph, not a claim that any arbitrary collection of measured variables has this independence.
+
+Why does this assumption simplify the chain rule? Choose a topological order, so every parent appears before its child. No earlier node can be a descendant of $X_i$. The earlier nodes consist of its parents and other non-descendants, so the local Markov property gives
+
+$$
+p(x_i\mid x_1,\ldots,x_{i-1})
+=p(x_i\mid\mathbf x_{\operatorname{pa}(i)}).
+$$
+
+Replace each chain-rule factor by this shorter factor. The resulting joint distribution is
 
 $$
 \boxed{
@@ -93,7 +112,9 @@ $$
 
 The product symbol means to multiply one factor for each node. Every variable appears once as the variable being predicted, on the left side of its conditional distribution. It may also appear in the conditioning arguments of its children's factors.
 
-The graph does not replace the joint distribution. It gives a compact recipe for constructing it.
+The graph does not replace the joint distribution. It gives a compact recipe for constructing it: **the Markov assumption removes unnecessary conditioning variables, and the remaining parent-conditioned factors are multiplied**.
+
+You may have seen a *time-series* Markov property such as $p(x_3\mid x_1,x_2)=p(x_3\mid x_2)$ for a chain $X_1\to X_2\to X_3$. That is one special case. The DAG property above also applies to forks, colliders, and networks whose nodes do not represent successive times.
 
 ### Example: faults, an alarm, and a support ticket
 
@@ -513,7 +534,7 @@ X\perp\!\!\!\perp Y\mid\mathbf X_{\mathcal O}
 }.
 $$
 
-This is a guarantee that comes from the graph. Conversely, an active path means the graph does **not** guarantee independence. It does not prove that a particular numerical model has dependence. For example, a conditional distribution might ignore one of its displayed parents, creating an additional independence that the graph does not show.
+This implication is called the **global Markov property**: d-separation reveals conditional independences guaranteed by a distribution that factorizes according to the DAG. The local Markov assumption let us simplify the chain rule into that factorization; d-separation lets us read further consequences from the full graph. Conversely, an active path means the graph does **not** guarantee independence. It does not prove that a particular numerical model has dependence. For example, a conditional distribution might ignore one of its displayed parents, creating an additional independence that the graph does not show.
 
 ### Example: checking every path matters
 
@@ -546,28 +567,23 @@ We can check the paths separately:
 
 For example, observing $M$ gives $X\perp\!\!\!\perp Y\mid M$. But observing $M$ **and** $C$ removes that guarantee, because observing $C$ opens the second path. Adding information does not always preserve conditional independence.
 
-## Local Markov properties and the Markov blanket
+## From the Markov property to the Markov blanket
 
 The word **Markov** here refers to a screening-off property: after we know an appropriate set of variables, some other variables provide no additional information. It does not require a time series.
 
-### Parents screen off non-descendants
+### What parents do, and do not, screen off
 
-The **local Markov property** of a DAG says that a node is conditionally independent of its non-descendants, excluding its parents, given its parents.
-
-Let $\operatorname{nd}(i)$ denote the indices of the other nodes that are not descendants of $X_i$. Then
+The local Markov property introduced above only promises that parents screen off **other non-descendants**. In the fault-and-ticket graph, $T$ has parent $A$, while $B$ and $F$ are non-descendants of $T$. Thus
 
 $$
-X_i\perp\!\!\!\perp
-\mathbf X_{\operatorname{nd}(i)\setminus\operatorname{pa}(i)}
-\mid
-\mathbf X_{\operatorname{pa}(i)}.
+T\perp\!\!\!\perp(B,F)\mid A,
+\qquad
+p(t\mid b,f,a)=p(t\mid a).
 $$
 
-The set difference $\setminus$ means that we remove the parents from the non-descendant set. We do not include $X_i$ itself. A root's parent set is empty, so no conditioning is needed for its corresponding local independence statement.
+This is precisely why the ticket factor in $p(b,f,a,t)$ needs $a$ but not $b$ or $f$. Also, $F$ is a root and $B$ is its non-descendant, so the model assumes $F\perp\!\!\!\perp B$ and uses $p(f)$ rather than $p(f\mid b)$. These are the two simplifications made earlier when we factorized the example joint distribution.
 
-In words, once we know the parents, the remaining non-descendants do not help us predict the node. This is the property used to simplify the chain-rule factorization.
-
-Parents do not generally screen off a node from its **descendants**. If we learn that an alarm occurred, that observation can still change our belief about its parent, even when the parent's own parents are known.
+Parents do not generally screen off a node from its **descendants**. Knowing a fault's parents, if any, does not make the alarm or ticket uninformative about that fault. The local Markov property alone therefore does not isolate a node from *every* other node in the graph.
 
 ### The Markov blanket screens off the rest of the graph
 
