@@ -19,11 +19,11 @@ $$
 
 Thus, $\theta$ is the probability that the engine starts in less than five seconds under the specified testing conditions. Assume that test outcomes are conditionally independent given the same fixed $\theta$.
 
-For this teaching example, we set the target at $\theta_c=0.8$; this is an illustrative requirement, not an externally established engineering standard. 
+For this teaching example, we set the target at $\theta_c=0.8$; this is an illustrative requirement, not an externally established engineering standard.
 
-::: 
+:::
 
-So this leads to the following practically motivated question: 
+So this leads to the following practically motivated question:
 **Guiding question:** What do your test results tell you about the engine's unknown start-success probability, and how much support do they provide for the claim that it exceeds your threshold?
 
 ## Key learning outcomes
@@ -136,7 +136,7 @@ from scipy import stats
 lower, upper = stats.beta.ppf([0.025,0.975],a=17,b=3)
 print(f"95% credible interval: [{lower:.3f},{upper:.3f}]")
 ```
-The input '0.025` and `0.975` are cumulative probabilities. The outputs `lower` and `upper` are possible values of the engines start-success probability $\theta$. 
+The inputs `0.025` and `0.975` are cumulative probabilities. The outputs `lower` and `upper` are possible values of the engine's start-success probability $\theta$.
 
 
 ### 1.3 Interpret the result
@@ -150,7 +150,7 @@ This describes uncertainty about $\theta$. It does not mean that 95% of future e
 
 ![One-step update](images/credible-interval.png)
 
-**Figure 1**: Equal-tailed 95% credible interval of the posterior distribution based on a Beta prior (8,2) and measuring 9 sucesses and 1 failure. 
+**Figure 1**: Equal-tailed 95% credible interval of the posterior distribution based on a Beta prior (8,2) and measuring 9 successes and 1 failure.
 
 ### 1.4 Credible intervals versus confidence intervals
 
@@ -484,7 +484,7 @@ $$
 S=\sum_{i=1}^{10}X_i.
 $$
 
-Its observed value is $S_{\mathrm{obs}}=9$. 
+Its observed value is $S_{\mathrm{obs}}=9$.
 
 > Because the outcomes are independent Bernoulli observations under
 a fixed $\theta$, we know the exact sampling distribution of $S$:
