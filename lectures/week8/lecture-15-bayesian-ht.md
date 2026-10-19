@@ -323,7 +323,7 @@ After testing, they favor $H_1$ by about 3.22 to 1.
 
 ### 2.4 Bayes factor
 
-Now you might as: **How much did the observations change these odds?** 
+Now you might ask: **How much did the observations change these odds?**
 
 This is where the Bayes factor is helpful. 
 
