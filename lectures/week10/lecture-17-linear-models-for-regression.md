@@ -2,31 +2,136 @@
 
 Imagine managing a building and predicting its electricity use for tomorrow. On a mild day, when little heating or cooling is needed, the building might use around 25 kWh. On a hot day, air conditioning might raise that to around 60 kWh. These are illustrative averages and actual use will vary from day to day even at the same temperature.
 
-In Lecture 7, we fitted a Gaussian distribution with **one mean** to a collection of observations. Applied here, that model would give every day the same predicted use, perhaps somewhere between 25 and 60 kWh, whether tomorrow is mild or hot. It can describe variation *around* an overall average, but it cannot use the temperature we already know. The problem is not that the Gaussian distribution is unsuitable; it is that its mean is fixed when the prediction should respond to the input.
+To use temperature in the prediction, we could first try fitting a straight line to past measurements. We need a way to decide which line fits better: one candidate might be close on mild days but far off on hot days, while another might make smaller errors overall. **Least squares** gives us a rule for making that choice. We will build the rule from individual prediction errors before introducing any probability model.
 
-We therefore model electricity use **conditional on temperature**. A mild day and a hot day can have different predicted means, while the Gaussian distribution still describes the day-to-day variation around each prediction. The Gaussian model from Lecture 12 supplies the probability distribution; a weighted combination of functions of temperature supplies the input-dependent mean. When we fit those weights by maximum likelihood, the resulting rule is **least squares**.
+After defining the least-squares estimator, we will ask why squared errors are useful here. A conditional Gaussian model provides a probabilistic answer: under independent, common-variance Gaussian noise, the weights found by maximum likelihood are the **same weights** found by least squares. We will then allow the predicted mean to curve with temperature using basis functions, while keeping the same fitting principle.
 
 :::{admonition} Guiding question
 :class: tip
 
-How does a Gaussian model for an outcome *given its input* turn regression into a maximum-likelihood problem, and when can we solve for its weights exactly?
+What does a least-squares estimator actually do, why does Gaussian maximum likelihood give the same answer under certain assumptions, and how can we calculate that answer for a flexible regression model?
 :::
 
 ## Learning outcomes
 
 After completing this lecture, you should be able to:
 
-1. Understand the conditional Gaussian regression model, including the roles of $\mathbf w$ and the precision $\beta$.
-2. Connect its input-dependent mean to the Gaussian exponential-family form from Lecture 12.
-3. Distinguish linearity in the weights from linearity in the inputs, and construct a design matrix from chosen basis functions.
-4. Derive the squared-error objective from the Gaussian log-likelihood and obtain the normal equations.
-5. State when the closed-form solution exists and explain why a perfect training fit is not necessarily a good predictive model.
+1. Build the least-squares estimator from predictions, residuals, and a total squared-error score.
+2. Calculate the straight-line least-squares slope and intercept, and distinguish the estimator from a way of computing it.
+3. State the assumptions under which the least-squares and Gaussian maximum-likelihood weights are the same.
+4. Connect the conditional Gaussian to Lecture 12's exponential-family form, then construct nonlinear basis functions and a design matrix.
+5. Derive the normal equations for the least-squares weights and state when a unique closed-form solution exists.
 
 ## Notation
 
 We will use $Y$ for the random target and $y$ for an observed value. Earlier lectures sometimes called the same target $T$ and its observed value $t$. An input is $\mathbf x\in\mathbb R^D$, and the training data are $\mathcal D=\{(\mathbf x_n,y_n)\}_{n=1}^N$. The inputs and observed targets are given and the weights $\mathbf w$ and noise precision $\beta$ are unknown parameters, not random variables in the frequentist fit below.
 
-## From an exponential-family Gaussian to regression
+## What is the least-squares estimator?
+
+Suppose our data consist of observed input–target pairs $(x_n,y_n)$. For now, let $x_n$ be one input, such as temperature, and choose a straight-line prediction rule
+
+$$
+\widehat y_n=f(x_n;\mathbf w)=w_0+w_1x_n,
+$$
+
+where $w_0$ is the intercept and $w_1$ is the slope. At this point we have chosen the **shape** of the model, but not the values of its weights. Different choices of $(w_0,w_1)$ give different lines and different predictions.
+
+### Turn prediction errors into one score
+
+For each observation, compare what happened with what the line predicted. The difference
+
+$$
+r_n(\mathbf w)=y_n-\widehat y_n
+=y_n-(w_0+w_1x_n)
+$$
+
+is its **residual**. A positive residual means the line predicted too little; a negative residual means it predicted too much. Adding the raw residuals is a poor measure of fit because positive and negative errors can cancel. For example, errors of $+1$ and $-1$ add to zero even though neither prediction was correct.
+
+Least squares **squares each residual and adds the results**. Squaring makes every contribution nonnegative and makes a large error count more than a small one. We write the total as
+
+$$
+E_D(\mathbf w)
+=\frac12\sum_{n=1}^{N}r_n(\mathbf w)^2
+=\frac12\sum_{n=1}^{N}
+\left[y_n-(w_0+w_1x_n)\right]^2.
+$$
+
+The factor $1/2$ is only for convenience when we differentiate later: multiplying every candidate's score by the same positive number cannot change which candidate has the smallest score. Squared error is a **choice of fitting criterion**, not yet a consequence of assuming a probability distribution.
+
+Consider three observations: $(0,1)$, $(1,2)$, and $(2,2)$. The candidate line $f(x)=1+x$ predicts $(1,2,3)$, so its residuals are $(0,0,-1)$ and its *sum* of squared residuals is $1$. The line $f(x)=1+x/2$ predicts $(1,1.5,2)$, giving residuals $(0,0.5,0)$ and a smaller squared-error sum of $0.25$. With the factor $1/2$, their $E_D$ scores are $0.5$ and $0.125$, respectively. Either way, the second line fits these three points better **by the least-squares criterion**. This comparison does not yet establish that it is the *best* line; we must consider all possible intercepts and slopes.
+
+### Define the estimator
+
+The **least-squares estimator (LSE)** is the rule that selects the weights with the smallest total squared-error score:
+
+$$
+\boxed{
+\widehat{\mathbf w}_{\mathrm{LS}}
+=\mathop{\arg\min}_{\mathbf w}E_D(\mathbf w).
+}
+$$
+
+The notation $\arg\min_{\mathbf w}E_D(\mathbf w)$ means “find the *values of the weights* at which $E_D$ is smallest.” The result $\widehat{\mathbf w}_{\mathrm{LS}}$ is an **estimate** because it is calculated from the observed sample; another sample may give different fitted weights. For the straight-line model, this is called **ordinary least squares (OLS)**: each observation contributes one unweighted squared residual.
+
+The definition tells us *which weights we want*. It does not specify *how* to find them. A straight-line formula, the matrix normal equations later in this lecture, and gradient descent in Lecture 18 are different calculation methods for the same least-squares goal. We can define this estimator without a Gaussian assumption.
+
+### Find the best straight line
+
+For the straight-line model, we can calculate the LSE by setting the derivatives of $E_D$ with respect to $w_0$ and $w_1$ to zero. The first derivative gives
+
+$$
+\frac{\partial E_D}{\partial w_0}
+=-\sum_{n=1}^{N}(y_n-w_0-w_1x_n)=0
+\quad\Longrightarrow\quad
+w_0=\bar y-w_1\bar x,
+$$
+
+where $\bar x=N^{-1}\sum_n x_n$ and $\bar y=N^{-1}\sum_n y_n$ are the sample means. The fitted line therefore passes through $(\bar x,\bar y)$. The second derivative gives
+
+$$
+\frac{\partial E_D}{\partial w_1}
+=-\sum_{n=1}^{N}x_n(y_n-w_0-w_1x_n)=0.
+$$
+
+Substitute $w_0=\bar y-w_1\bar x$ into this second equation:
+
+$$
+0=\sum_{n=1}^{N}x_n
+\left[(y_n-\bar y)-w_1(x_n-\bar x)\right].
+$$
+
+The centered values satisfy $\sum_n(y_n-\bar y)=0$ and $\sum_n(x_n-\bar x)=0$. We may therefore replace $x_n$ in this sum by $x_n-\bar x$ without changing its value. Moving the term containing $w_1$ to the other side gives
+
+$$
+w_1\sum_{n=1}^{N}(x_n-\bar x)^2
+=\sum_{n=1}^{N}(x_n-\bar x)(y_n-\bar y).
+$$
+
+If the $x_n$ values are not all equal, the sum on the left multiplying $w_1$ is positive, and we obtain the familiar straight-line solution
+
+$$
+\boxed{
+\widehat w_1
+=\frac{\sum_{n=1}^{N}(x_n-\bar x)(y_n-\bar y)}
+{\sum_{n=1}^{N}(x_n-\bar x)^2},
+\qquad
+\widehat w_0=\bar y-\widehat w_1\bar x.
+}
+$$
+
+For the three observations above, $\bar x=1$ and $\bar y=5/3$. The slope's numerator is $(-1)(-2/3)+0+(1)(1/3)=1$, and its denominator is $(-1)^2+0+1^2=2$. Thus $\widehat w_1=1/2$ and $\widehat w_0=5/3-1/2=7/6$. The best-fitting line by this criterion is $\widehat f(x)=7/6+x/2$. Notice that the earlier candidate $1+x/2$ had the same slope but a different intercept: it was *better* than the first candidate, but not the least-squares optimum.
+
+~~~{figure} images/least-squares-residuals.svg
+:name: least-squares-residuals
+:alt: Three observed targets marked as black circles, their predictions on a blue least-squares line marked as squares, and signed residuals shown as orange vertical dashed segments.
+:width: 900px
+
+The black points are the observed target values—the “ground truth” for these three observations, **not** the unknown noise-free relationship. Blue squares show what the least-squares line predicts at the same inputs. The orange segments are the signed residuals $r_n=y_n-\widehat y_n$: $-1/6$, $+1/3$, and $-1/6$. Their squared sum is $1/6$, so the objective with its factor $1/2$ is $E_D(\widehat{\mathbf w}_{\mathrm{LS}})=1/12$.
+~~~
+
+We have now defined the estimator and found it for a straight line. Next, we ask why a Gaussian probability model selects these same weights.
+
+## From a conditional Gaussian to the least-squares estimator
 
 Recall that a Gaussian with mean $m$ and variance $\sigma^2=\beta^{-1}$ has density
 
@@ -51,7 +156,46 @@ $$
 
 Thus $\mathbb E[Y\mid\mathbf x,\mathbf w,\beta]=f(\mathbf x;\mathbf w)$ and $\operatorname{Var}(Y\mid\mathbf x,\mathbf w,\beta)=\beta^{-1}$. The model says that, at a given input, observations fluctuate around the predicted mean with the same variance. This **constant-variance** assumption is useful but may be inappropriate when the spread changes substantially with $\mathbf x$.
 
-This is a conditional density for $Y$ given $\mathbf x$. It does not assign a probability distribution to the inputs themselves. We can therefore fit $p(y\mid\mathbf x,\mathbf w,\beta)$ using observed input-target pairs without specifying $p(\mathbf x)$.
+This is a conditional density for $Y$ given $\mathbf x$. It does not assign a probability distribution to the inputs themselves. We can therefore fit $p(y\mid\mathbf x,\mathbf w,\beta)$ using observed input-target pairs without specifying $p(\mathbf x)$. The function $f$ could be the straight line above or a more flexible prediction function we choose later.
+
+### When Gaussian MLE equals LSE
+
+For the data-set likelihood, assume that the observations have **independent Gaussian errors with the same variance** $1/\beta$. In other words, each target can be written as $y_n=f(\mathbf x_n;\mathbf w)+\epsilon_n$, where the $\epsilon_n$ are independent draws from $\mathcal N(0,\beta^{-1})$. The inputs can differ, so the predicted means $f(\mathbf x_n;\mathbf w)$ can differ too; the same weights $\mathbf w$ determine them all.
+
+Independence lets us multiply the conditional densities:
+
+$$
+\begin{aligned}
+p(\mathbf y\mid\mathbf x_1,\ldots,\mathbf x_N,\mathbf w,\beta)
+&=\prod_{n=1}^{N}p(y_n\mid\mathbf x_n,\mathbf w,\beta)\\
+&=\left(\frac{\beta}{2\pi}\right)^{N/2}
+\exp\!\left\{-\frac{\beta}{2}\sum_{n=1}^{N}
+\left[y_n-f(\mathbf x_n;\mathbf w)\right]^2\right\}.
+\end{aligned}
+$$
+
+The inputs do not have to be identical for this multiplication. Take the logarithm to make the part involving the weights easier to see:
+
+$$
+\log p(\mathbf y\mid\mathbf x_1,\ldots,\mathbf x_N,\mathbf w,\beta)
+=\underbrace{\frac N2\log\beta-\frac N2\log(2\pi)}_{\text{same for every choice of }\mathbf w\text{ if }\beta\text{ is fixed}}
+-\frac{\beta}{2}\sum_{n=1}^{N}
+\left[y_n-f(\mathbf x_n;\mathbf w)\right]^2.
+$$
+
+Compare two candidate weight vectors while holding $\beta>0$ fixed. The bracketed term is the same for both. Only the squared-error sum changes. A *smaller* sum is multiplied by the negative number $-\beta/2$, giving a *larger* log-likelihood. Therefore maximizing this Gaussian likelihood selects exactly the least-squares weights we defined earlier:
+
+$$
+\boxed{
+\widehat{\mathbf w}_{\mathrm{ML}}
+=\mathop{\arg\max}_{\mathbf w}
+p(\mathbf y\mid\mathbf x_1,\ldots,\mathbf x_N,\mathbf w,\beta)
+=\mathop{\arg\min}_{\mathbf w}E_D(\mathbf w)
+=\widehat{\mathbf w}_{\mathrm{LS}}.
+}
+$$
+
+This is an **equality under the stated assumptions**, not a new definition of least squares. We were able to define the LSE without a probability model; the Gaussian model explains why it is also an MLE in this case. Another noise model need not have squared-error MLE weights. This equality identifies the desired weights, but we still need a way to calculate them for more flexible prediction functions.
 
 ### The connection to Lecture 12
 
@@ -94,11 +238,11 @@ The new idea is not a new probability distribution. It is that the Gaussian's na
 
 ## Linear and nonlinear basis functions
 
-The conditional Gaussian model tells us that its mean must be a function of the input, but it does not tell us which function to use. Let us build one gradually, using the building-temperature example.
+Least squares tells us how to score a chosen prediction function, and Gaussian likelihood gives the same fitted weights under the assumptions above. Neither rule decides what *shape* the prediction function should have. Let us build one gradually, using the building-temperature example.
 
 ### Start with a straight line
 
-If $x$ is temperature, the simplest choice is
+Our first least-squares example used the straight-line model
 
 $$
 f(x;\mathbf w)=w_0+w_1x.
@@ -195,44 +339,16 @@ $$
 
 The first column of ones comes from the intercept basis function. The second column lists the three observed input values. If we added a quadratic basis function, the design matrix would gain a third column $(0,1,4)^{\mathsf T}$.
 
-## Why Gaussian maximum likelihood gives least squares
-
-Assume the observed targets are **conditionally independent** given the inputs and parameters, and that each uses the same precision $\beta$. Their conditional likelihood is the product of their Gaussian densities:
-
-$$
-\begin{aligned}
-p(\mathbf y\mid\boldsymbol\Phi,\mathbf w,\beta)
-&=\prod_{n=1}^N p(y_n\mid\mathbf x_n,\mathbf w,\beta)\\
-&=\left(\frac{\beta}{2\pi}\right)^{N/2}
-\exp\!\left\{-\frac{\beta}{2}
-\sum_{n=1}^N
-\left[y_n-\mathbf w^{\mathsf T}\boldsymbol\phi(\mathbf x_n)\right]^2\right\}.
-\end{aligned}
-$$
-
-Conditional independence lets us multiply the densities. It does **not** require the inputs to be identical. Taking a logarithm turns the product into a sum:
-
-$$
-\log p(\mathbf y\mid\boldsymbol\Phi,\mathbf w,\beta)
-=\frac N2\log\beta-\frac N2\log(2\pi)
--\frac\beta2\sum_{n=1}^N
-\left[y_n-\mathbf w^{\mathsf T}\boldsymbol\phi(\mathbf x_n)\right]^2.
-$$
-
-The first two terms do not depend on $\mathbf w$, and $\beta>0$. Consequently, for any fixed $\beta$, maximizing this log-likelihood over $\mathbf w$ is equivalent to minimizing the **sum of squared residuals**:
-
-$$
-\widehat{\mathbf w}_{\mathrm{ML}}
-=\mathop{\arg\min}_{\mathbf w}
-\underbrace{\frac12\sum_{n=1}^N
-\left[y_n-\mathbf w^{\mathsf T}\boldsymbol\phi(\mathbf x_n)\right]^2}_{E_D(\mathbf w)}
-=\mathop{\arg\min}_{\mathbf w}
-\frac12\|\mathbf y-\boldsymbol\Phi\mathbf w\|_2^2.
-$$
-
-The factor $1/2$ makes the derivative tidier; it does not change the minimizing weights. This is why squared-error loss is a natural choice under a Gaussian noise assumption. It is an assumption-driven result, not a claim that squared error is the right loss for every regression problem.
-
 ## Normal equations and the closed-form solution
+
+We have defined the least-squares estimator, seen why it is also a Gaussian MLE under the stated assumptions, and constructed a design matrix for flexible predictions. Now we calculate the estimator from that matrix. Write $\widehat{\mathbf w}$ for the shared least-squares and Gaussian maximum-likelihood weights. The objective from the start of this lecture becomes
+
+$$
+E_D(\mathbf w)
+=\frac12\sum_{n=1}^{N}
+\left[y_n-\mathbf w^{\mathsf T}\boldsymbol\phi(\mathbf x_n)\right]^2
+=\frac12\|\mathbf y-\boldsymbol\Phi\mathbf w\|_2^2.
+$$
 
 To find the minimum, expand the squared norm before differentiating:
 
@@ -262,16 +378,16 @@ At a minimum, each partial derivative is zero. Therefore the fitted weights sati
 
 $$
 \boxed{\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi
-\widehat{\mathbf w}_{\mathrm{ML}}
+\widehat{\mathbf w}
 =\boldsymbol\Phi^{\mathsf T}\mathbf y.}
 $$
 
-Equivalently, $\boldsymbol\Phi^{\mathsf T}(\mathbf y-\boldsymbol\Phi\widehat{\mathbf w}_{\mathrm{ML}})=\mathbf0$. The vector in parentheses contains the fitted **residuals**. Its dot product with every column of $\boldsymbol\Phi$ is zero: no remaining residual pattern points along any chosen basis-function column. This is also the geometric picture of projecting $\mathbf y$ onto the space of predictions that the model can make.
+Equivalently, $\boldsymbol\Phi^{\mathsf T}(\mathbf y-\boldsymbol\Phi\widehat{\mathbf w})=\mathbf0$. The vector in parentheses contains the fitted **residuals**. Its dot product with every column of $\boldsymbol\Phi$ is zero: no remaining residual pattern points along any chosen basis-function column. This is also the geometric picture of projecting $\mathbf y$ onto the space of predictions that the model can make.
 
 If the $M$ columns of $\boldsymbol\Phi$ are linearly independent, $\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi$ is invertible. In that case the unique solution is
 
 $$
-\boxed{\widehat{\mathbf w}_{\mathrm{ML}}
+\boxed{\widehat{\mathbf w}
 =\left(\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi\right)^{-1}
 \boldsymbol\Phi^{\mathsf T}\mathbf y.}
 $$
@@ -280,7 +396,7 @@ Full column rank requires $N\geq M$, but $N\geq M$ alone does not guarantee it: 
 
 ### A small complete fit
 
-Take the three inputs above and observed targets $\mathbf y=(1,2,2)^{\mathsf T}$. For the straight-line basis,
+Return to the same three observations used in the elementary LSE example: $(0,1)$, $(1,2)$, and $(2,2)$. With $\mathbf y=(1,2,2)^{\mathsf T}$ and the straight-line basis,
 
 $$
 \boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi
@@ -290,7 +406,7 @@ $$
 =\begin{pmatrix}5\\6\end{pmatrix}.
 $$
 
-The normal equations are $3w_0+3w_1=5$ and $3w_0+5w_1=6$. Subtracting them gives $2w_1=1$, so $w_1=1/2$ and $w_0=7/6$. Hence
+The normal equations are $3w_0+3w_1=5$ and $3w_0+5w_1=6$. Subtracting them gives $2w_1=1$, so $w_1=1/2$ and $w_0=7/6$—**the same LSE** we calculated with the straight-line formulas. Hence
 
 $$
 \widehat f(x)=\frac76+\frac12x,
@@ -378,14 +494,26 @@ Setting the gradient to zero yields $\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi\
 
 Use $\boldsymbol\phi(x)=(1,x)^{\mathsf T}$ with $(x_1,y_1)=(0,1)$, $(x_2,y_2)=(1,2)$, and $(x_3,y_3)=(2,2)$.
 
-1. Compute $\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi$ and $\boldsymbol\Phi^{\mathsf T}\mathbf y$, then solve for $\widehat{\mathbf w}$.
-2. Find the three residuals and verify that they are orthogonal to both columns of $\boldsymbol\Phi$.
-3. Suppose every training input had instead been $x_n=1$. Why could you no longer determine $w_0$ and $w_1$ separately from these observations?
+1. Use the straight-line least-squares formulas to find the slope and intercept.
+2. Compute $\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi$ and $\boldsymbol\Phi^{\mathsf T}\mathbf y$, then solve the normal equations. Are the fitted weights the same as in part 1?
+3. Find the three residuals and verify that they are orthogonal to both columns of $\boldsymbol\Phi$.
+4. Suppose every training input had instead been $x_n=1$. Why could you no longer determine $w_0$ and $w_1$ separately from these observations?
 
 ::::{admonition} Solution 4
 :class: dropdown
 
-Here $\boldsymbol\Phi=\begin{pmatrix}1&0\\1&1\\1&2\end{pmatrix}$ and $\mathbf y=(1,2,2)^{\mathsf T}$. Matrix multiplication gives
+The sample means are $\bar x=1$ and $\bar y=5/3$. The straight-line formulas give
+
+$$
+\widehat w_1
+=\frac{(-1)(-2/3)+0+(1)(1/3)}{(-1)^2+0+1^2}
+=\frac12,
+\qquad
+\widehat w_0=\bar y-\widehat w_1\bar x
+=\frac53-\frac12=\frac76.
+$$
+
+Now use the matrix method. Here $\boldsymbol\Phi=\begin{pmatrix}1&0\\1&1\\1&2\end{pmatrix}$ and $\mathbf y=(1,2,2)^{\mathsf T}$. Matrix multiplication gives
 
 $$
 \boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi
@@ -395,7 +523,7 @@ $$
 =\begin{pmatrix}5\\6\end{pmatrix}.
 $$
 
-Solving $3w_0+3w_1=5$ and $3w_0+5w_1=6$ gives $\widehat{\mathbf w}=(7/6,1/2)^{\mathsf T}$. The predictions are $(7/6,5/3,13/6)^{\mathsf T}$, so the residuals are $(-1/6,1/3,-1/6)^{\mathsf T}$. Their dot product with the first column, $(1,1,1)^{\mathsf T}$, is $-1/6+1/3-1/6=0$. Their dot product with the second column, $(0,1,2)^{\mathsf T}$, is $0+1/3-2/6=0$.
+Solving $3w_0+3w_1=5$ and $3w_0+5w_1=6$ gives $\widehat{\mathbf w}=(7/6,1/2)^{\mathsf T}$, the same LSE as in part 1. The predictions are $(7/6,5/3,13/6)^{\mathsf T}$, so the residuals are $(-1/6,1/3,-1/6)^{\mathsf T}$. Their dot product with the first column, $(1,1,1)^{\mathsf T}$, is $-1/6+1/3-1/6=0$. Their dot product with the second column, $(0,1,2)^{\mathsf T}$, is $0+1/3-2/6=0$.
 
 If all $x_n=1$, both columns of $\boldsymbol\Phi$ would be columns of ones. Every prediction would equal $w_0+w_1$, so the data could constrain that sum but not the two weights separately. The design matrix would lack full column rank, and $\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi$ would not be invertible.
 ::::
