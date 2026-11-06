@@ -1,7 +1,5 @@
 # Lecture 19 - Linear Discriminant Functions
 
-## Introduction
-
 In Lecture 17, we used a weighted combination of input features to predict a continuous quantity, such as tomorrow's electricity use in kWh. Lecture 18 showed how to fit those weights using gradient descent when we do not want to solve the least-squares problem directly. Now imagine that the building operator needs a different answer: *Will tomorrow be a high-demand day that requires extra capacity, or a normal day?* An exact kWh prediction is no longer the immediate goal. We need to assign one of two **class labels**.
 
 The familiar weighted combination of features can still help. We will interpret its output as a **score** and use a threshold to make a decision. That simple change leads to a new geometric object: a **decision boundary** separating regions assigned to different classes. However, changing what the output *means* does not automatically make the least-squares method from Lecture 17 the best way to learn the weights. We will examine that distinction before briefly meeting a different approach, Fisher's linear discriminant, which looks for a projection that separates the labeled groups.
@@ -9,7 +7,7 @@ The familiar weighted combination of features can still help. We will interpret 
 :::{admonition} Guiding question
 :class: tip
 
-How can a weighted sum of features separate classes, and what does its score tell us—and *not* tell us—about a prediction?
+How can a weighted sum of features separate classes, and what does its score tell us - and *not* tell us - about a prediction?
 :::
 
 ## Learning outcomes
@@ -24,7 +22,7 @@ After completing this lecture, you should be able to:
 
 ## From predicting a number to assigning a class
 
-Let the input vector be $\mathbf x=(x_1,\ldots,x_D)^{\mathsf T}\in\mathbb R^D$. Its components could be scaled temperature, expected occupancy, and other measurements available before the building operator must make a decision. In regression, the target $y$ was a real number, such as $42$ kWh, and a model's output was a prediction of that number. In binary classification, the target is instead a label: $C_1$ for high demand or $C_2$ for normal demand. We can encode these labels as $t=1$ and $t=0$ when we need numbers for calculations, but the labels are still *categories*, not arbitrary quantities along a continuous scale.
+Let the input vector for the day be $\mathbf x=(x_1,\ldots,x_D)^{\mathsf T}\in\mathbb R^D$. Its components could be scaled temperature, expected occupancy, and other measurements available before the building operator must make a decision. In regression, the target $y$ was a real number, such as $42$ kWh, and a model's output during testing/inference was a prediction of that number. In binary classification, the target is instead a label: $C_1$ for high demand or $C_2$ for normal demand. We can encode these labels as $t=1$ and $t=0$ when we need numbers for calculations, but the labels are still *categories*, not arbitrary quantities along a continuous scale.
 
 A **discriminant function** takes $\mathbf x$ and supplies a score used to choose a class. It is a *direct* route from input to decision. Later, we will instead model a conditional class probability such as $p(C_1\mid\mathbf x)$ and use that probability to make a decision. These are related approaches, but a discriminant score by itself need not be a probability.
 
@@ -79,7 +77,7 @@ A binary linear discriminant. The line $a(\mathbf x)=0$ divides the input plane 
 
 ### What do the weights and bias do?
 
-The weight vector controls the boundary's orientation. To see why, take any two points $\mathbf x_A$ and $\mathbf x_B$ on the boundary. Both have score zero, so
+The weight vector $\mathbf w$ controls the boundary's orientation. To see why, take any two points $\mathbf x_A$ and $\mathbf x_B$ on the boundary. Both have score zero, so
 
 $$
 w_0+\mathbf w^{\mathsf T}\mathbf x_A=0,
@@ -113,11 +111,11 @@ $$
 a(\mathbf x)=\widetilde{\mathbf w}^{\mathsf T}\boldsymbol\phi(\mathbf x).
 $$
 
-If $\boldsymbol\phi(\mathbf x)=(1,x_1,\ldots,x_D)^{\mathsf T}$, this is exactly $w_0+\mathbf w^{\mathsf T}\mathbf x$, and the boundary is linear in the original input space. If the basis functions themselves are nonlinear, the boundary may curve in the original input space even though the score remains linear in the weights. For example, with $\boldsymbol\phi(\mathbf x)=(1,x_1^2,x_2^2)^{\mathsf T}$ and $\widetilde{\mathbf w}=(1,-1,-1)^{\mathsf T}$, the boundary is $1-x_1^2-x_2^2=0$, a circle. It is a linear boundary **in feature space**, but not a straight line in the original $(x_1,x_2)$ plane. In the rest of this lecture, “linear decision boundary” refers to the original inputs unless we explicitly say otherwise.
+If $\boldsymbol\phi(\mathbf x)=(1,x_1,\ldots,x_D)^{\mathsf T}$, this is exactly $w_0+\mathbf w^{\mathsf T}\mathbf x$, and the boundary is linear in the original input space (the original data itself, without it being transformed by arbitrary functions). If the basis functions themselves are nonlinear, the boundary may curve in the original input space even though the score remains linear in the weights. For example, with $\boldsymbol\phi(\mathbf x)=(1,x_1^2,x_2^2)^{\mathsf T}$ and $\widetilde{\mathbf w}=(1,-1,-1)^{\mathsf T}$, the boundary is $1-x_1^2-x_2^2=0$, a circle. It is a linear boundary **in feature space**, but not a straight line in the original $(x_1,x_2)$ plane. In general, a “linear decision boundary” refers to the original inputs unless explicitly stated otherwise.
 
 ## More than two classes
 
-Suppose demand is categorized as low, normal, or high, giving three classes rather than two. One possible strategy is to train a separate binary classifier for each class versus all the others. But the classifiers could all reject a new input, or more than one could accept it. Another strategy compares every pair of classes; separate pairwise decisions can also create ambiguous votes. We would prefer one rule that compares all classes together.
+Suppose demand is categorized as low, normal, or high, giving three classes rather than two. One possible strategy is to train a separate binary classifier for each class versus all the others. But the classifiers could all reject a new input, or more than one could accept it. Another strategy compares every pair of classes, but again, separate pairwise decisions can also create ambiguous votes. We would prefer one rule that compares all classes together as follows.
 
 For $K$ classes, give each class $C_k$ its own linear score,
 
@@ -145,23 +143,156 @@ $$
 
 This is again a hyperplane in the original input space. It is part of the *actual* boundary between $C_i$ and $C_j$ only where their tied scores are at least as large as every other class score. Each class's decision region is the set where its score beats all the others.
 
+### A three-class example
+
+Keep $C_1$ as **high** demand and $C_2$ as **normal** demand from the binary example, and add $C_3$ for **low** demand. Suppose $x_1$ and $x_2$ are two nonnegative, scaled inputs, such as temperature and occupancy, and write $s=x_1+x_2$. To make the decision rule easy to see, choose these simple scores:
+
+$$
+a_1(\mathbf x)=s-1,\qquad
+a_2(\mathbf x)=0.3,\qquad
+a_3(\mathbf x)=1-s.
+$$
+
+Each score has the form $w_{k0}+\mathbf w_k^{\mathsf T}\mathbf x$. The normal-demand score happens to be constant because its feature weights are zero. These scores are **illustrative choices, not weights learned from building data**. We evaluate all three for a new day and choose the largest:
+
+| Input $\mathbf x=(x_1,x_2)$ | $s$ | Scores $(a_1,a_2,a_3)$ | Largest score; assigned class |
+| :--- | :--- | :--- | :--- |
+| $(0.2,0.2)$ | $0.4$ | $(-0.6,0.3,0.6)$ | $a_3$; low demand |
+| $(0.55,0.45)$ | $1.0$ | $(0,0.3,0)$ | $a_2$; normal demand |
+| $(1.0,0.8)$ | $1.8$ | $(0.8,0.3,-0.8)$ | $a_1$; high demand |
+
+The boundaries are where the *winning* score changes. Low and normal demand tie when $1-s=0.3$, or $s=0.7$. At that value, the high-demand score is $-0.3$, so the tie really is a boundary between low and normal. Normal and high demand tie when $0.3=s-1$, or $s=1.3$; the low-demand score is then $-0.3$, so this is another real boundary.
+
+There is one more pairwise tie: low and high demand have equal scores when $1-s=s-1$, giving $s=1$. But both scores are then $0$, while the normal-demand score is $0.3$. **Normal demand wins at that tie and for nearby inputs on either side**, so $s=1$ is *not* a decision boundary. This is why we must compare *all* class scores, not just solve every pairwise equality and call each resulting line a boundary.
+
+Putting this together, we assign low demand when $s<0.7$, normal demand when $0.7<s<1.3$, and high demand when $s>1.3$. At $s=0.7$ and $s=1.3$, the two largest scores tie, so we would use the chosen tie rule.
+
+~~~{figure} images/three-class-linear-discriminant.svg
+:name: three-class-linear-discriminant
+:alt: A two-dimensional plot of x1 and x2 with low, normal, and high demand regions separated by solid parallel lines x1 plus x2 equals 0.7 and 1.3. A dashed line at x1 plus x2 equals 1 shows where low and high scores tie but normal has the larger score. Three example inputs are marked in the corresponding regions.
+:width: 900px
+
+The three colored regions show the class selected by the largest score. Solid lines are actual decision boundaries; the dashed line is only a tie between two *nonwinning* scores. The boundaries happen to be parallel in this particular example because all three scores depend on $x_1+x_2$; multiclass linear boundaries need not be parallel in general.
+~~~
+
 When recording the observed class labels for calculations, we often use a **one-hot** target vector. With three classes, examples from $C_1$, $C_2$, and $C_3$ have targets $(1,0,0)^{\mathsf T}$, $(0,1,0)^{\mathsf T}$, and $(0,0,1)^{\mathsf T}$, respectively. The vector is a *coding of the observed label*; it does not mean that an arbitrary vector of discriminant scores is already a vector of class probabilities.
 
 ## Could we reuse least squares?
 
-Lecture 17 showed how to fit linear scores to numerical targets by minimizing squared errors. With one-hot class targets $\mathbf t_n$ and a vector of class scores $\mathbf a(\mathbf x_n)$, we could choose weights to minimize
+The scores above tell us *how to classify once the weights are known*. How should we learn those weights from labeled examples? We already have one tool: Lecture 17 fitted a line to numerical targets by least squares. Since we can encode class labels as numbers, it is reasonable to ask whether the same method will work here.
+
+### Start with two classes
+
+Let $t_n=1$ when training input $\mathbf x_n$ belongs to $C_1$, and $t_n=0$ when it belongs to $C_2$. For the moment, treat those zeros and ones as if they were ordinary regression targets. Using the same feature vector as in Lecture 17, fit the linear output
+
+$$
+r(\mathbf x)=\widetilde{\mathbf w}^{\mathsf T}\boldsymbol\phi(\mathbf x)
+$$
+
+by choosing weights that minimize
+
+$$
+\boxed{
+E_{\mathrm{LS}}(\widetilde{\mathbf w})
+=\frac12\sum_{n=1}^{N}
+\left[t_n-r(\mathbf x_n)\right]^2.
+}
+$$
+
+Each term compares a *number produced by the model* with the numerical code of the observed class. For instance, if $t_n=1$ and the model gives $r(\mathbf x_n)=0.7$, the residual is $1-0.7=0.3$ and this example contributes $\tfrac12(0.3)^2=0.045$ to $E_{\mathrm{LS}}$. For a class-$C_2$ example with $t_n=0$ and $r(\mathbf x_n)=0.2$, the contribution is $\tfrac12(0-0.2)^2=0.02$. The factor $\tfrac12$ has the same calculus convenience as it did in Lecture 17.
+
+Nothing new is required to *compute* the least-squares weights: the design-matrix method from Lecture 17 or gradient descent from Lecture 18 can minimize this objective. What is new is the **interpretation** of the fitted output. A building's electricity use really can be $42$ kWh; a class label cannot be $0.7$ of a class. The value $r(\mathbf x)=0.7$ is, at this stage, a fitted numerical score.
+
+### Turn the fitted output into a decision
+
+Because $0.5$ lies halfway between the codes $0$ and $1$, a natural decision rule is to choose the *closer code*. For a fitted output $r$, the squared distance to code $1$ is no larger than the squared distance to code $0$ precisely when
+
+$$
+(r-1)^2\leq(r-0)^2
+\quad\Longleftrightarrow\quad
+r^2-2r+1\leq r^2
+\quad\Longleftrightarrow\quad
+r\geq0.5.
+$$
+
+Thus the classification rule is
+
+$$
+\widehat C(\mathbf x)=
+\begin{cases}
+C_1, & r(\mathbf x)\geq0.5,\\
+C_2, & r(\mathbf x)<0.5.
+\end{cases}
+$$
+
+This threshold is a convention based on the chosen codes; it does **not** prove that $r(\mathbf x)$ is a probability. It also matches the zero-threshold discriminant from earlier in the lecture. Define $a(\mathbf x)=r(\mathbf x)-0.5$. Then $r(\mathbf x)\geq0.5$ is exactly the same condition as $a(\mathbf x)\geq0$, and the boundary is the set where $r(\mathbf x)=0.5$.
+
+Consider just two training examples: $(x,t)=(0,0)$ and $(1,1)$. The line $r(x)=x$ fits both exactly, so it has zero training squared error. It places the class boundary at $x=0.5$. But at the new input $x=2$, it outputs $r(2)=2$. The decision rule still assigns $C_1$, yet a probability of $2$ is impossible.
+
+~~~{figure} images/least-squares-binary-classification.svg
+:name: least-squares-binary-classification
+:alt: Plot of the fitted line r(x)=x through binary labels at x=0 and x=1. A horizontal threshold at 0.5 makes a decision boundary at x=0.5. At x=2, the fitted value is 2, outside the valid probability range from 0 to 1.
+:width: 820px
+
+The threshold converts a fitted number into a class decision. The line fits the two coded labels perfectly, but its output at $x=2$ cannot be read as a class probability.
+~~~
+
+### Why this first attempt is tempting, and where it falls short
+
+There is a genuine reason to try squared error, beyond having learned how to minimize it. Let $T$ be a random binary label, with $T=1$ for $C_1$, and suppose the *true* conditional probability at a particular input is $q(\mathbf x)=P(T=1\mid\mathbf x)$. At that input, the conditional mean of the label is
+
+$$
+\mathbb E[T\mid\mathbf x]
+=1\cdot q(\mathbf x)+0\cdot[1-q(\mathbf x)]
+=q(\mathbf x).
+$$
+
+If we could choose a separate prediction $r$ for this one input using the entire population, its expected squared error would be
+
+$$
+\begin{aligned}
+\mathbb E[(T-r)^2\mid\mathbf x]
+&=q(\mathbf x)(1-r)^2+[1-q(\mathbf x)](0-r)^2\\
+&=[r-q(\mathbf x)]^2+q(\mathbf x)[1-q(\mathbf x)].
+\end{aligned}
+$$
+
+The second term does not depend on $r$, and the squared first term is smallest when $r=q(\mathbf x)$. So, **in this idealized population calculation**, squared error favors the true class probability. That explains why regression on zero-one labels can sometimes be useful.
+
+Our fitted line is not that idealized calculation. We have only a finite sample, and one set of linear weights must serve *all* inputs. A straight line is also free to go below $0$ or above $1$, as the figure shows. Thus least squares does not guarantee that its scores are valid probabilities, even though the population-level squared-error target is a conditional probability.
+
+There is another mismatch: least squares measures how close the scores are to the *numerical codes*, whereas classification accuracy asks only whether each score falls on the correct side of the threshold. The two criteria can prefer different weights. Consider three labeled examples $(x,t)=(0,0),(1,1),(2,1)$ and two candidate lines:
+
+| Candidate | Outputs at $x=0,1,2$ | Sum of squared errors | Correct classes using $0.5$ |
+| :--- | :--- | :--- | :--- |
+| $r_A(x)=x$ | $(0,1,2)$ | $0^2+0^2+(-1)^2=1$ | $3$ out of $3$ |
+| $r_B(x)=0.2+0.4x$ | $(0.2,0.6,1.0)$ | $(-0.2)^2+(0.4)^2+0^2=0.20$ | $3$ out of $3$ |
+
+The table reports the *sum* of squared errors, before the factor $\tfrac12$ in $E_{\mathrm{LS}}$. Including that factor would give $0.5$ for A and $0.10$ for B, without changing which is smaller. Both lines classify every training example correctly. Among these two candidates, least squares prefers $r_B$ because its *numerical predictions* are closer to the codes. In particular, $r_A(2)=2$ is penalized for being far above the target $1$, even though it is on the correct side of the decision boundary. This does not make squared error useless; it shows that it is solving a different optimization problem from “minimize the number of wrong class decisions.”
+
+~~~{figure} images/least-squares-classification-objectives.svg
+:name: least-squares-classification-objectives
+:alt: Side-by-side plots of two linear score functions for the same three binary-labeled examples. Both achieve three correct classifications, but the longer residual for candidate A makes its sum of squared errors larger than candidate B's.
+:width: 900px
+
+Two lines can make the same class decisions yet receive different least-squares scores. The dashed vertical segments show their numerical residuals from the coded targets.
+~~~
+
+### Extending the idea to more classes
+
+For $K$ classes, use the one-hot target vector $\mathbf t_n=(t_{n1},\ldots,t_{nK})^{\mathsf T}$ introduced above. Here $t_{nk}=1$ for the observed class of example $n$, and $0$ for its other classes. Fit one linear output $a_k(\mathbf x)$ for each class and collect them into $\mathbf a(\mathbf x)=(a_1(\mathbf x),\ldots,a_K(\mathbf x))^{\mathsf T}$. The least-squares objective becomes
 
 $$
 E_{\mathrm{LS}}
 =\frac12\sum_{n=1}^{N}
-\left\|\mathbf t_n-\mathbf a(\mathbf x_n)\right\|^2.
+\left\|\mathbf t_n-\mathbf a(\mathbf x_n)\right\|^2
+=\frac12\sum_{n=1}^{N}\sum_{k=1}^{K}
+\left[t_{nk}-a_k(\mathbf x_n)\right]^2.
 $$
 
-This is the same least-squares idea applied to coded class labels: find scores numerically close to each target vector, then select the class with the largest fitted score. A design matrix and the normal-equation machinery from Lecture 17 can compute such a fit. This is a legitimate way to build a classifier, but the fitting objective is asking the scores to imitate the **numbers used for the coding**, rather than directly asking for well-separated classes.
+The double sum simply squares the error in **every class score for every training example**. At prediction time we choose the class with the largest fitted score, as in the preceding section. For example, the score vector $(-0.2,1.3,0.4)^{\mathsf T}$ chooses $C_2$, but it is not a valid probability vector: it contains a negative component, another component greater than $1$, and its components do not add to $1$.
 
-For two classes, we could instead encode $C_1$ as $t=1$ and $C_2$ as $t=0$, fit a scalar regression output $r(\mathbf x)$, and predict $C_1$ when $r(\mathbf x)\geq0.5$. This is the same zero-threshold rule as before if we define the discriminant score $a(\mathbf x)=r(\mathbf x)-0.5$. The threshold changes only because the numerical label coding has changed.
-
-The limitation becomes clear in a tiny example. Suppose two training cases are $(x,t)=(0,0)$ and $(1,1)$. The least-squares line $r(x)=x$ fits both exactly. At $x=2$, however, it returns $r(2)=2$. We can still classify that input as $C_1$, but $2$ cannot be interpreted as the probability of $C_1$. Least squares does not constrain binary outputs to $[0,1]$, nor multiclass outputs to valid probability vectors. Moreover, Lecture 17's Gaussian-likelihood explanation for squared error is natural for a continuous target, not for a label restricted to a finite set of categories. These observations do not mean least squares *never* classifies well; they tell us why it does not by itself solve the probabilistic classification problem.
+We have therefore learned a workable *decision procedure*, not a probabilistic model for the labels. Recall also that Lecture 17 connected squared error to a Gaussian model for a **continuous** target. A binary or one-hot label is not Gaussian. This motivates the next lecture's Bernoulli-based approach: keep the useful linear score, but use a model and fitting objective designed for class probabilities.
 
 ## Fisher's linear discriminant: choose a separating direction
 
@@ -190,9 +321,16 @@ $$
 =\frac{(m_1-m_2)^2}{S_1+S_2}.}
 $$
 
+~~~{figure} images/fisher-projection-number-line.svg
+:width: 100%
+:name: fig-fisher-projection-number-line
+
+The direction $\mathbf w$ turns each two-dimensional observation into a position $z_n$ on a number line. Fisher favors directions for which the projected class means $m_1$ and $m_2$ are far apart while points in each class remain close to their own mean. The shaded ranges illustrate spread; $S_1$ and $S_2$ are **sums of squared deviations**, not the widths of those ranges.
+~~~
+
 The numerator rewards means that are far apart; the denominator penalizes spread within the classes. Fisher chooses a direction that makes this ratio large. Multiplying $\mathbf w$ by a nonzero constant scales both numerator and denominator by the constant squared, so the criterion evaluates the *direction*, not the arbitrary length, of $\mathbf w$.
 
-Choosing that direction gives a one-dimensional projection, **not yet a complete classifier**. We must also choose a threshold on the projected line; equivalently, the threshold supplies a bias in a linear discriminant. Fisher's construction does not, by itself, assign class probabilities. The matrix derivation of its optimal direction and the multiclass extension are beyond the scope of this introductory treatment.
+Choosing that direction gives a one-dimensional projection, **not yet a complete classifier**. We must also choose a threshold on the projected line, or put equivalenty, the threshold supplies a bias in a linear discriminant. Fisher's construction does not, by itself, assign class probabilities. The matrix derivation of its optimal direction and the multiclass extension are beyond the scope of this introductory treatment.
 
 ## Looking ahead
 
