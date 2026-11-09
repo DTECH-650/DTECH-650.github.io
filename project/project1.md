@@ -1,4 +1,4 @@
-# Project 1 — Airfoil Noise: Evidence, Prediction, and Decisions
+# Project - Airfoil Noise: Evidence, Prediction, and Decisions
 
 An engineering team is studying noise from an airfoil. It has two related tasks: predict the measured sound-pressure level for a set of test conditions, and flag conditions likely to produce **high noise**. Before using a new configuration, the team also wants to assess a small, separate quality-assurance audit.
 
