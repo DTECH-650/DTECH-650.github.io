@@ -62,5 +62,5 @@ parts:
       - file: assignments/assignment3
   - caption: Project
     chapters:
-      - file: project1
-      - file: project1-starter
+      - file: project/project1
+      - file: project/project1-starter
