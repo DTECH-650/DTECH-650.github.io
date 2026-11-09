@@ -60,3 +60,7 @@ parts:
       - file: assignments/assignment1
       - file: assignments/assignment2
       - file: assignments/assignment3
+  - caption: Project
+    chapters:
+      - file: project1
+      - file: project1-starter
