@@ -1,5 +1,3 @@
-# Week 11 — Linear Models for Classification
+# Week 11 — No Lectures
 
-This week moves from predicting continuous values to assigning classes. Lecture 19 develops the geometry of linear discriminant functions and introduces Fisher's idea of choosing a projection that separates labeled groups.
-
-- [Lecture 19 — Linear Discriminant Functions](lecture-19-linear-discriminant-functions.md)
+This week mdid not have any lectures to give students time to work on assignment 3 and the follow-up quiz.
