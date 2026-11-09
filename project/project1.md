@@ -1,7 +1,5 @@
 # Project 1 — Airfoil Noise: Evidence, Prediction, and Decisions
 
-*Draft for review; not yet released.*
-
 An engineering team is studying noise from an airfoil. It has two related tasks: predict the measured sound-pressure level for a set of test conditions, and flag conditions likely to produce **high noise**. Before using a new configuration, the team also wants to assess a small, separate quality-assurance audit.
 
 For this project, **125 dB is an illustrative design-screening limit chosen for the exercise**. It is not presented as a legal, medical, or universal engineering safety standard. Define a high-noise result as a measured sound-pressure level **at or above 125 dB**; a result below 125 dB passes the screen.
