@@ -336,47 +336,6 @@ There are two distinct sources of uncertainty:
   and slope exactly. This is represented by the prior and posterior
   distributions over $\mathbf w$.
 
-### 1.4 The simple three-point regression line
-
-Recap: In this lecture, we will use the illustrative observations $(0,1)$, $(1,2)$, and $(2,2)$ from Lecture 17. Thus, we want to refresh our memory on it. These are numerical input–target pairs, not temperatures and electricity bills. Set the observation-noise precision to $\beta=1$ for this example.
-
-With the straight-line model above, the maximum-likelihood weights are the least-squares weights:
-
-$$
-\widehat{\mathbf w}_{\mathrm{ML}}=(7/6,\,1/2)^{\mathsf T},
-\qquad \widehat f_{\mathrm{ML}}(x)=7/6+0.5x.
-$$
-
-![The three observations and the least-squares line.](images/three-points-line.png)
-
-**Figure 2.** The line maximizes the Gaussian likelihood for the three observed points. The fitted weights alone do not tell us how uncertain we are about the intercept and slope.
-
-### 1.5 A prior for the same intercept and slope
-
-A prior distribution over $\mathbf w=(w_0,w_1)^{\mathsf T}$ expresses which lines we consider plausible before incorporating these observations. We choose a Gaussian prior:
-
-$$
-p(\mathbf w)=\mathcal N(\mathbf w\mid\mathbf m_0,\mathbf S_0).
-$$
-
-The two entries of $\mathbf m_0$ give the prior mean intercept and slope. The diagonal of $\mathbf S_0$ gives their variances; its off-diagonal entries describe how the two weights vary together.
-
-For the three-point example we use a **zero-mean isotropic Gaussian**:
-
-$$
-\mathbf m_0=\mathbf 0,\qquad
-\mathbf S_0=\alpha^{-1}\mathbf I_2,\qquad \alpha=1.
-$$
-
-Thus the intercept and slope are independent under the prior, each with mean zero and variance one in these numerical coordinates. The prior mean line is horizontal at zero. Other slopes and intercepts are plausible: zero is the center of the distribution, not a requirement on either weight.
-
-| Precision | What does it control? |
-|---|---|
-| $\alpha$ — prior precision | How closely the plausible **weights** cluster around zero. |
-| $\beta$ — noise precision | How closely the **observations** cluster around a given line. |
-
-We chose both precisions to equal one for this example. They describe different sources of uncertainty.
-
 ## 2. Place a prior on the regression weights
 
 Our next step is to choose a prior over the weights and calculate
@@ -540,11 +499,7 @@ posterior. We will derive this conjugate update in Section 3.
 
 ### 2.3 A simple prior for the worked example
 
-In Section 2.2, we chose a prior for predicting the temperature of a building. The intercept was measured in kWh and the slope in kWh per degree Celsius. We chose
-a different prior variance for each weight because the two weights
-have different meanings and units.
-
-To better understand the effect of the prior, and perform hand computation, let's return to the small numerical example from Lecture 17:
+In Section 2.2, we used building units (kWh and kWh per degree Celsius), so it was natural to choose different prior variances for intercept and slope. To make the Bayesian update easy to compute by hand, we now return to the small numerical example from Lecture 17:
 
 $$
 (x_1,y_1)=(0,1),\qquad
@@ -553,16 +508,27 @@ $$
 $$
 
 We treat these as illustrative numerical values rather than temperatures
-and electricity bills. We use the same straight-line model,
-$f(x;\mathbf w)=w_0+w_1x$, and choose a simple Gaussian prior:
+and electricity bills. With the straight-line model
+$f(x;\mathbf w)=w_0+w_1x$, the maximum-likelihood weights are the least-squares weights:
 
 $$
-\mathbf w\mid\alpha
-\sim \mathcal N(\mathbf 0,\alpha^{-1}\mathbf I_2).
+\widehat{\mathbf w}_{\mathrm{ML}}=(7/6,\,1/2)^{\mathsf T},
+\qquad \widehat f_{\mathrm{ML}}(x)=7/6+0.5x.
 $$
 
-What does this choice say about the two weights? Before seeing the
-three observations, both the intercept and the slope have prior mean
+![The three observations and the least-squares line.](images/three-points-line.png)
+
+**Figure 2.** The line maximizes the Gaussian likelihood for the three observed points. The fitted weights alone do not tell us how uncertain we are about the intercept and slope.
+
+We use this least-squares line as a reference. For the Bayesian fit, we keep the same observations and Gaussian likelihood, fix the noise precision at $\beta=1$, and choose the prior
+
+$$
+\mathbf w \sim \mathcal N(\mathbf 0,\alpha^{-1}\mathbf I_2).
+$$
+
+For this worked example, set $\alpha=1$.
+
+Before seeing the three observations, both the intercept and the slope have prior mean
 zero and variance $1/\alpha$. They are independent under this prior.
 A larger $\alpha$ concentrates the plausible weights closer to zero.
 
@@ -583,9 +549,6 @@ has a nonzero intercept and slope.
 We also set the observation-noise precision to $\beta=1$. Although
 we chose the same numerical value for both precisions, they describe
 different things:
-
-For the hand calculation, we set $\alpha=1$ and $\beta=1$.
-These are two separate modeling choices:
 
 - **Prior precision $\alpha$** controls the spread of the weights
   before we observe the data. Setting $\alpha=1$ gives the intercept
@@ -629,7 +592,7 @@ We have used the input values $0,1,2$, but we have not yet used the
 observed targets $1,2,2$. Those enter in Section 3, when we update
 the weights.
 
-The following figure illustrates how your draw from the prior impacts the slope of the line for the example above. 
+The following figure illustrates how draws from the prior affect both intercept and slope in this example.
 
 
 ![Bayesian regression](images/lecture19-prior-lines.png)
@@ -989,4 +952,3 @@ The prior variance of each weight increases from 1 to 100. The prior now gives m
 ## References
 
 Christopher M. Bishop, *Pattern Recognition and Machine Learning*, Chapter 3, pages 136–142 (especially Section 3.1 and Section 3.1.1).
-
