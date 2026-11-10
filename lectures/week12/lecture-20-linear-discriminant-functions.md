@@ -1,4 +1,4 @@
-# Lecture 19 - Linear Discriminant Functions
+# Lecture 20 - Linear Discriminant Functions
 
 In Lecture 17, we used a weighted combination of input features to predict a continuous quantity, such as tomorrow's electricity use in kWh. Lecture 18 showed how to fit those weights using gradient descent when we do not want to solve the least-squares problem directly. Now imagine that the building operator needs a different answer: *Will tomorrow be a high-demand day that requires extra capacity, or a normal day?* An exact kWh prediction is no longer the immediate goal. We need to assign one of two **class labels**.
 
