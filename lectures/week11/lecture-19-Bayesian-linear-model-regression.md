@@ -1,13 +1,13 @@
 # Lecture 19 - Bayesian Linear Regression
 
-In this lecture we return to our scenario from lecture 17: Building the electricity use for a building. 
+In this lecture we return to our scenario from Lecture 17: predicting electricity use for a building.
 
 
 :::{admonition} Scenario recap linear regression for temperature prediction: 
 
 Temperature prediction: On a mild day, when little heating or cooling is needed, the building might use around 25 kWh. On a hot day, air conditioning might raise that to around 60 kWh. These are illustrative averages and actual use will vary from day to day even at the same temperature.
 
-In last lecture we used the least square and the MLE estimator to solve the problem. In this lecture, we adopt a Bayesian perspective, and argue that we need to consider prior knowledge related to the weights in the linear model, in order to estimate the posterior after seeing the evidence. 
+In the last lecture we used least squares and the MLE estimator to solve the problem. In this lecture, we adopt a Bayesian perspective and incorporate prior knowledge about the weights in the linear model to estimate the posterior after seeing the evidence.
 :::
 
 The guiding question for this lecture is: 
@@ -26,16 +26,16 @@ After completing this lecture, you should be able to:
 
 ## Notation
 
-Just like in lecture 17 and 18 we will use $Y$ for the random target and $y$ for an observed value. In statistics the random target variable $Y$ is also sometimes called dependent variable. An input is $\mathbf x\in\mathbb R^D$ - also called independent variable - and the training data are $\mathcal D=\{(\mathbf x_n,y_n)\}_{n=1}^N$. The inputs and observed targets are given and the weights $\mathbf w$ and noise precision $\beta$ are unknown parameters, not random variables in the frequentist fit below.
+As in Lectures 17 and 18, we use $Y$ for the random target and $y$ for an observed value. In statistics, the random target variable $Y$ is also sometimes called the dependent variable. An input is $\mathbf x\in\mathbb R^D$ (also called an independent variable), and the training data are $\mathcal D=\{(\mathbf x_n,y_n)\}_{n=1}^N$. The inputs and observed targets are given, and the weights $\mathbf w$ and noise precision $\beta$ are unknown parameters, not random variables in the frequentist fit below.
 
 ## 1. Recap: Regression model from Lecture 17
 
-To build intiution about the Bayesian regression model, let us return to the regression model we had build. 
+To build intuition about the Bayesian regression model, let us return to the regression model we had built.
 
 ### 1.1 Formulating the regression model
 
 
-Just in the prior model, we specify temperature as the input $X$ and electricity is our target $Y$. 
+As in the previous model, we specify temperature as the input $X$, and electricity use is our target $Y$.
 We write $x_n$ for the observed temperature on day $n$ and $y_n$ for the electricity use measured that day.
 
 We begin with a straight-line first-order regression model because we assume a linear relationship between input and target:
@@ -46,9 +46,9 @@ $$
 
 where $w_0$ is the intercept and $w_1$ is the slope. Under our zero-mean noise model, this function describes the expected electricity use at temperature $x$, given the weights $\mathbf w$.
 
-Just like in lecture 17, we can also formulate this, using the **general basis function notation**: 
+Just like in Lecture 17, we can also formulate this using **general basis function notation**:
 
-A basis function is a fixed function that transforms an input into a feature used by the regression model. The model multiplies aach feature by a weight and adds the results.
+A basis function is a fixed function that transforms an input into a feature used by the regression model. The model multiplies each feature by a weight and adds the results.
 
 For our straight line, choose
 
@@ -58,7 +58,7 @@ $$
 \phi_1(x)=x.
 $$
 
-We can write the same straight-line linear model model in vector notation: 
+We can write the same straight-line model in vector notation:
 
 $$
 \boldsymbol\phi(x)=
@@ -75,7 +75,7 @@ f(x;\mathbf w)
 w_0+w_1x.
 $$
 
-We could also assume an additional polynominal term and and choose: 
+We could also assume an additional polynomial term and choose:
 $\boldsymbol\phi(x)=(1,x,x^2)^{\mathsf T}$
 
 This would give us the following regression model. 
@@ -88,7 +88,7 @@ When would we do this? For example, if we assume a curved relationship between t
 
 For this lecture, however, we assume only a first-order linear regression model. When we learn the weights, we hold the basis functions fixed. 
 
-## 1.2. The Gaussian Likelihood
+## 1.2 The Gaussian likelihood
 
 The observed electricity $y_n$ can differ from the regression
 function's predicted mean $\mathbb E[Y\mid x,\mathbf w]=f(x;\mathbf w)$. We represent this variation using an additive Gaussian error:
@@ -218,15 +218,15 @@ p(\mathbf y\mid\boldsymbol\Phi,\mathbf w,\beta).
 $$
 
 At fixed $\beta$, weights producing smaller squared residuals
-have a larger likelihood (This is the connection between Gaussian maximum likelihood and least squares established in Lecture 17). 
+have a larger likelihood. This is the connection between Gaussian maximum likelihood and least squares established in Lecture 17.
 
 It measures how well each candidate weight vector accounts for
 the observed targets under our Gaussian sampling model. It is
 not a probability density over the weights.
 
-Figure below, illustrates the Gaussian observation model for electricity use, and the conditional mean for fixed weight vector $\mathbf w$. 
+The figure below illustrates the Gaussian observation model for electricity use and the conditional mean for a fixed weight vector $\mathbf w$.
 
-![Guassian observation model](images/lecture19-conditional-densities.png)
+![Gaussian observation model](images/lecture19-conditional-densities.png)
 
 **Figure:** Gaussian observation model for electricity use.
 The line shows the conditional mean for one fixed weight vector
@@ -344,11 +344,11 @@ $$
 \qquad \widehat f_{\mathrm{ML}}(x)=7/6+0.5x.
 $$
 
-![The three observations and the least-squares line.]()
+![The three observations and the least-squares line.](images/three-points-line.png)
 
 **Figure 2.** The line maximizes the Gaussian likelihood for the three observed points. The fitted weights alone do not tell us how uncertain we are about the intercept and slope.
 
-## 2. A prior for the same intercept and slope
+### 1.5 A prior for the same intercept and slope
 
 A prior distribution over $\mathbf w=(w_0,w_1)^{\mathsf T}$ expresses which lines we consider plausible before incorporating these observations. We choose a Gaussian prior:
 
@@ -381,8 +381,8 @@ how the observations update it.
 
 ### 2.1 From plausible weights to plausible curves
 
-The intercept $\mathcal w_0$ and $\mathcal w_1$ control the shape of the regression model. If $\mathcal w_0$ gets larger the slope moves up. If the slope $\mathcal w_1$ gets larger the line gets steeper. 
-Now, you can also think of a prior over the weights as the uncertainty you have over the shape of the curve. 
+The intercept $w_0$ and slope $w_1$ control the shape of the regression model. If $w_0$ increases, the whole line shifts upward. If $w_1$ increases, the line becomes steeper.
+You can think of a prior over the weights as uncertainty about the shape of the curve.
 
 For our straight-line model,
 
@@ -535,7 +535,7 @@ We use a Gaussian prior because it is mathematically convenient:
 combined with our Gaussian likelihood, it gives a Gaussian
 posterior. We will derive this conjugate update in Section 3.
 
-### 2.3 A simple prior for "simple" 
+### 2.3 A simple prior for the worked example
 
 In Section 2.2, we chose a prior for predicting the temperature of a building. The intercept was measured in kWh and the slope in kWh per degree Celsius. We chose
 a different prior variance for each weight because the two weights
@@ -642,7 +642,7 @@ have not yet been used to update the weights.
 ## 3. Update on our belief in the weights using the observed data
 
 In Section 2.3, we drew three lines from the prior. We used the inputs
-$x=0,1,2$ to draw them, but we did not use the observed targets. Now bring those targets into the picture. The Bayesian update mechanisms starts to work. 
+$x=0,1,2$ to draw them, but we did not use the observed targets. Now bring those targets into the picture. The Bayesian update mechanism starts to work.
 
 | Input $x_n$ | Observed target $y_n$ |
 |---:|---:|
@@ -676,7 +676,7 @@ $$
 choose one of them. The update applies to **every possible intercept
 and slope**, giving us a posterior distribution over regression lines.
 
-### 3.2 Conjugacy and posterior calculation 
+### 3.1 Conjugacy and posterior calculation
 
 Recall conjugacy from Lecture 14: a conjugate update keeps the
 distribution in the same family while changing its parameters.
@@ -745,13 +745,13 @@ $$
 \mathbf m_N=\mathbf S_N\boldsymbol\Phi^{\mathsf T}\mathbf y.
 $$
 
-Next, we we will evaluate these expressions for our three observations and compare the resulting line with the least-squares fit. We will use the simple example from above to do so. The following figure illustrates this: 
+Next, we will evaluate these expressions for our three observations and compare the resulting line with the least-squares fit. We will use the simple example from above to do so. The following figure illustrates this:
 
 ![Bayesian regression](images/lecture19-prior-lines-with-data.png) 
 
 **Figure:** Candidate lines, versus observations. 
 
-### 3.4 Fit the data using Bayesian update 
+### 3.2 Fit the data using Bayesian update
 
 To illustrate the Bayesian fitting, let us return to the three observations $(0,1)$, $(1,2)$, and $(2,2)$.
 We use the same straight-line model as before:
@@ -813,7 +813,7 @@ print("Posterior covariance:")
 print(S_N.round(3))
 ```
 
-The results are as following: 
+The results are as follows:
 
 | Quantity | Prior | Posterior |
 |---|---:|---:|
@@ -950,5 +950,4 @@ The **maximum a posteriori (MAP)** estimate is the weight vector at which the po
 ## References
 
 Christopher M. Bishop, *Pattern Recognition and Machine Learning*, Chapter 3, pages 136–142 (especially Section 3.1 and Section 3.1.1).
-
 
