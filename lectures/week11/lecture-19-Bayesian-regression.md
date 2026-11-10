@@ -12,7 +12,10 @@ In the last lecture we used least squares and the MLE estimator to solve the pro
 
 The guiding question for this lecture is: 
 
-> How can we incorporate prior knowledge in a linear regression model when we estimate the regression weights? 
+:::{admonition} 
+:class: tip 
+How can we incorporate prior knowledge in a linear regression model when we estimate the regression weights? 
+:::
 
 ## Learning outcomes
 
@@ -945,6 +948,42 @@ At $x=0$ we can read the intercepts directly: the least-squares estimate is $7/6
 The **maximum a posteriori (MAP)** estimate is the weight vector at which the posterior density is largest. For this Gaussian posterior, the mode and mean coincide, so the solid line is also the MAP line. If we make the prior progressively broader ($\alpha\to 0$) while keeping $\beta$ fixed, the MAP weights approach the least-squares weights. This works here because the two columns of $\boldsymbol\Phi$ are linearly independent.
 
 **Check your understanding:** If someone reported only the line $0.8+0.6x$, what would you still want to know? Use one entry of the posterior covariance matrix to explain what the line alone leaves out.
+
+
+## Practice exercises
+
+Use the same three observations throughout: $(0,1)$, $(1,2)$, and $(2,2)$. The model is $f(x;\mathbf w)=w_0+w_1x$, with independent Gaussian observation errors and fixed noise precision $\beta=1$.
+
+### 1. Which line does the likelihood favor?
+
+Consider two candidate lines: $f_A(x)=1+x$ and $f_B(x)=1$. Both give the same mean at $x=0$. Before calculating, which do you expect the observations to favor? For each line, calculate its three fitted means and its sum of squared residuals. Does the line with the higher likelihood need to pass through every point?
+
+:::{admonition} Solution 1
+:class: dropdown
+
+Line A gives means $(1,2,3)$ and residuals $(0,0,-1)$, so its sum of squared residuals is 1. Line B gives means $(1,1,1)$ and residuals $(0,1,1)$, so its sum is 2. At the same noise precision, the smaller sum gives line A the higher Gaussian likelihood. It misses the last point, but fits the three observations better overall. This comparison uses only the likelihood.
+:::
+
+### 2. What does the posterior tell us beyond a fitted line?
+
+With the prior $\mathbf w\sim\mathcal N(\mathbf 0,\mathbf I_2)$, the posterior mean is $(0.8,0.6)^{\mathsf T}$. Use it to find the posterior mean line's value at $x=1$. The observed target there is 2. Does the difference mean the update was calculated incorrectly? The posterior covariance between intercept and slope is $-0.2$: explain how an increase in the intercept could be offset by a change in slope at this input.
+
+:::{admonition} Solution 2
+:class: dropdown
+
+At $x=1$, the posterior mean line gives $0.8+0.6=1.4$. The observed target is 0.6 above it. The line summarizes our estimate of the conditional mean; an individual observation can differ from it even if the weights were known. At this input the line height is $w_0+w_1$, so raising the intercept by 0.1 and lowering the slope by 0.1 leaves the height unchanged. The negative covariance tells us that higher intercepts tend to accompany lower slopes among plausible lines. It does not require an exact offset in every draw.
+:::
+
+### 3. What happens if we broaden the prior?
+
+In the lecture's Python example, change only the prior precision from `alpha = 1.0` to `alpha = 0.01`. Before running the code, predict whether the posterior mean line will move closer to the prior mean line or to the least-squares line. Rerun the update and compare the new weights with the least-squares weights $(7/6,1/2)^{\mathsf T}$. Why is it important to leave `beta` unchanged for this comparison?
+
+:::{admonition} Solution 3
+:class: dropdown
+
+The prior variance of each weight increases from 1 to 100. The prior now gives more similar density to candidate weights near the least-squares solution, so the likelihood has more influence on the fit. The posterior mean changes from $(0.800,0.600)^{\mathsf T}$ to approximately $(1.160,0.503)^{\mathsf T}$, close to the least-squares weights $(1.167,0.500)^{\mathsf T}$. Keeping $\beta$ fixed keeps the assumed observation noise and the likelihood unchanged, so we can attribute the difference to the prior.
+:::
+
 
 
 ## References
