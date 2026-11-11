@@ -12,6 +12,8 @@ In Lecture 17, we fitted the weights by least squares. Here we ask how much unce
 
 The guiding question for this lecture is: 
 
+
+:::{admonition} Guiding Question
 :class: tip 
 How can we incorporate prior knowledge in a linear regression model when we estimate the regression weights? 
 :::
