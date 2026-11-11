@@ -3,11 +3,11 @@
 In this lecture we return to our scenario from Lecture 17: predicting electricity use for a building.
 
 
-:::{admonition} Scenario recap linear regression for temperature prediction: 
+:::{admonition} Scenario: Predicting building electricity use from temperature
 
-Temperature prediction: On a mild day, when little heating or cooling is needed, the building might use around 25 kWh. On a hot day, air conditioning might raise that to around 60 kWh. These are illustrative averages and actual use will vary from day to day even at the same temperature.
+On a mild day, a building might use around 25 kWh; on a hot day, air conditioning might raise that to 60 kWh. Actual use can vary even on days with the same temperature.
 
-In the last lecture we used least squares and the MLE estimator to solve the problem. In this lecture, we adopt a Bayesian perspective and incorporate prior knowledge about the weights in the linear model to estimate the posterior after seeing the evidence.
+In Lecture 17, we fitted the weights by least squares. Here we ask how much uncertainty remains about the intercept and slope after observing the data.
 :::
 
 The guiding question for this lecture is: 
@@ -25,11 +25,11 @@ After completing this lecture, you should be able to:
 2. Explain why this prior is conjugate.
 3. Calculate and interpret the posterior mean and covariance. 
 4. Explain the connection between a broad prior and the least-squares estimate.
-5. Distinguish uncertainty about the fitted mean from uncertainty about a new observation.
+5. Use the marginal posterior of a regression weight to calculate and interpret a credible interval and a threshold probability.
 
 ## Notation
 
-As in Lectures 17 and 18, we use $Y$ for the random target and $y$ for an observed value. In statistics, the random target variable $Y$ is also sometimes called the dependent variable. An input is $\mathbf x\in\mathbb R^D$ (also called an independent variable), and the training data are $\mathcal D=\{(\mathbf x_n,y_n)\}_{n=1}^N$. The inputs and observed targets are given, and the weights $\mathbf w$ and noise precision $\beta$ are unknown parameters, not random variables in the frequentist fit below.
+As in Lectures 17 and 18, we use $Y$ for the random target and $y$ for an observed value. In statistics, the random target variable $Y$ is also sometimes called the dependent variable. An input is $\mathbf x\in\mathbb R^D$ (also called an independent variable), and the training data are $\mathcal D=\{(\mathbf x_n,y_n)\}_{n=1}^N$. Throughout this lecture, we treat the noise precision $\beta$ as known and fixed. The regression weights $\mathbf w$ are unknown.
 
 ## 1. Recap: Regression model from Lecture 17
 
@@ -49,11 +49,9 @@ $$
 
 where $w_0$ is the intercept and $w_1$ is the slope. Under our zero-mean noise model, this function describes the expected electricity use at temperature $x$, given the weights $\mathbf w$.
 
-Just like in Lecture 17, we can also formulate this using **general basis function notation**:
+Just like in Lecture 17, we can also formulate this using **general basis function notation**: Recall, that a basis function is a fixed function that transforms an input into a feature used by the regression model. The model multiplies each feature by a weight and adds the results.
 
-A basis function is a fixed function that transforms an input into a feature used by the regression model. The model multiplies each feature by a weight and adds the results.
-
-For our straight line, choose
+Lets' take a simple straight line model, and choose the basis functions as: 
 
 $$
 \phi_0(x)=1,
@@ -61,7 +59,7 @@ $$
 \phi_1(x)=x.
 $$
 
-We can write the same straight-line model in vector notation:
+Then, we can write the same straight-line model in vector notation:
 
 $$
 \boldsymbol\phi(x)=
@@ -78,203 +76,37 @@ f(x;\mathbf w)
 w_0+w_1x.
 $$
 
-We could also assume an additional polynomial term and choose:
-$\boldsymbol\phi(x)=(1,x,x^2)^{\mathsf T}$
+### 1.2 The Gaussian observation model
 
-This would give us the following regression model. 
+In Lecture 17, we fitted a line to predict electricity use from temperature. At a given temperature, the line gives the **expected electricity use**. Actual meter readings can differ even on days with the same temperature.
 
-$$
-f(x;\mathbf w)=w_0+w_1x+w_2x^2.
-$$
-
-When would we do this? For example, if we assume a curved relationship between the electricity and the temperature (but the model remains linear in its unknown weights). 
-
-For this lecture, however, we assume only a first-order linear regression model. When we learn the weights, we hold the basis functions fixed. 
-
-## 1.2 The Gaussian likelihood
-
-The observed electricity $y_n$ can differ from the regression
-function's predicted mean $\mathbb E[Y\mid x,\mathbf w]=f(x;\mathbf w)$. We represent this variation using an additive Gaussian error:
+Suppose day $n$ has temperature $x_n$. For a candidate line with intercept $w_0$ and slope $w_1$, we model that day's electricity use as
 
 $$
-y_n
-=
-\mathbf w^{\mathsf T}\boldsymbol\phi(x_n)+\epsilon_n,
-\qquad
-\epsilon_n\sim\mathcal N(0,\beta^{-1}).
-$$
-
-Just like before, we assume that the errors are independent and have the same variance.
-The parameter $\beta$ is the **noise precision**, or inverse variance:
-
-$$
-\beta=\frac{1}{\sigma^2}.
-$$
-
-A larger $\beta$ means less variation around the regression mean.
-Throughout this lecture, we treat $\beta>0$ as known and fixed,
-and focus on learning the weights $\mathbf w$.
-
-#### The conditional distribution of one observation
-
-Given the input, weights, and noise precision, the target follows
-
-$$
-p(y_n\mid x_n,\mathbf w,\beta)
-=
-\mathcal N\!\left(
-y_n\mid
-\mathbf w^{\mathsf T}\boldsymbol\phi(x_n),
-\beta^{-1}
+Y_n \mid x_n,\mathbf w,\beta
+\sim \mathcal N\!\left(
+\underbrace{w_0+w_1x_n}_{\text{expected electricity use}},
+\underbrace{\beta^{-1}}_{\text{variance}}
 \right).
 $$
 
-Thus, $\mathbf w^{\mathsf T}\boldsymbol\phi(x_n)$ is the conditional
-mean, while $\beta^{-1}$ describes the variation around that mean.
+For example, if the line gives an expected electricity use of 40 kWh at $20^\circ\mathrm{C}$, the Gaussian distribution at that temperature is centered on 40 kWh. We assume the same variance, $\beta^{-1}=\sigma^2$, at every temperature.
 
-For example, if the conditional mean at a particular temperature
-is 60 kWh and the noise standard deviation is 5 kWh, then
+![Gaussian observation model for electricity use](images/lecture19-conditional-densities.png)
 
-$$
-Y_n\mid x_n,\mathbf w,\beta
-\sim\mathcal N(60,25),
-\qquad
-\beta=\frac1{25}.
-$$
+**Figure:** Each sideways curve shows the distribution of meter readings at one temperature for the chosen line. The vertical axis gives electricity use. The horizontal width of each curve shows the density, which is highest at the line.
 
-The mean need not equal the electricity use actually measured
-on a particular day.
-
-#### The likelihood of all observations
-
-Collect the observed targets into the vector
-
-$$
-\mathbf y=
-\begin{pmatrix}
-y_1\\
-\vdots\\
-y_N
-\end{pmatrix}.
-$$
-
-As in Lecture 17, the design matrix contains one row of
-basis-function values for each observed input:
-
-$$
-\boldsymbol\Phi=
-\begin{pmatrix}
-\boldsymbol\phi(x_1)^{\mathsf T}\\
-\vdots\\
-\boldsymbol\phi(x_N)^{\mathsf T}
-\end{pmatrix}.
-$$
-
-With $N$ observations and $M$ basis functions,
-$\boldsymbol\Phi$ is an $N\times M$ matrix. The vector
-$\boldsymbol\Phi\mathbf w$ contains the conditional means
-for all observations.
-
-Conditional independence lets us multiply the Gaussian densities:
-
-$$
-\begin{aligned}
-p(\mathbf y\mid\boldsymbol\Phi,\mathbf w,\beta)
-&=
-\prod_{n=1}^{N}
-\mathcal N\!\left(
-y_n\mid
-\mathbf w^{\mathsf T}\boldsymbol\phi(x_n),
-\beta^{-1}
-\right)\\
-&=
-\left(\frac{\beta}{2\pi}\right)^{N/2}
-\exp\left[
--\frac{\beta}{2}
-\|\mathbf y-\boldsymbol\Phi\mathbf w\|_2^2
-\right].
-\end{aligned}
-$$
-
-Equivalently, this is a multivariate Gaussian density:
-
-$$
-p(\mathbf y\mid\boldsymbol\Phi,\mathbf w,\beta)
-=
-\mathcal N\!\left(
-\mathbf y\mid\boldsymbol\Phi\mathbf w,
-\beta^{-1}\mathbf I_N
-\right).
-$$
-
-Here, $\mathbf I_N$ is the $N\times N$ identity matrix. The covariance
-$\beta^{-1}\mathbf I_N$ expresses independent errors with equal variance.
-
-With the observed data and $\beta$ fixed, this expression is a
-function of the candidate weights. Viewed in this way, it is
-the **likelihood**:
-
-$$
-\mathcal L(\mathbf w;\mathcal D,\beta)
-=
-p(\mathbf y\mid\boldsymbol\Phi,\mathbf w,\beta).
-$$
-
-At fixed $\beta$, weights producing smaller squared residuals
-have a larger likelihood. This is the connection between Gaussian maximum likelihood and least squares established in Lecture 17.
-
-It measures how well each candidate weight vector accounts for
-the observed targets under our Gaussian sampling model. It is
-not a probability density over the weights.
-
-The figure below illustrates the Gaussian observation model for electricity use and the conditional mean for a fixed weight vector $\mathbf w$.
-
-![Gaussian observation model](images/lecture19-conditional-densities.png)
-
-**Figure:** Gaussian observation model for electricity use.
-The line shows the conditional mean for one fixed weight vector
-$\mathbf w$. At three selected temperatures, the Gaussian
-density curves show how electricity use varies around that mean.
-Their common vertical spread illustrates the constant noise
-variance $\beta^{-1}$. The horizontal width of each small density
-curve represents density, not a change in temperature.
+Now suppose we have recorded the temperatures and meter readings for several days. **With these observations fixed, how well does each candidate line account for them?** For each candidate line, we evaluate the Gaussian density at each observed reading. Assuming independent errors, the product of those densities gives the **likelihood** as a function of the weights. Under this Gaussian model, maximizing the likelihood gives the same intercept and slope as minimizing the sum of squared residuals in Lecture 17.
 
 ### 1.3 What changes in the Bayesian approach?
 
-In Lecture 17, maximum likelihood selected the weight vector
-that made the observed data most likely:
+We now combine this likelihood with a prior over the intercept and slope to find which lines remain plausible after observing the data.
 
-$$
-\widehat{\mathbf w}_{\mathrm{ML}}
-=
-\arg\max_{\mathbf w}
-p(\mathbf y\mid\boldsymbol\Phi,\mathbf w,\beta).
-$$
+The MLE fit in  section 1.2. figives us one intercept and one slope by maximaizing the log-likelihood. Given the same observations, which other intercepts and slopes remain plausible?
 
-Under our Gaussian noise model, this is also the least-squares
-estimate. It gives us one fitted regression line:
+Here the unknown is a pair of weights, $\mathbf w=(w_0,w_1)^{\mathsf T}$. Each pair defines one line. We keep the Gaussian observation model from Lecture 17: with the weights fixed, it gives a density for the targets; with the observed targets fixed, the same expression gives the likelihood as a function of the weights. We now add a prior $p(\mathbf w)$ describing which intercepts and slopes we consider plausible together.
 
-$$
-f(x;\widehat{\mathbf w}_{\mathrm{ML}})
-=
-\widehat w_0+\widehat w_1x.
-$$
-
-However, a fitted weight vector alone does not describe how uncertain
-we are about the intercept and slope. With limited observations,
-several different lines may remain plausible.
-
-In Bayesian regression, we retain the same Gaussian likelihood
-but introduce a **prior distribution** over the weights:
-
-$$
-p(\mathbf w).
-$$
-
-This distribution represents our assumptions about plausible
-intercepts and slopes before observing the data used in this update.
-
-We combine the prior with the likelihood using Bayes' rule:
+Let $\mathbf y$ collect the observed targets and let $\boldsymbol\Phi$ be the design matrix with one row $(1,x_n)$ per observation. Bayes’ rule gives
 
 $$
 \boxed{
@@ -311,10 +143,8 @@ $$
 For our straight-line model, this integration is over both
 $w_0$ and $w_1$.
 
-The result of Bayesian inference is therefore a posterior
-distribution over possible intercepts and slopes. Each weight
-vector defines a regression line, so uncertainty about the
-weights also represents uncertainty about the regression line.
+The result of Bayesian inference is therefore a posterior distribution over possible intercepts and slopes. Each weight
+vector defines a regression line, so uncertainty about the weights also represents uncertainty about the regression line.
 
 
 
@@ -327,7 +157,10 @@ $$
 
 We do not draw a new intercept and slope for each day. Instead, the temperatures and errors vary across days, while the same underlying regression relationship applies throughout the dataset.
 
-There are two distinct sources of uncertainty:
+
+
+:::{admonition} Summary of sources of uncertainty
+:class: tip There are two distinct sources of uncertainty:
 
 - **Observation noise:** electricity use can vary even when the
   temperature and regression weights are specified. This is
@@ -336,10 +169,13 @@ There are two distinct sources of uncertainty:
   and slope exactly. This is represented by the prior and posterior
   distributions over $\mathbf w$.
 
-## 2. Place a prior on the regression weights
+We will focus on the uncertainty coming from the weights in this tutorial as that is fundamental for the Bayesian regression modeling. 
+:::
 
-Our next step is to choose a prior over the weights and calculate
-how the observations update it.
+## 2. Priors on the weights for Bayesian regression
+
+Recall from Lecture 14 our discussion on priors. Our next step is to choose a prior over the weights and calculate
+how the observations update it. We make use conjugate priors for our weights. 
 
 ### 2.1 From plausible weights to plausible curves
 
@@ -509,18 +345,14 @@ $$
 
 We treat these as illustrative numerical values rather than temperatures
 and electricity bills. With the straight-line model
-$f(x;\mathbf w)=w_0+w_1x$, the maximum-likelihood weights are the least-squares weights:
+$f(x;\mathbf w)=w_0+w_1x$, the least-squares fit from Lecture 17 is:
 
 $$
-\widehat{\mathbf w}_{\mathrm{ML}}=(7/6,\,1/2)^{\mathsf T},
-\qquad \widehat f_{\mathrm{ML}}(x)=7/6+0.5x.
+\widehat{\mathbf w}_{\mathrm{LS}}=(7/6,\,1/2)^{\mathsf T},
+\qquad \widehat f_{\mathrm{LS}}(x)=7/6+0.5x.
 $$
 
-![The three observations and the least-squares line.](images/three-points-line.png)
-
-**Figure 2.** The line maximizes the Gaussian likelihood for the three observed points. The fitted weights alone do not tell us how uncertain we are about the intercept and slope.
-
-We use this least-squares line as a reference. For the Bayesian fit, we keep the same observations and Gaussian likelihood, fix the noise precision at $\beta=1$, and choose the prior
+We use this MLE estimation with Gaussian likelihood observation as a reference. For the Bayesian fit, we keep the same observations and Gaussian likelihood, fix the noise precision at $\beta=1$, and choose the prior
 
 $$
 \mathbf w \sim \mathcal N(\mathbf 0,\alpha^{-1}\mathbf I_2).
@@ -605,51 +437,32 @@ to the dashed prior mean line. The three observed target values
 have not yet been used to update the weights.
 
 
-## 3. Update on our belief in the weights using the observed data
+## 3. Updating the distribution over the weights
 
-In Section 2.3, we drew three lines from the prior. We used the inputs
-$x=0,1,2$ to draw them, but we did not use the observed targets. Now bring those targets into the picture. The Bayesian update mechanism starts to work.
+In Section 2.3, we drew three intercept–slope pairs from the prior. Each pair defines one line. We now compare those same lines with the observations $(0,1)$, $(1,2)$, and $(2,2)$.
 
-| Input $x_n$ | Observed target $y_n$ |
-|---:|---:|
-| 0 | 1 |
-| 1 | 2 |
-| 2 | 2 |
+![Three lines drawn from the prior with the observed data](images/lecture19-prior-lines-with-data.png)
 
-How do these observations change our beliefs about the intercept and the slope? 
+**Figure:** The colored lines are the same prior draws as in Section 2.3. The black dots show the observed targets.
 
-Consider the observation at $x=2$, where we measured $y=2$.
-The first line in our figure gives a mean of approximately $1.618$
-at this input. The third gives a mean of approximately $-2.228$.
+Consider the observation $(2,2)$. At $x=2$, the first line gives a mean of $1.618$, while the third gives a mean of $-2.228$. Both assume the same noise variance. The observed value $y=2$ is closer to the first line’s mean, so this observation has a higher Gaussian density under the first line.
 
-Under our Gaussian observation model, the value $y=2$ has a higher
-density under the first line: it lies closer to that line's mean.
-This one observation therefore favors the first line over the third.
-The full likelihood makes this comparison using **all three observations**.
-
-Bayes' rule combines that likelihood with the prior:
+The **likelihood** makes this comparison using all three observations. To obtain the **posterior**, we multiply the likelihood by the prior density at each candidate weight pair and normalize:
 
 $$
 p(\mathbf w\mid\mathbf y,\boldsymbol\Phi,\beta)
 \propto
-\underbrace{p(\mathbf y\mid\boldsymbol\Phi,\mathbf w,\beta)}
-_{\text{how well the line fits the observations}}
-\underbrace{p(\mathbf w)}
-_{\text{prior density at those weights}}.
+\underbrace{p(\mathbf y\mid\boldsymbol\Phi,\mathbf w,\beta)}_{\text{likelihood}}
+\underbrace{p(\mathbf w)}_{\text{prior}}.
 $$
 
-> Note: The three lines in the figure are illustrations. We do not have to
-choose one of them. The update applies to **every possible intercept
-and slope**, giving us a posterior distribution over regression lines.
+The three lines illustrate how the likelihood distinguishes between candidates. The update applies to **every** intercept–slope pair. A given pair still defines the same line; what changes is the density assigned to that pair.
 
-### 3.1 Conjugacy and posterior calculation
+### 3.1 Why the posterior is Gaussian
 
-Recall conjugacy from Lecture 14: a conjugate update keeps the
-distribution in the same family while changing its parameters.
-Here, the prior over the weights is Gaussian. The Gaussian
-log-likelihood is quadratic in the weights because the regression
-mean is linear in them. Adding the Gaussian log-prior gives another
-quadratic, so the posterior over the weights is also Gaussian:
+Recall conjugacy from Lecture 14: a Beta prior updated with a Bernoulli likelihood gave a Beta posterior. Here, a Gaussian prior over the weights gives a **Gaussian posterior** because the regression mean is linear in the weights and the observation noise is Gaussian. The log-likelihood and log-prior are both quadratic in the weights, so their sum has the form of a Gaussian log-density.
+
+After $N$ observations, the posterior is
 
 $$
 p(\mathbf w\mid\mathbf y,\boldsymbol\Phi,\beta)
@@ -657,34 +470,23 @@ p(\mathbf w\mid\mathbf y,\boldsymbol\Phi,\beta)
 \mathcal N(\mathbf w\mid\mathbf m_N,\mathbf S_N).
 $$
 
-We therefore need to calculate just two quantities: the updated
-mean vector $\mathbf m_N$ and covariance matrix $\mathbf S_N$.
-The subscript $N$ means that we have incorporated $N$ observations.
+Just as two shape parameters specified the Beta posterior, the mean vector $\mathbf m_N$ and covariance matrix $\mathbf S_N$ specify the entire Gaussian posterior. We can therefore obtain the normalized posterior without calculating the evidence integral separately.
 
-**First, calculate the posterior precision.** Precision is the
-inverse of covariance:
+**Posterior covariance.** It is easiest to write the update in terms of **precision**, the inverse of covariance:
 
 $$
-\boxed{
 \mathbf S_N^{-1}
 =
 \underbrace{\mathbf S_0^{-1}}_{\text{prior precision}}
 +
-\underbrace{\beta\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi}
-_{\text{precision contributed by the observations}}.
-}
+\underbrace{\beta\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi}_{\text{precision contributed by the data}}.
 $$
 
-This equation tells us how the locations of the inputs and the
-observation noise affect what we can learn about the weights.
-For example, if every observation were taken at $x=0$, each model
-mean would equal $w_0$. Those measurements would tell us about
-the intercept, but they would not directly measure the slope.
+The inverse of this matrix is the posterior covariance $\mathbf S_N$. For a given prior and fixed noise precision $\beta$, it depends on **where** we observed the targets. For example, if we measured only at $x=0$, every observation would tell us about the intercept without directly measuring the slope.
 
-**Next, calculate the posterior mean:**
+**Posterior mean.** The observed target values $\mathbf y$ determine how the center of the distribution shifts from its prior mean $\mathbf m_0$:
 
 $$
-\boxed{
 \mathbf m_N
 =
 \mathbf S_N
@@ -693,41 +495,11 @@ $$
 +
 \beta\boldsymbol\Phi^{\mathsf T}\mathbf y
 \right).
-}
 $$
 
-Notice where the measured targets $\mathbf y$ appear: they help
-determine **where the posterior is centered**. With known noise
-precision $\beta$, the posterior covariance depends on where we
-measured and how noisy the measurements are; it does not depend
-on the particular target values we obtained.
+### 3.2 Fitting and interpreting the three-point example
 
-For our worked example, $\mathbf m_0=\mathbf 0$, $\mathbf S_0=\mathbf I_2$,
-and $\beta=1$. The two calculations simplify to
-
-$$
-\mathbf S_N^{-1}=\mathbf I_2+\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi,
-\qquad
-\mathbf m_N=\mathbf S_N\boldsymbol\Phi^{\mathsf T}\mathbf y.
-$$
-
-Next, we will evaluate these expressions for our three observations and compare the resulting line with the least-squares fit. We will use the simple example from above to do so. The following figure illustrates this:
-
-![Bayesian regression](images/lecture19-prior-lines-with-data.png) 
-
-**Figure:** Candidate lines, versus observations. 
-
-### 3.2 Fit the data using Bayesian update
-
-To illustrate the Bayesian fitting, let us return to the three observations $(0,1)$, $(1,2)$, and $(2,2)$.
-We use the same straight-line model as before:
-
-$$
-f(x;\mathbf w)=w_0+w_1x.
-$$
-
-Each row of the design matrix is $(1,x_n)$, and the corresponding
-entry of $\mathbf y$ is the observed target $y_n$. Thus,
+We now apply the update to our three observations using the prior $\mathbf w\sim\mathcal N(\mathbf 0,\mathbf I_2)$ and noise precision $\beta=1$. Each row of the design matrix is $(1,x_n)$:
 
 $$
 \boldsymbol\Phi=
@@ -738,26 +510,14 @@ $$
 \end{pmatrix},
 \qquad
 \mathbf y=
-\begin{pmatrix}1\\2\\2\end{pmatrix}.
+\begin{pmatrix}
+1\\
+2\\
+2
+\end{pmatrix}.
 $$
 
-In Lecture 17, least squares gave an intercept of $7/6$ and a
-slope of $1/2$. Under our Gaussian observation model, these are
-also the maximum-likelihood estimates:
-
-$$
-\widehat{\mathbf w}_{\mathrm{ML}}
-=
-\begin{pmatrix}7/6\\1/2\end{pmatrix}.
-$$
-
-For the Bayesian fit, we keep the same observations and likelihood.
-From Section 2.3, our prior is Gaussian with mean
-$\mathbf m_0=\mathbf 0$ and covariance $\mathbf S_0=\mathbf I_2$
-(prior precision $\alpha=1$). We also fix the observation-noise
-precision at $\beta=1$.
-
-The posterior can be calculated exactly as we will explain later. However, to make it easier for you, please run the following code to get the posterior. Each row of the design matrix is $[1,x_n]$. The first call to `solve` finds the posterior mean; the second obtains the covariance from the precision.
+The following code evaluates the two update equations. Because the prior mean is zero, its contribution to the posterior mean equation is zero; the prior precision still enters the calculation.
 
 ```python
 import numpy as np
@@ -766,151 +526,59 @@ x = np.array([0., 1., 2.])
 y = np.array([1., 2., 2.])
 Phi = np.column_stack((np.ones_like(x), x))
 
-alpha = 1.0
-beta = 1.0
+alpha = 1.0  # prior precision
+beta = 1.0   # observation-noise precision
 I = np.eye(2)
 
 precision = alpha * I + beta * (Phi.T @ Phi)
-m_N = np.linalg.solve(precision, beta * (Phi.T @ y))
 S_N = np.linalg.solve(precision, I)
+m_N = np.linalg.solve(precision, beta * (Phi.T @ y))
 
 print("Posterior mean:", m_N)
-print("Posterior covariance:")
-print(S_N.round(3))
+print("Posterior covariance:\n", S_N.round(3))
 ```
-
-The results are as follows:
 
 | Quantity | Prior | Posterior |
 |---|---:|---:|
-| Mean intercept | 0 | 0.8 |
-| Mean slope | 0 | 0.6 |
+| Mean intercept | 0 | 0.800 |
+| Mean slope | 0 | 0.600 |
 | Intercept variance | 1 | 0.400 |
 | Slope variance | 1 | 0.267 |
-| Covariance between intercept and slope | 0 | −0.200 |
+| Intercept–slope covariance | 0 | −0.200 |
 
+The first two rows give the **posterior mean line**, $f(x;\mathbf m_N)=0.8+0.6x$. We can now compare it with the least-squares line from Lecture 17.
 
-:::{admonition} Calculation by hand
-:class: dropdown
+![Least-squares and posterior mean lines for the same three observations](images/LQ-versus-Bayesian-posterior.png)
 
-**Step 1. Calculate the posterior precision.**
+**Figure:** The dashed orange line is the least-squares fit, $\widehat f_{\mathrm{LS}}(x)=7/6+0.5x$. The blue line is the posterior mean, $f(x;\mathbf m_N)=0.8+0.6x$.
 
-The update from Section 3 adds the prior precision to the precision
-contributed by the observations:
+The remaining rows tell us something neither line shows. Both weight variances have fallen below their prior value of 1. The posterior covariance is negative: among lines that fit these observations reasonably well, a higher intercept tends to go with a lower slope.
 
-$$
-\mathbf S_N^{-1}
-=
-\mathbf S_0^{-1}
-+
-\beta\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi.
-$$
+For this Gaussian posterior, the mean is also the mode, so $\mathbf m_N$ is the **maximum a posteriori (MAP)** estimate. If we broaden the prior by letting $\alpha$ approach zero while keeping $\beta$ fixed, the posterior mean approaches the least-squares estimate. In this example, the two columns of $\boldsymbol\Phi$ are linearly independent, so that estimate is unique.
 
-First calculate the matrix product that also appeared in the
-least-squares normal equations:
+#### How certain are we that the slope is positive?
+
+The blue line rises. How much posterior probability is assigned to rising lines? As in Lecture 15, we specify a threshold and calculate the posterior probability above it. Here the threshold is zero: a line rises when $w_1>0$.
+
+We use the **marginal posterior** of the slope, which accounts for uncertainty about the intercept. Because the joint posterior is Gaussian, we can read the slope’s mean and variance directly from the table. Using the unrounded variance gives
 
 $$
-\boldsymbol\Phi^{\mathsf T}\boldsymbol\Phi
-=
-\begin{pmatrix}1&1&1\\0&1&2\end{pmatrix}
-\begin{pmatrix}1&0\\1&1\\1&2\end{pmatrix}
-=
-\begin{pmatrix}3&3\\3&5\end{pmatrix}.
+w_1\mid\mathcal D,\beta=1
+\sim \mathcal N\!\left(0.6,\frac{4}{15}\right).
 $$
 
-Since $\mathbf S_0^{-1}=\mathbf I_2$ and $\beta=1$, the update is
+```python
+from scipy.stats import norm
 
-$$
-\mathbf S_N^{-1}
-=
-\begin{pmatrix}1&0\\0&1\end{pmatrix}
-+
-\begin{pmatrix}3&3\\3&5\end{pmatrix}
-=
-\begin{pmatrix}4&3\\3&6\end{pmatrix}.
-$$
+# SciPy uses the standard deviation, so take the square root of the variance.
+slope = norm(loc=m_N[1], scale=np.sqrt(S_N[1, 1]))
+print("95% credible interval:", slope.ppf([0.025, 0.975]).round(2))
+print(f"Probability of a positive slope: {slope.sf(0):.1%}")
+```
 
-**Step 2. Invert the precision to obtain the posterior covariance.**
+Given the data, prior, and observation model, the posterior assigns **87.7% probability** to a positive slope. The equal-tailed **95% credible interval** is approximately $[-0.41,1.61]$. These results agree: rising lines receive most of the posterior probability, but about 12% remains on falling lines—enough for the middle 95% interval to include zero.
 
-The determinant is $4(6)-3(3)=15$. Using the inverse formula
-for a $2\times2$ matrix gives
 
-$$
-\mathbf S_N
-=
-\begin{pmatrix}4&3\\3&6\end{pmatrix}^{-1}
-=
-\frac1{15}
-\begin{pmatrix}6&-3\\-3&4\end{pmatrix}.
-$$
-
-The diagonal entries are the posterior variances: $6/15$ for the
-intercept and $4/15$ for the slope. Both are smaller than their
-prior variance of 1. The negative covariance, $-3/15$, means that
-under the posterior, a higher intercept tends to go with a lower slope.
-
-**Step 3. Calculate the posterior mean.**
-
-The general update is
-
-$$
-\mathbf m_N
-=
-\mathbf S_N
-\left(\mathbf S_0^{-1}\mathbf m_0
-+\beta\boldsymbol\Phi^{\mathsf T}\mathbf y\right).
-$$
-
-Because $\mathbf m_0=\mathbf 0$ and $\beta=1$, this simplifies to
-$\mathbf m_N=\mathbf S_N\boldsymbol\Phi^{\mathsf T}\mathbf y$.
-This is where the measured target values enter:
-
-$$
-\boldsymbol\Phi^{\mathsf T}\mathbf y
-=
-\begin{pmatrix}1&1&1\\0&1&2\end{pmatrix}
-\begin{pmatrix}1\\2\\2\end{pmatrix}
-=
-\begin{pmatrix}
-1+2+2\\
-0(1)+1(2)+2(2)
-\end{pmatrix}
-=
-\begin{pmatrix}5\\6\end{pmatrix}.
-$$
-
-Multiplying by the posterior covariance gives
-
-$$
-\mathbf m_N
-=
-\frac1{15}
-\begin{pmatrix}6&-3\\-3&4\end{pmatrix}
-\begin{pmatrix}5\\6\end{pmatrix}
-=
-\frac1{15}
-\begin{pmatrix}30-18\\-15+24\end{pmatrix}
-=
-\begin{pmatrix}0.8\\0.6\end{pmatrix}.
-$$
-:::
-
-**What did the Bayesian fit give us?** The posterior mean line is
-$f(x;\mathbf m_N)=0.8+0.6x$, compared with the least-squares line
-$\widehat f_{\mathrm{LS}}(x)=7/6+0.5x$. The Bayesian result also
-includes $\mathbf S_N$, which describes the uncertainty remaining
-about the intercept and slope. Because this posterior is Gaussian,
-its mean is also its mode: $\widehat{\mathbf w}_{\mathrm{MAP}}=\mathbf m_N$.
-
-![The same points and least-squares line, now with the posterior mean line.](images/LQ-versus-Bayesian-posterior.png)
-
-Figure: The points and dashed least-squares line are unchanged from above (dashed orange line). The blue line is the posterior mean from the Bayesian update. 
-
-At $x=0$ we can read the intercepts directly: the least-squares estimate is $7/6$, whereas the posterior mean is $0.8$. The slope changes from $0.5$ to $0.6$. A zero-centered prior need not move each individual coefficient toward zero relative to least squares: the intercept and slope determine the fit together.
-
-The **maximum a posteriori (MAP)** estimate is the weight vector at which the posterior density is largest. For this Gaussian posterior, the mode and mean coincide, so the solid line is also the MAP line. If we make the prior progressively broader ($\alpha\to 0$) while keeping $\beta$ fixed, the MAP weights approach the least-squares weights. This works here because the two columns of $\boldsymbol\Phi$ are linearly independent.
-
-**Check your understanding:** If someone reported only the line $0.8+0.6x$, what would you still want to know? Use one entry of the posterior covariance matrix to explain what the line alone leaves out.
 
 
 ## Practice exercises
