@@ -6,6 +6,12 @@ For this project, **125 dB is an illustrative design-screening limit chosen for 
 
 Questions 2 and 3 use the same [UCI Airfoil Self-Noise dataset](https://archive.ics.uci.edu/dataset/291/airfoil%2Bself-noise), which contains 1,503 wind-tunnel observations, five inputs, and a measured sound-pressure level in decibels. Question 1 uses a separate, hypothetical audit under one fixed test condition. Do **not** treat all rows of the UCI dataset as repeated identical-condition trials for Question 1: its operating conditions vary.
 
+## Project Submission Requirements
+
+- The completed [starter notebook](project1-starter.ipynb).
+- A 3 minute video explaining your thought process and your interpretation of the results (1 minute per question).
+- You do not need to create  any other material like slides or docs for your video - a walkthrough of your completed notebook is sufficient.
+
 ## Purdue Honor Pledge
 
 > “As a Boilermaker pursuing academic excellence, I pledge to be honest and true in all that I do. Accountable together—We are Purdue.”
