@@ -9,8 +9,8 @@ Questions 2 and 3 use the same [UCI Airfoil Self-Noise dataset](https://archive.
 ## Project Submission Requirements
 
 - **Submission date: December 12, 2026.**
-- The completed [starter notebook](project-starter.ipynb).
-- A 3 minute video explaining your thought process and your interpretation of the results (1 minute per question).
+- Complete and execute the [starter notebook](project-starter.ipynb), then **export it as a PDF and submit the PDF on Gradescope**. Make sure the PDF includes your code, outputs, figures, and written answers.
+- Submit a **3-minute video file on Brightspace** explaining your thought process and interpretation of the results (about 1 minute per question).
 - You do not need to create  any other material like slides or docs for your video - a walkthrough of your completed notebook is sufficient.
 
 ## Purdue Honor Pledge
@@ -26,7 +26,7 @@ Questions 2 and 3 use the same [UCI Airfoil Self-Noise dataset](https://archive.
 - Use the **same five inputs and the same data split** for Questions 2 and 3. Keep the starter notebook's seed, split code, model settings, and final reporting threshold unchanged so numerical results are comparable across submissions. The measured sound-pressure level is the target; never include it among the model inputs. It may be used to create the binary high-noise target.
 - Fit preprocessing steps, such as feature scaling, on the training set only. Use validation results to interpret each model before reporting its test results; do not use the test set to tune a model or threshold.
 - Label numerical results and figures with units where appropriate. A small table and a short explanation are usually more useful than a large block of unannotated output.
-- Submit an executed notebook with your code, requested results, figures, and written answers. **Use the exact labeled outputs and table columns specified in the starter notebook** so results can be graded consistently. Submit the notebook on Gradescope by the date listed in the Project Submission Requirements.
+- Complete and execute the notebook with your code, requested results, figures, and written answers. **Use the exact labeled outputs and table columns specified in the starter notebook** so results can be graded consistently. Export the executed notebook to PDF, check that all content is visible, and submit the **PDF on Gradescope** by the date listed in the Project Submission Requirements. Submit the **video file on Brightspace**.
 
 ## Question 1: Does a fixed airfoil configuration reliably pass the noise screen?
 
@@ -77,10 +77,10 @@ Both required files are available on the Brightspace Content page. On this websi
 
 The project has two required parts:
 
-1. **Completed `.ipynb` report:** Fill in the provided starter notebook, which is already organized around the three questions above. You do not need to add new sections. Submit the completed notebook on Gradescope. Your code, requested outputs, and written interpretations should follow the instructions in the notebook.
-2. **Three-minute video:** Walk through your completed notebook. Explain how and why you chose your approach, then interpret the results of your data analysis. Aim for approximately one minute per question.
+1. **PDF report — Gradescope:** Fill in and execute the provided `.ipynb` starter notebook, which is already organized around the three questions above. You do not need to add new sections. Export the completed notebook to a PDF and submit that **PDF**, not the `.ipynb` file, on Gradescope. Check that the PDF shows your code, requested outputs, figures, and written interpretations.
+2. **Three-minute video file — Brightspace:** Walk through your completed notebook. Explain how and why you chose your approach, then interpret the results of your data analysis. Aim for approximately one minute per question. Submit the video file on Brightspace.
 
-Do not create slides or a separate report. Your submission should consist only of the completed `.ipynb` notebook and your video reviewing that notebook.
+Do not create slides or a separate report. The two submitted files are your notebook **exported as a PDF** on Gradescope and your **video** on Brightspace.
 
 ### Do I have to code the algorithms from scratch?
 
