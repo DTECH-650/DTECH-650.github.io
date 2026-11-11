@@ -8,7 +8,7 @@ Questions 2 and 3 use the same [UCI Airfoil Self-Noise dataset](https://archive.
 
 ## Project Submission Requirements
 
-- The completed [starter notebook](project1-starter.ipynb).
+- The completed [starter notebook](project-starter.ipynb).
 - A 3 minute video explaining your thought process and your interpretation of the results (1 minute per question).
 - You do not need to create  any other material like slides or docs for your video - a walkthrough of your completed notebook is sufficient.
 
@@ -20,7 +20,7 @@ Questions 2 and 3 use the same [UCI Airfoil Self-Noise dataset](https://archive.
 
 ## Instructions
 
-- Use the accompanying [starter notebook](project1-starter.ipynb). Its setup cells download the public dataset and make one shared train/validation/test split. Complete the blank experiment and interpretation cells.
+- Use the accompanying [starter notebook](project-starter.ipynb). Its setup cells download the public dataset and make one shared train/validation/test split. Complete the blank experiment and interpretation cells.
 - **Use SciPy and scikit-learn functions.** You are not asked to implement a statistical test, a regression solver, gradient descent, or logistic regression from scratch, but **you are expected to read up on the documentation for the code and use the necessary packages, functions, and classes**, just like in the real world. Show the function calls, their relevant outputs, and your interpretation.
 - Use the **same five inputs and the same data split** for Questions 2 and 3. Keep the starter notebook's seed, split code, model settings, and final reporting threshold unchanged so numerical results are comparable across submissions. The measured sound-pressure level is the target; never include it among the model inputs. It may be used to create the binary high-noise target.
 - Fit preprocessing steps, such as feature scaling, on the training set only. Use validation results to interpret each model before reporting its test results; do not use the test set to tune a model or threshold.
@@ -65,6 +65,33 @@ The measured dB value is used to form this label, but it must **not** be supplie
 - **(b) Fit and inspect probabilities.** Fit a `StandardScaler`-`LogisticRegression` pipeline using only the training rows and the fixed `LOGISTIC_SETTINGS` in the starter notebook. Use `predict_proba` to obtain the estimated probability of high noise for validation rows. Show a few examples with their measured dB, true class, and predicted probability. Scikit-learn applies regularization by default.
 - **(c) Make a decision on validation data.** At a probability threshold of $0.5$, report the logistic model's validation confusion matrix and identify the **false negatives**: cases that actually have high noise but are predicted to pass. Compare logistic thresholds $0.3$, $0.5$, and $0.7$ on the **validation set**. Use the fixed $0.3$ threshold for the graded final test, but say whether you would recommend a different threshold in practice. Explain the tradeoff between missed high-noise cases and unnecessary warnings.
 - **(d) Final logistic-model test.** Report the high-noise count in the held-out test set. Apply the fixed $0.3$ probability threshold to the logistic model's test-set probabilities, then report TN, FP, FN, TP (the entries of its confusion matrix) and accuracy. Interpret the false negatives and false positives in the context of an initial noise-screening tool. Do not use either regression model as a classifier in this question.
+
+## Project FAQs
+
+### Where do I find the project?
+
+Both required files are available on the Brightspace Content page. On this website, you can read the [project instructions](project.md) and open or download the [project template Jupyter notebook](project-starter.ipynb).
+
+### What do I submit, and how will my work be assessed?
+
+The project has two required parts:
+
+1. **Completed `.ipynb` report:** Fill in the provided starter notebook, which is already organized around the three questions above. You do not need to add new sections. Submit the completed notebook on Gradescope. Your code, requested outputs, and written interpretations should follow the instructions in the notebook.
+2. **Three-minute video:** Walk through your completed notebook. Explain how and why you chose your approach, then interpret the results of your data analysis. Aim for approximately one minute per question.
+
+Do not create slides or a separate report. Your submission should consist only of the completed `.ipynb` notebook and your video reviewing that notebook.
+
+### Do I have to code the algorithms from scratch?
+
+No. Use the relevant SciPy and scikit-learn functions rather than implementing the statistical tests or learning algorithms yourself. You still need to choose the appropriate calls and explain the results.
+
+### Are there specific lectures that relate to this project?
+
+Yes. The project instructions and webinar recording indicate which lectures support each part of the project.
+
+### Is this an individual or team project?
+
+This is strictly an individual project.
 
 ## Data and tool references
 
