@@ -12,7 +12,6 @@ In the last lecture we used least squares and the MLE estimator to solve the pro
 
 The guiding question for this lecture is: 
 
-:::{admonition} 
 :class: tip 
 How can we incorporate prior knowledge in a linear regression model when we estimate the regression weights? 
 :::
