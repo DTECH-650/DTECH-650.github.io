@@ -51,6 +51,14 @@ parts:
         sections:
           - file: lectures/week10/lecture-17-linear-models-for-regression
           - file: lectures/week10/lecture-18-gradient-descent
+      - file: lectures/week11/index
+        title: Week 11
+        sections:
+          - file: lectures/week11/lecture-19-Bayesian-regression
+      - file: lectures/week12/index
+        title: Week 12
+        sections:
+          - file: lectures/week12/lecture-20-linear-discriminant-functions
   - caption: Code
     chapters:
       - file: codes/intro-to-python
