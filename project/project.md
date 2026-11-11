@@ -8,6 +8,7 @@ Questions 2 and 3 use the same [UCI Airfoil Self-Noise dataset](https://archive.
 
 ## Project Submission Requirements
 
+- **Submission date: December 12, 2026.**
 - The completed [starter notebook](project-starter.ipynb).
 - A 3 minute video explaining your thought process and your interpretation of the results (1 minute per question).
 - You do not need to create  any other material like slides or docs for your video - a walkthrough of your completed notebook is sufficient.
@@ -25,7 +26,7 @@ Questions 2 and 3 use the same [UCI Airfoil Self-Noise dataset](https://archive.
 - Use the **same five inputs and the same data split** for Questions 2 and 3. Keep the starter notebook's seed, split code, model settings, and final reporting threshold unchanged so numerical results are comparable across submissions. The measured sound-pressure level is the target; never include it among the model inputs. It may be used to create the binary high-noise target.
 - Fit preprocessing steps, such as feature scaling, on the training set only. Use validation results to interpret each model before reporting its test results; do not use the test set to tune a model or threshold.
 - Label numerical results and figures with units where appropriate. A small table and a short explanation are usually more useful than a large block of unannotated output.
-- Submit an executed notebook with your code, requested results, figures, and written answers. **Use the exact labeled outputs and table columns specified in the starter notebook** so results can be graded consistently. Submission location and deadline will be announced separately.
+- Submit an executed notebook with your code, requested results, figures, and written answers. **Use the exact labeled outputs and table columns specified in the starter notebook** so results can be graded consistently. Submit the notebook on Gradescope by the date listed in the Project Submission Requirements.
 
 ## Question 1: Does a fixed airfoil configuration reliably pass the noise screen?
 
