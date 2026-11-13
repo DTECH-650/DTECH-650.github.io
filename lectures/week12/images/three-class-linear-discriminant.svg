@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="550" viewBox="0 0 900 550" role="img" aria-labelledby="title description">
+  <title id="title">Three-class linear discriminant decision regions</title>
+  <desc id="description">In the first quadrant of the x1 x2 plane, low demand is selected when x1 plus x2 is below 0.7, normal demand between 0.7 and 1.3, and high demand above 1.3. A dashed line at x1 plus x2 equals 1 marks a tie between the low and high scores that does not change the winning normal class.</desc>
+  <defs>
+    <marker id="axis-arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+      <path d="M 0 0 L 9 4.5 L 0 9 z" fill="#334155"/>
+    </marker>
+  </defs>
+  <rect width="900" height="550" fill="#ffffff"/>
+  <text x="450" y="30" text-anchor="middle" font-family="sans-serif" font-size="22" font-weight="700" fill="#0f172a">Three scores divide the input space</text>
+
+  <rect x="130" y="40" width="450" height="450" fill="#fff7ed"/>
+  <path d="M 130 490 L 340 490 L 130 280 Z" fill="#dbeafe"/>
+  <path d="M 130 280 L 130 100 L 520 490 L 340 490 Z" fill="#ede9fe"/>
+  <g stroke="#cbd5e1" stroke-width="1" opacity="0.7">
+    <path d="M 280 40 V 490 M 430 40 V 490 M 580 40 V 490"/>
+    <path d="M 130 340 H 580 M 130 190 H 580 M 130 40 H 580"/>
+  </g>
+
+  <path d="M 130 280 L 340 490 M 130 100 L 520 490" fill="none" stroke="#334155" stroke-width="3"/>
+  <path d="M 130 190 L 430 490" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="8 6"/>
+
+  <path d="M 130 490 H 603" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#axis-arrow)"/>
+  <path d="M 130 490 V 25" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#axis-arrow)"/>
+  <g font-family="sans-serif" font-size="15" fill="#475569">
+    <text x="126" y="514">0</text><text x="270" y="514">0.5</text><text x="424" y="514">1</text><text x="567" y="514">1.5</text>
+    <text x="100" y="495">0</text><text x="91" y="345">0.5</text><text x="100" y="195">1</text><text x="91" y="45">1.5</text>
+  </g>
+  <text x="609" y="496" font-family="sans-serif" font-size="18" font-weight="600" fill="#334155">x₁</text>
+  <text x="109" y="27" font-family="sans-serif" font-size="18" font-weight="600" fill="#334155">x₂</text>
+
+  <text x="174" y="108" font-family="sans-serif" font-size="20" font-weight="700" fill="#9a3412">High</text>
+  <text x="164" y="247" font-family="sans-serif" font-size="20" font-weight="700" fill="#6d28d9">Normal</text>
+  <text x="156" y="467" font-family="sans-serif" font-size="20" font-weight="700" fill="#1e40af">Low</text>
+
+  <circle cx="190" cy="430" r="8" fill="#1d4ed8" stroke="#ffffff" stroke-width="2"/>
+  <text x="207" y="419" font-family="sans-serif" font-size="15" font-weight="600" fill="#1e40af">L = (0.2, 0.2)</text>
+  <circle cx="295" cy="355" r="8" fill="#6d28d9" stroke="#ffffff" stroke-width="2"/>
+  <text x="311" y="345" font-family="sans-serif" font-size="15" font-weight="600" fill="#5b21b6">N = (0.55, 0.45)</text>
+  <circle cx="430" cy="250" r="8" fill="#c2410c" stroke="#ffffff" stroke-width="2"/>
+  <text x="447" y="240" font-family="sans-serif" font-size="15" font-weight="600" fill="#9a3412">H = (1.0, 0.8)</text>
+
+  <text x="638" y="87" font-family="sans-serif" font-size="17" font-weight="700" fill="#0f172a">Decision rule</text>
+  <text x="638" y="114" font-family="sans-serif" font-size="15" fill="#334155">Choose the largest score.</text>
+  <rect x="638" y="145" width="16" height="16" fill="#dbeafe" stroke="#1e40af"/>
+  <text x="666" y="159" font-family="sans-serif" font-size="15" fill="#1e40af">Low: s &lt; 0.7</text>
+  <rect x="638" y="177" width="16" height="16" fill="#ede9fe" stroke="#6d28d9"/>
+  <text x="666" y="191" font-family="sans-serif" font-size="15" fill="#5b21b6">Normal: 0.7 &lt; s &lt; 1.3</text>
+  <rect x="638" y="209" width="16" height="16" fill="#fff7ed" stroke="#9a3412"/>
+  <text x="666" y="223" font-family="sans-serif" font-size="15" fill="#9a3412">High: s &gt; 1.3</text>
+
+  <path d="M 638 273 H 674" fill="none" stroke="#334155" stroke-width="3"/>
+  <text x="684" y="278" font-family="sans-serif" font-size="15" fill="#334155">Actual boundaries</text>
+  <text x="684" y="300" font-family="sans-serif" font-size="15" fill="#334155">s = 0.7, s = 1.3</text>
+  <path d="M 638 345 H 674" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="8 6"/>
+  <text x="684" y="350" font-family="sans-serif" font-size="15" fill="#475569">Score tie, not boundary</text>
+  <text x="684" y="372" font-family="sans-serif" font-size="15" fill="#475569">a₁ = a₃ at s = 1</text>
+  <text x="638" y="410" font-family="sans-serif" font-size="15" fill="#475569">At s = 1, a₂ = 0.3 wins.</text>
+  <text x="638" y="437" font-family="sans-serif" font-size="14" fill="#64748b">s = x₁ + x₂</text>
+</svg>
