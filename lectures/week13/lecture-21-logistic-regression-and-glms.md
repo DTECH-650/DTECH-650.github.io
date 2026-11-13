@@ -17,15 +17,15 @@ After completing this lecture, you should be able to:
 1. Distinguish a discriminative model for $p(t\mid\mathbf x)$ from a generative model that also describes the inputs.
 2. Convert a linear score into a binary class probability using the logistic sigmoid, and recover the score from the log-odds.
 3. Write the Bernoulli likelihood and derive its negative log-likelihood (binary cross-entropy) for labeled data.
-4. Explain why a logistic-regression decision boundary is linear in its chosen feature space, even though its output is nonlinear in the score.
+4. Explain why a logistic regression decision boundary is linear in its chosen feature space, even though its output is nonlinear in the score.
 5. Recognize Gaussian linear regression, logistic regression, and Poisson regression as examples of generalized linear models with different response distributions and links.
 
 ## Model the label directly
 
-Let $t=1$ denote a high-demand day and $t=0$ a normal-demand day. The input $\mathbf x$ might contain temperature and expected occupancy. We want a model for
+Let $t=1$ denote a high demand day and $t=0$ a normal demand day, and let our input $\mathbf x$ contain temperature and expected occupancy as the $2$ features for our example. Then, we want a model for
 
 $$
-y(\mathbf x)\equiv p(t=1\mid\mathbf x,\mathbf w),
+y(\mathbf x) = p(t=1\mid\mathbf x,\mathbf w),
 $$
 
 so that $p(t=0\mid\mathbf x,\mathbf w)=1-y(\mathbf x)$. The notation $y(\mathbf x)$ is the model's predicted **probability**, not a measured electricity use. We write $\mathbf w$ explicitly to emphasize that the weights must be learned.
@@ -35,7 +35,7 @@ There are two broad routes to class probabilities:
 - A **generative** approach models how inputs arise in each class, for example $p(\mathbf x\mid t=1)$ and $p(\mathbf x\mid t=0)$, along with class probabilities. Bayes' rule then gives $p(t\mid\mathbf x)$.
 - A **discriminative** approach models $p(t\mid\mathbf x)$ directly. Logistic regression takes this route: it does not require a probability distribution for temperature or occupancy.
 
-Both routes can make predictions; neither is inherently “more Bayesian.” *Discriminative* describes what distribution is modeled, whereas *Bayesian* describes how uncertainty about model parameters is handled. In this lecture the weights are fixed but unknown, as in the frequentist parameter-learning lectures.
+Both routes can make predictions and neither is inherently “more Bayesian.” *Discriminative* describes what distribution is modeled, whereas *Bayesian* describes how uncertainty about model parameters is handled. In this lecture the weights are fixed but unknown, as in the frequentist parameter learning lectures.
 
 ## From a score to a probability
 
@@ -45,16 +45,16 @@ $$
 a(\mathbf x)=\mathbf w^{\mathsf T}\boldsymbol\phi(\mathbf x).
 $$
 
-The first feature is usually $\phi_0(\mathbf x)=1$, so $w_0$ acts as a bias. If we use the original inputs, $\boldsymbol\phi(\mathbf x)=(1,x_1,\ldots,x_D)^{\mathsf T}$. Fixed nonlinear basis functions are also possible; as in Lecture 17, their values are determined from $\mathbf x$ before we fit $\mathbf w$.
+The first feature is usually $\phi_0(\mathbf x)=1$, so $w_0$ acts as a bias. If we use the original inputs, $\boldsymbol\phi(\mathbf x)=(1,x_1,\ldots,x_D)^{\mathsf T}$. Fixed nonlinear basis functions are also possible as in Lecture 17, and their values are determined from $\mathbf x$ before we fit $\mathbf w$.
 
-The score $a$ ranges over all real numbers, but a probability must lie between zero and one. The **logistic sigmoid** makes this conversion:
+We need a way to convert the score $a$, which ranges over all real numbers, lie between zero and one to make it a probability value. The **logistic sigmoid** makes this conversion:
 
 $$
 \boxed{\sigma(a)=\frac{1}{1+e^{-a}},\qquad
 y(\mathbf x)=\sigma\!\left(\mathbf w^{\mathsf T}\boldsymbol\phi(\mathbf x)\right).}
 $$
 
-When $a=0$, $y=1/2$. Positive scores give $y>1/2$; negative scores give $y<1/2$. For example, scores $-1$, $0$, and $1$ give probabilities of approximately $0.269$, $0.500$, and $0.731$. As $a$ increases without bound, $y$ approaches $1$; as it decreases without bound, $y$ approaches $0$. For finite weights and features it never equals either endpoint exactly.
+When $a=0$, $y=1/2$. Positive scores give $y>1/2$, while negative scores give $y<1/2$. For example, scores $-1$, $0$, and $1$ give probabilities of approximately $0.269$, $0.500$, and $0.731$. As $a$ increases without bound, $y$ approaches $1$; as it decreases without bound, $y$ approaches $0$. For finite weights and features it never equals either endpoint exactly.
 
 ### Why this particular curve?
 
@@ -64,7 +64,7 @@ $$
 \text{odds}(\mathbf x)=\frac{y(\mathbf x)}{1-y(\mathbf x)}.
 $$
 
-For the sigmoid, $1-y=1/(1+e^a)$ and $y=e^a/(1+e^a)$, so
+For the sigmoid, $1-y=1/(1+e^a)$ and $y=e^a/(1+e^a)$ (check this yourself!), so
 
 $$
 \frac{y}{1-y}=e^a,
@@ -133,7 +133,7 @@ $$
 =-\sum_{n=1}^{N}\left[t_n\log y_n+(1-t_n)\log(1-y_n)\right].}
 $$
 
-For one observation, a correct label assigned a large probability has a small loss. If $t=1$, the loss is $-\log y$: predicting $y=0.8$ costs about $0.223$ nats, whereas predicting $y=0.2$ costs about $1.609$ nats. A confident wrong prediction is penalized strongly. Dividing $E$ by $N$ gives the **mean** cross-entropy; it changes the scale of the loss but not its minimizer.
+For one observation, a correct label assigned a large probability has a small loss. If $t=1$, the loss is $-\log y$: predicting $y=0.8$ costs about $0.223$ nats, whereas predicting $y=0.2$ costs about $1.609$ nats. A confident wrong prediction is penalized strongly. Dividing $E$ by $N$ gives the **mean** cross-entropy and it it changes the scale of the loss but not its minimizer.
 
 The loss is not an arbitrary replacement for least squares. It follows from choosing a Bernoulli distribution for a binary target. In Lecture 17, a Gaussian distribution for a continuous target led instead to squared error. The model for the target determines the likelihood and, through it, the fitting objective.
 
@@ -176,17 +176,17 @@ $$
 
 This resembles the residual-times-feature gradient for squared error, although the predicted $y_n$ and the loss are different. If a positive example ($t_n=1$) gets a low predicted probability, then $y_n-t_n<0$: a gradient-descent step tends to increase its score in the direction of its feature vector. The full gradient balances all examples, so an individual update need not improve every prediction.
 
-Unlike Gaussian linear regression with a fixed design matrix, setting this gradient to zero does not produce a simple closed-form expression for $\mathbf w$, because each $y_n=\sigma(\mathbf w^{\mathsf T}\boldsymbol\phi_n)$ depends nonlinearly on the unknown weights. We can use gradient-based optimization, as in Lecture 18; the next lecture will develop Newton's method and iteratively reweighted least squares (IRLS).
+Unlike Gaussian linear regression with a fixed design matrix, setting this gradient to zero does not produce a simple closed-form expression for $\mathbf w$, because each $y_n=\sigma(\mathbf w^{\mathsf T}\boldsymbol\phi_n)$ depends nonlinearly on the unknown weights. We can use gradient-based optimization, as in Lecture 18. the next lectures will develop Newton's method and iteratively reweighted least squares (IRLS) for this exact purpose.
 
-### When the classes separate perfectly
+<!-- ### When the classes separate perfectly
 
 There is a subtle limit to unregularized maximum likelihood. If some hyperplane separates all positive training labels from all negative ones, multiplying its weights by larger positive numbers pushes the predicted probabilities toward $1$ for positive examples and $0$ for negative examples. The training loss approaches zero, but no **finite** weight vector reaches that limit. A numerical solver may report very large coefficients rather than a stable finite maximum-likelihood estimate.
 
-Regularization—equivalently, under appropriate conditions, a prior on the weights—can keep the fitted coefficients finite. This is a property of the *fitting problem*, not a reason to abandon the probabilistic interpretation of logistic regression.
+Regularization, and equivalently, under appropriate conditions, a prior on the weights, can keep the fitted coefficients finite. This is a property of the *fitting problem*, not a reason to abandon the probabilistic interpretation of logistic regression. -->
 
-## Logistic regression as a generalized linear model
+## Generalized linear models (GLMs)
 
-At first, linear regression from Lecture 17 and logistic regression from this lecture may look like unrelated methods: one predicts a continuous quantity and the other predicts a class probability. **Both are generalized linear models (GLMs)** because both can be written using the same three-part recipe. First form a linear score from the features; next convert that score into the target's conditional mean; finally choose a probability distribution for the target with that mean:
+At first, linear regression from Lecture 17 and logistic regression from this lecture may look like unrelated methods: one predicts a continuous quantity and the other predicts a class probability. However, **both are generalized linear models (GLMs)** because they can be written using the same three-part recipe. First form a linear score from the features. Next, convert that score into the target's conditional mean. Finally, choose a probability distribution for the target with that mean:
 
 $$
 \boxed{
@@ -198,7 +198,7 @@ T\mid\mathbf x,\mathbf w\sim\text{a distribution with mean }\mu(\mathbf x).
 }
 $$
 
-Here $T$ is the random target and $t$ is its observed value; this $T$ is not the sufficient-statistic function $T(x)$ from Lecture 12. The function $f$ is the **inverse link**. Its inverse $g=f^{-1}$ is the **link function**, so $g(\mu(\mathbf x))=a(\mathbf x)$. “Linear” in GLM refers to the score $a$, not necessarily to $\mu$ as a function of the inputs.
+Here $T$ is the random target and $t$ is its observed value. This $T$ is not the sufficient-statistic function $T(x)$ from Lecture 12. The function $f$ is the **inverse link**. Its inverse $g=f^{-1}$ is the **link function**, so $g(\mu(\mathbf x))=a(\mathbf x)$. “Linear” in GLM refers to the score $a$, not necessarily to $\mu$ as a function of the inputs.
 
 Now write our two familiar models in that *same* template:
 
@@ -207,7 +207,7 @@ Now write our two familiar models in that *same* template:
 | **Linear regression** (Lecture 17) | $\mathbf w^{\mathsf T}\boldsymbol\phi(\mathbf x)$ | $a(\mathbf x)$ (identity inverse link) | $T\mid\mathbf x,\mathbf w\sim\mathcal N(a(\mathbf x),\beta^{-1})$ |
 | **Logistic regression** (this lecture) | $\mathbf w^{\mathsf T}\boldsymbol\phi(\mathbf x)$ | $\sigma(a(\mathbf x))$ (sigmoid inverse link) | $T\mid\mathbf x,\mathbf w\sim\operatorname{Bernoulli}(\sigma(a(\mathbf x)))$ |
 
-The notation $\beta^{-1}$ is the fixed Gaussian noise variance from Lecture 17. In either row, the weights enter through exactly the same kind of linear score. What changes is the **target distribution** and the function that turns the score into its mean. Gaussian linear regression uses $\mu=a$ and can predict any real mean. Logistic regression uses $\mu=\sigma(a)$, which is constrained to be a valid probability. That is why their likelihoods—and hence their losses, squared error and binary cross-entropy—are different, even though their scores look alike.
+The notation $\beta^{-1}$ is the fixed Gaussian noise variance from Lecture 17. In either row, the weights enter through exactly the same kind of linear score. What changes is the **target distribution** and the function that turns the score into its mean. Gaussian linear regression uses $\mu=a$ and can predict any real mean. Logistic regression uses $\mu=\sigma(a)$, which is constrained to be a valid probability. That is why their likelihoods, and hence their losses, squared error and binary cross-entropy, are different, even though their scores look alike.
 
 Lecture 12 introduced the exponential-family distributions behind both rows. Gaussian, Bernoulli, and Poisson targets take different kinds of values, but each can be used in the same GLM recipe. For Bernoulli data, $\mu(\mathbf x)=p(T=1\mid\mathbf x,\mathbf w)=y(\mathbf x)$. Logistic regression's link is the **logit**,
 
@@ -217,9 +217,9 @@ g(\mu)=\log\frac{\mu}{1-\mu},
 g^{-1}(a)=\sigma(a).
 $$
 
-The link is necessary because the mean of a binary variable must be between $0$ and $1$, whereas the score can be any real number. In the linear-regression row, the identity link $g(\mu)=\mu$ needs no such transformation. A third example is **Poisson regression** for a count target: its log link $g(\mu)=\log\mu$ gives $\mu=e^a>0$, so the expected count stays positive. Gaussian, Bernoulli, and Poisson targets therefore use different inverse links—identity, sigmoid, and exponential—while retaining the same linear score.
+The link is necessary because the mean of a binary variable must be between $0$ and $1$, whereas the score can be any real number. In the linear-regression row, the identity link $g(\mu)=\mu$ needs no such transformation. A third example is **Poisson regression** for a count target: its log link $g(\mu)=\log\mu$ gives $\mu=e^a>0$, so the expected count stays positive. Gaussian, Bernoulli, and Poisson targets therefore use different inverse links: identity, sigmoid, and exponential, while retaining the same linear score.
 
-These links are called **canonical** for the respective exponential-family models. To see what that means without introducing a new parameter convention, recall Lecture 12's exponential-family form and write a one-statistic version with an optional positive scale $s$:
+<!-- These links are called **canonical** for the respective exponential-family models. To see what that means without introducing a new parameter convention, recall Lecture 12's exponential-family form and write a one-statistic version with an optional positive scale $s$:
 
 $$
 p(t\mid\eta,s)
@@ -232,9 +232,11 @@ $$
 A'(\eta)=\frac{e^\eta}{1+e^\eta}=\sigma(\eta)=\mu.
 $$
 
-Setting $\eta=a$ recovers logistic regression. For a Gaussian with fixed variance $s=\sigma^2$, we can use $\eta=\mu$ and $A(\eta)=\eta^2/2$; then $A'(\eta)=\eta$, giving the identity link. For a Poisson target, $s=1$ and $A(\eta)=e^\eta$; then $A'(\eta)=e^\eta$, giving the log link. The same architecture handles different target types, but **changing the target distribution also changes the likelihood and loss**. We do not apply squared error to a Bernoulli target merely because both models use a linear score.
+Setting $\eta=a$ recovers logistic regression. For a Gaussian with fixed variance $s=\sigma^2$, we can use $\eta=\mu$ and $A(\eta)=\eta^2/2$; then $A'(\eta)=\eta$, giving the identity link. For a Poisson target, $s=1$ and $A(\eta)=e^\eta$; then $A'(\eta)=e^\eta$, giving the log link. The same architecture handles different target types, but **changing the target distribution also changes the likelihood and loss**. We do not apply squared error to a Bernoulli target merely because both models use a linear score. -->
 
-We will not develop multiclass logistic regression or softmax in this course. Our classification model here has exactly two classes. The GLM viewpoint is useful even with that restriction: it connects the Gaussian regression of Lecture 17, the exponential families of Lecture 12, and the binary classifier of this lecture.
+We will not develop multiclass logistic regression or softmax in this course and leave it as a future reading exercise. Our classification model here has exactly two classes. The GLM viewpoint is useful even with that restriction: it connects the Gaussian regression of Lecture 17, the exponential families of Lecture 12, and the binary classifier of this lecture. Further, 
+Bayesian logistic regression is **beyond the scope of this course**. Unlike the model in this lecture, it places a prior distribution on the weights and uses a posterior distribution over them for prediction. If you are interested, see Bishop, Chapter 4, Section 4.4 (Laplace approximation, pages 213–216) and Section 4.5 (Bayesian logistic regression, pages 217–220).
+
 
 ## Practice problems
 
