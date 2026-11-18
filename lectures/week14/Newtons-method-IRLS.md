@@ -27,13 +27,13 @@ After completing this lecture, students should be able to:
 
 ## Recap from lecture 20/21: From scores to probabilities 
 
-In lecture 21, we had started with the score $a$ and defined it as function of weighted features: 
+In lecture 21, we had started with the score $a$ and defined it as function of weighted basis functions (also referred to as features): 
 
 $$
 a(\mathbf x)=\mathbf w^{\mathsf T}\boldsymbol\phi(\mathbf x).
 $$
 
-The first feature is usually $\phi_0(\mathbf x)=1$, so $w_0$ acts as a bias (it is also called intercept sometimes). If we use the original inputs plus the $\phi_0(\mathbf x)=1$, our feature vector is $\boldsymbol\phi(\mathbf x)=(1,x_1,\ldots,x_D)^{\mathsf T}$. 
+The first basis function is usually $\phi_0(\mathbf x)=1$, and $w_0$ acts as a form of a bias (please note that this term bias should not be confused with statistical bias, in statistics this bias term is sometimes also referred as intercept or constant of the regression model). If we use the original inputs plus the $\phi_0(\mathbf x)=1$, our feature vector is $\boldsymbol\phi(\mathbf x)=(1,x_1,\ldots,x_D)^{\mathsf T}$. 
 We than converted $a$ to real values that lie between zero and one using the **logistic sigmoid**: 
 
 $$
@@ -140,9 +140,7 @@ w-\frac{E'(w)}{E''(w)}.
 }
 $$
 
-Unlike gradient descent, Newton's method uses curvature to scale
-the update. For the same slope, greater positive curvature produces
-a smaller step.
+Unlike gradient descent, Newton's method uses curvature to scale the update by including the second-order derivative. For the same slope, greater positive curvature produces a smaller step.
 
 ### From one weight to several weights
 
@@ -211,13 +209,13 @@ The inverse makes the mathematical comparison clear. In Python,
 we solve the linear system rather than explicitly calculate
 the matrix inverse.
 
-### Why a shorter step may be needed
+### Damped Newton's update
 
 The quadratic approximation describes the objective locally.
 Its minimum need not be the minimum of the actual objective,
 and a full Newton step can sometimes increase the loss.
 
-We can therefore shorten the step:
+When applying the so called damped Newton's method, we can therefore shorten the step:
 
 $$
 \mathbf w_{\mathrm{new}}
@@ -227,25 +225,24 @@ $$
 $$
 
 Here $\lambda=1$ gives the full Newton step. If that step increases
-the objective, we can try a smaller value of $\lambda$. This is
-called a damped Newton update.
+the objective, we can try a smaller value of $\lambda$. 
 
-Next, we calculate the gradient and Hessian for logistic regression.
+
+With this background on the Newton's method as second-order iterative gradient descent method, we can now apply it to the logistic regression. We start with a simple one classification model and perform a single update with an intercept-only model (the bias term $\phi_0(\mathbf{x})$). 
 
 ## 3. One Newton update for a simple classification model
 
 ### 3.1 Start with an intercept-only model
 
-We first simplify our building example by temporarily leaving out
-temperature and occupancy. Suppose we observe four days, of which
+We first simplify our building example from above, and we are leaving out the varying inputs (
+temperature and occupancy) for illustrative purposes only. Suppose we observe four days, of which
 three are high-demand days:
 
 $$
 \mathbf t=(1,1,1,0)^{\mathsf T}.
 $$
 
-Without input features, the model contains only an intercept $w_0$.
-It assigns the same high-demand probability to every day:
+Without input features, the model contains only an intercept/bias $w_0$. Since $\phi_0(x)$ =1, it assigns the same high-demand probability to every day:
 
 $$
 y=\sigma(w_0)=\frac{1}{1+e^{-w_0}}.
@@ -351,17 +348,19 @@ $$
 $$
 
 Our first update has moved toward this solution but has not reached
-it. We would now recompute the probability, gradient, and curvature
-at $w_0=1$ and perform another update.
+it. We could now recompute the probability, gradient, and curvature
+at $w_0=1$ and perform another update. This would be an interesting self-study exercise to deepen your understanding of the procedure. 
 
 This intercept-only example has a direct solution. Logistic regression
 with several input features generally requires iteration.
 
+> what does direct mean? this is unclear! 
+
 
 ## 4. Newton's method for logistic regression
 
-We now return to a model that uses features such as temperature
-and occupancy. Each day can have a different high-demand probability:
+We now return to a model that uses more basis function/features and not just the constant/bias (e.g. such as temperature
+and occupancy). In other words, it acounts for how the probability of assignment to the binary class, varies based on the observed data, and their transformation via the basis functions. In the most simple case, we use the input features directly. 
 
 $$
 y_n
@@ -369,7 +368,7 @@ y_n
 \sigma(\mathbf w^{\mathsf T}\boldsymbol\phi_n).
 $$
 
-### 4.1 Write the gradient using the design matrix
+To derive Newton's method formally, we first express the gradient using the design matrix. 
 
 Let the design matrix contain one row of features per observation:
 
@@ -383,10 +382,10 @@ $$
 \end{pmatrix}.
 $$
 
-With $M$ features, including the intercept feature,
+With $M$ features, including the constant bias feature,
 $\boldsymbol\Phi$ has shape $N\times M$.
 
-Collect the predicted probabilities and observed labels into
+Then, we collect the predicted probabilities and observed labels into
 
 $$
 \mathbf y=
@@ -418,7 +417,7 @@ This is the same gradient as before, expressed using matrix notation.
 The vector $\mathbf y-\mathbf t$ contains the differences between
 predicted probabilities and observed labels.
 
-### 4.2 Obtain the Hessian
+### 4.1 Obtaining the Hessian
 
 Recall that
 
@@ -494,47 +493,103 @@ For finite scores, each $r_n>0$. If the columns of
 $\boldsymbol\Phi$ are linearly independent, the Hessian is positive
 definite and the Newton linear system has a unique solution.
 
-### 4.3 Assemble the update
+### 4.2 From Newton's update to weighted least squares
 
-Substitute the gradient and Hessian into the Newton equation:
+We now use the gradient and Hessian to calculate the next weight
+vector. Write the current weights as $\mathbf w^{(\mathrm{old})}$
+and the updated weights as $\mathbf w^{(\mathrm{new})}$.
+
+Newton's update is
 
 $$
-\left(
-\boldsymbol\Phi^{\mathsf T}\mathbf R\boldsymbol\Phi
-\right)
-\Delta\mathbf w
+\mathbf w^{(\mathrm{new})}
 =
-\boldsymbol\Phi^{\mathsf T}(\mathbf t-\mathbf y).
+\mathbf w^{(\mathrm{old})}
+-
+\mathbf H^{-1}\nabla E.
 $$
 
-After solving for $\Delta\mathbf w$, update the weights:
+Substituting our expressions for the gradient and Hessian gives
+
+$$
+\mathbf w^{(\mathrm{new})}
+=
+\mathbf w^{(\mathrm{old})}
+-
+(\boldsymbol\Phi^{\mathsf T}\mathbf R\boldsymbol\Phi)^{-1}
+\boldsymbol\Phi^{\mathsf T}(\mathbf y-\mathbf t).
+$$
+
+Both $\mathbf y$ and $\mathbf R$ are calculated using the current
+weights.
+
+To see the connection to weighted least squares, first factor out
+the inverse matrix:
+
+$$
+\mathbf w^{(\mathrm{new})}
+=
+(\boldsymbol\Phi^{\mathsf T}\mathbf R\boldsymbol\Phi)^{-1}
+\left[
+\boldsymbol\Phi^{\mathsf T}\mathbf R\boldsymbol\Phi
+\mathbf w^{(\mathrm{old})}
+-
+\boldsymbol\Phi^{\mathsf T}(\mathbf y-\mathbf t)
+\right].
+$$
+
+We can write the bracketed expression as
+
+$$
+\boldsymbol\Phi^{\mathsf T}\mathbf R
+\left[
+\boldsymbol\Phi\mathbf w^{(\mathrm{old})}
+-
+\mathbf R^{-1}(\mathbf y-\mathbf t)
+\right].
+$$
+
+Define the inner bracket as a vector of **working targets**
+(see also Bishop, 2006, Eq. 4.100):
 
 $$
 \boxed{
-\mathbf w_{\mathrm{new}}
+\mathbf z
 =
-\mathbf w+\Delta\mathbf w.
+\boldsymbol\Phi\mathbf w^{(\mathrm{old})}
+-
+\mathbf R^{-1}(\mathbf y-\mathbf t).
 }
 $$
 
-Each iteration follows the same sequence:
+The update therefore becomes (see also Bishop, 2006, Eq. 4.99):
 
-1. Use the current weights to calculate the probabilities.
-2. Calculate the gradient and Hessian.
-3. Solve for the change in weights.
-4. Update the weights and repeat.
+$$
+\boxed{
+\mathbf w^{(\mathrm{new})}
+=
+(\boldsymbol\Phi^{\mathsf T}\mathbf R\boldsymbol\Phi)^{-1}
+\boldsymbol\Phi^{\mathsf T}\mathbf R\mathbf z.
+}
+$$
 
-The design matrix and labels remain fixed. The probabilities,
-gradient, and Hessian are recalculated.
+This has the form of a weighted least-squares solution.
+It is the same Newton update, written differently.
+
+In the next section, we explain the working targets and apply
+this calculation to our four-day example.
+
+For computation, we solve the corresponding linear system
+rather than explicitly calculating the inverse.
 
 
-## 5. Why this is called iteratively reweighted least squares
+### 4.3. Why this is called iteratively reweighted least squares (IRLS)
 
 Newton's update for logistic regression can also be written as
 a weighted least-squares calculation. This equivalent form is
 called **iteratively reweighted least squares**, or **IRLS**.
 
-### 5.1 Using working targets as illustration: 
+### Using working targets as illustration 
 
 The current scores are
 
@@ -604,7 +659,7 @@ $$
 \mathbf z=(2,2,2,-2)^{\mathsf T}.
 $$
 
-### 5.2 Expressing the Newton update as weighted least squares
+### Expressing the Newton update as weighted least squares
 
 Start with the Newton equation:
 
@@ -681,7 +736,7 @@ $$
 
 This is exactly the Newton update we calculated in Section 3.
 
-### 5.3 What gets repeated?
+### What gets repeated?
 
 At each IRLS iteration:
 
@@ -705,19 +760,21 @@ update iteratively.
 
 This derivation gives the full Newton step.
 
-## 6. Comparing gradient descent and Newton's method in Python
+## 5. Comparing gradient descent and Newton's method in Python
 
-We now return to the building classification problem with temperature
-and occupancy as features.
-
-The purpose of this exercise is to inspect the updates. Use NumPy
-for the matrix calculations, SciPy's sigmoid function, and Matplotlib
+The purpose of this exercise is to inspect the updates and understand the differences between Netwon's method and Gradient descent from Lecture 18. We will be using NumPy for the matrix calculations, SciPy's sigmoid function, and Matplotlib
 for the figures.
 
-### 6.1 The optimization problem revisited: 
+We will again use the scenario as above ( > Sabine: Add the scenario)
 
-Use the same observations, feature scaling, and initial weights
-for both methods.
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.special import expit
+```
+### 5.1 The optimization problem revisited: 
+
+We use the same observations, feature scaling (scaling between 0 and 1), and initial weights for both methods.
 
 For each day, let us construct
 
@@ -738,13 +795,10 @@ $$
 \mathbf w^{(0)}=\mathbf 0.
 $$
 
-Every initial score is then zero, so every initial probability
-is $0.5$.
+Every initial score is then zero, so every initial probability is $0.5$.
 
-> Note: If we assume we have a dataset whose design matrix has linearly independent columns
-and whose classes cannot be completely or quasi-completely separated, we can ensures that the unregularized fit has a finite solution.
-If the classes are perfectly separable, the likelihood can improve
-as the weights grow without reaching a finite maximum.
+> Note: We chose this example in a way that we have a dataset whose design matrix has linearly independent columns
+and whose classes cannot be completely or quasi-completely separated. THis helps because we can ensures that the unregularized fit has a finite solution. If the classes are perfectly separable, the likelihood can improve as the weights grow without reaching a finite maximum.
 
 Both methods minimize the same summed cross-entropy:
 
@@ -757,9 +811,24 @@ t_n\log y_n+(1-t_n)\log(1-y_n)
 \right].
 $$
 
-### 6.2 Recording ◊what changes across iterations
 
-At the starting point and after each update, record:
+Both methods begin with the same weights and calculate the same
+predicted probabilities and gradient:
+
+```python
+y = expit(Phi @ w)
+gradient = Phi.T @ (y - t)
+```
+
+Here `Phi` is the design matrix, `t` contains the observed labels,
+and `y` contains the current predicted probabilities.
+
+The methods differ in how they use this gradient to update `w`.
+
+
+### 5.2 Recording what changes across iterations
+
+At the starting point and after each update, we record:
 
 - The cross-entropy $E(\mathbf w)$.
 - The gradient norm $\|\nabla E(\mathbf w)\|_2$.
@@ -799,12 +868,13 @@ cross-entropy against iteration for both Netwon and Gradient descent. On the rig
 the plot shows the selected day's high-demand probability against iteration.
 
 
-### 6.3 Let us interpret the comparison
+### 5.3 Let us interpret the comparison
 
-> Figure 
+Once we have run the code, a notebook, we can also plot the results. 
 
-As you can see in the figure, for this unregularized problem with a unique finite optimum,
-both methods approach the same fit when they converge.
+![Comparison-newton-gradient](images/lecture22-conditional-densities.png)
+
+As you can see in the figure, for this unregularized problem with a unique finite optimum, both methods approach the same fit when they converge.
 
 Newton's method requires fewer iterations because it uses curvature. However, each iteration requires constructing a Hessian
 and solving a linear system. Fewer iterations therefore do not automatically mean less computing time.
