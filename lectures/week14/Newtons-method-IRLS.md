@@ -534,7 +534,7 @@ Newton's update for logistic regression can also be written as
 a weighted least-squares calculation. This equivalent form is
 called **iteratively reweighted least squares**, or **IRLS**.
 
-### 5.1 Introduce the working targets
+### 5.1 Using working targets as illustration: 
 
 The current scores are
 
@@ -604,7 +604,7 @@ $$
 \mathbf z=(2,2,2,-2)^{\mathsf T}.
 $$
 
-### 5.2 Express the Newton update as weighted least squares
+### 5.2 Expressing the Newton update as weighted least squares
 
 Start with the Newton equation:
 
@@ -700,16 +700,12 @@ working targets and the least-squares weights change.
 The original objective remains Bernoulli cross-entropy.
 
 Weighted least squares provides a way to calculate each Newton
-update. We are not replacing logistic regression with ordinary
-least-squares regression on the binary labels.
+update iteratively. 
 :::
 
-This derivation gives the full Newton step. If a shorter step is
-needed, move only partway from the current weights toward the
-weighted least-squares solution.
+This derivation gives the full Newton step.
 
-
-## 6. Compare gradient descent and Newton's method in Python
+## 6. Comparing gradient descent and Newton's method in Python
 
 We now return to the building classification problem with temperature
 and occupancy as features.
@@ -718,12 +714,12 @@ The purpose of this exercise is to inspect the updates. Use NumPy
 for the matrix calculations, SciPy's sigmoid function, and Matplotlib
 for the figures.
 
-### 6.1 Set up a shared fitting problem
+### 6.1 The optimization problem revisited: 
 
 Use the same observations, feature scaling, and initial weights
 for both methods.
 
-For each day, construct
+For each day, let us construct
 
 $$
 \boldsymbol\phi_n=
@@ -736,7 +732,7 @@ $$
 
 where the two input features are scaled temperature and occupancy.
 
-Start both methods at
+We can start both methods at
 
 $$
 \mathbf w^{(0)}=\mathbf 0.
@@ -745,9 +741,8 @@ $$
 Every initial score is then zero, so every initial probability
 is $0.5$.
 
-Use a dataset whose design matrix has linearly independent columns
-and whose classes cannot be completely or quasi-completely separated.
-This ensures that the unregularized fit has a finite solution.
+> Note: If we assume we have a dataset whose design matrix has linearly independent columns
+and whose classes cannot be completely or quasi-completely separated, we can ensures that the unregularized fit has a finite solution.
 If the classes are perfectly separable, the likelihood can improve
 as the weights grow without reaching a finite maximum.
 
@@ -762,7 +757,7 @@ t_n\log y_n+(1-t_n)\log(1-y_n)
 \right].
 $$
 
-### 6.2 Record what changes across iterations
+### 6.2 Recording ◊what changes across iterations
 
 At the starting point and after each update, record:
 
@@ -799,31 +794,20 @@ if the full step increases cross-entropy.
 Stop when the gradient norm is sufficiently small, or when a
 specified maximum number of iterations is reached.
 
-**Figure instruction:** Create two panels. On the left, plot
-cross-entropy against iteration for both methods. On the right,
-plot the selected day's high-demand probability against iteration.
-Include iteration zero and use consistent colors for the methods
-across both panels.
+**Figure:** On the left, the plot shows
+cross-entropy against iteration for both Netwon and Gradient descent. On the right,
+the plot shows the selected day's high-demand probability against iteration.
 
-### 6.3 Interpret the comparison
 
-Use the plots to answer:
+### 6.3 Let us interpret the comparison
 
-1. Do both methods approach the same fitted probability for the
-   selected day?
-2. How many iterations does each method need to approach the minimum?
-3. How does changing the gradient-descent learning rate affect
-   the loss curve?
-4. Does a large change in the weights necessarily produce a large
-   change in the selected day's probability?
+> Figure 
 
-For this unregularized problem with a unique finite optimum,
-both methods should approach the same fit when they converge.
+As you can see in the figure, for this unregularized problem with a unique finite optimum,
+both methods approach the same fit when they converge.
 
-Newton's method can require fewer iterations because it uses
-curvature. However, each iteration requires constructing a Hessian
-and solving a linear system. Fewer iterations therefore do not
-automatically mean less computing time.
+Newton's method requires fewer iterations because it uses curvature. However, each iteration requires constructing a Hessian
+and solving a linear system. Fewer iterations therefore do not automatically mean less computing time.
 
 
 ## 7. Summary and practice
