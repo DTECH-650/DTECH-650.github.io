@@ -797,7 +797,7 @@ and occupancy.
 
 We compare how gradient descent and Newton's method update the
 weights of the same logistic regression model. The accompanying
-notebook contains the complete implementation. Here we focus on
+[notebook](../../codes/lecture-22-Newtons-method.ipynb) contains the complete implementation. Here we focus on
 the core calculations and interpretation of the results.
 
 ### 5.1 Dataset and shared starting point
