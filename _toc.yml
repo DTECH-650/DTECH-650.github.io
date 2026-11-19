@@ -59,6 +59,10 @@ parts:
         title: Week 12
         sections:
           - file: lectures/week12/lecture-20-linear-discriminant-functions
+      - file: lectures/week13/index
+        title: Week 13
+        sections:
+          - file: lectures/week13/lecture-21-logistic-regression-and-glms
   - caption: Code
     chapters:
       - file: codes/intro-to-python
