@@ -672,66 +672,96 @@ itself does not. In this example, the currente score was 0, and the effective ta
 
 ### 4.4 Revisit the four-day example: one IRLS iteration
 
-We now calculate the same update as in Section 3 using weighted
-least squares.
-
-For the labels $\mathbf t=(1,1,1,0)^{\mathsf T}$ and starting
-intercept $w_0^{(\mathrm{old})}=0$, every observation has
+We now use the same normal equation derived in Section 4.2:
 
 $$
-a_n=0,
-\qquad
-y_n=0.5,
-\qquad
-r_n=0.25.
-$$
-
-The effective targets are
-
-$$
-\begin{aligned}
-t_n=1:\qquad
-z_n&=0+\frac{1-0.5}{0.25}=2,\\
-t_n=0:\qquad
-z_n&=0+\frac{0-0.5}{0.25}=-2.
-\end{aligned}
-$$
-
-Thus,
-
-$$
-\mathbf z=(2,2,2,-2)^{\mathsf T}.
-$$
-
-With only an intercept, the weighted least-squares problem is
-
-$$
-\min_v
-\frac12\sum_{n=1}^{4}r_n(z_n-v)^2.
-$$
-
-Its solution is the weighted mean of the effective targets:
-
-$$
-w_0^{(\mathrm{new})}
+(\boldsymbol\Phi^{\mathsf T}\mathbf R\boldsymbol\Phi)
+\mathbf w^{(\mathrm{new})}
 =
-\frac{\sum_{n=1}^{4}r_nz_n}{\sum_{n=1}^{4}r_n}
+\boldsymbol\Phi^{\mathsf T}\mathbf R\mathbf z.
+$$
+
+For our intercept-only model, the basis function is $1$ for
+every day. Thus,
+
+$$
+\boldsymbol\Phi=
+\begin{pmatrix}
+1\\1\\1\\1
+\end{pmatrix},
+\qquad
+\mathbf R=
+\begin{pmatrix}
+0.25&0&0&0\\
+0&0.25&0&0\\
+0&0&0.25&0\\
+0&0&0&0.25
+\end{pmatrix}.
+$$
+
+There is only one regression weight, $w_0$, so the normal
+equation becomes a scalar equation.
+
+First, calculate its left-hand coefficient:
+
+$$
+\boldsymbol\Phi^{\mathsf T}\mathbf R\boldsymbol\Phi
 =
-\frac{0.25(2+2+2-2)}{4(0.25)}
+0.25+0.25+0.25+0.25
 =
 1.
 $$
 
-This agrees with the Newton update in Section 3 and gives
-the same updated probability, $\sigma(1)\approx0.731$.
+Next, calculate its right-hand side:
+
+$$
+\boldsymbol\Phi^{\mathsf T}\mathbf R\mathbf z
+=
+0.25(2)+0.25(2)+0.25(2)+0.25(-2)
+=
+1.
+$$
+
+The normal equation is therefore
+
+$$
+1\cdot w_0^{(\mathrm{new})}=1,
+$$
+
+giving
+
+$$
+\boxed{w_0^{(\mathrm{new})}=1.}
+$$
+
+The weighted-mean formula is simply this same calculation
+written using sums:
+
+$$
+w_0^{(\mathrm{new})}
+=
+\frac{\sum_{n=1}^{4}r_nz_n}
+     {\sum_{n=1}^{4}r_n}
+=
+1.
+$$
+
+Section 4.3 explains how each observed label produces an
+effective target. The calculation here fits one shared
+intercept to all four effective targets.
+
+The targets are $(2,2,2,-2)$, but the updated model must give
+every day the same score because it has only an intercept.
+That shared score is now $a_n=1$, giving every day a predicted
+probability of $\sigma(1)\approx0.731$.
+
+This is exactly the Newton update obtained in Section 3 above. 
 
 #### Why repeat and reweight?
 
 The updated weights change the probabilities. Consequently,
 we must recalculate both the curvature weights $r_n$ and
-the effective targets $z_n$ before the next calculation.
-
-This gives the procedure its name:
+the effective targets $z_n$ before the next calculation. This gives the procedure its name:
 **iteratively reweighted least squares**, or **IRLS**.
 
 Each iteration consists of:
