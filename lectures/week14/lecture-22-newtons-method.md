@@ -1004,7 +1004,7 @@ $$
 We keep this day fixed so that changes in its probability reflect
 changes in the fitted weights.
 
-![Comparison of gradient descent and Newton's method](images/lecture22-conditional-densities.png)
+![Comparison of gradient descent and Newton's method](images/lecture22-newton-gradientdescen.png)
 
 **Figure:** Left: summed cross-entropy across optimization
 iterations. Right: the estimated high-demand probability for a
