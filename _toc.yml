@@ -63,6 +63,10 @@ parts:
         title: Week 13
         sections:
           - file: lectures/week13/lecture-21-logistic-regression-and-glms
+      - file: lectures/week14/index
+        title: Week 14
+        sections:
+          - file: lectures/week14/lecture-22-newtons-method
   - caption: Code
     chapters:
       - file: codes/intro-to-python
