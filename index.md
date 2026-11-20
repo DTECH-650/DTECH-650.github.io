@@ -108,8 +108,8 @@ Selected readings, videos, and other learning materials will be provided through
 | 11 | 11/02/26 – 11/08/26 | Regularized and Bayesian linear regression |
 | 12 | 11/09/26 – 11/15/26 | Linear models for classification and generalized linear models |
 | 13 | 11/16/26 – 11/22/26 | Linear models for classification and generalized linear models |
-| 14 | 11/23/26 – 11/29/26 | Introduction to neural networks |
-| 15 | 11/30/26 – 12/06/26 | Backpropagation |
+| 14 | 11/23/26 – 11/29/26 | Newton's method and iteratively reweighted least squares |
+| 15 | 11/30/26 – 12/06/26 | Introduction to neural networks |
 | 16 | 12/07/26 – 12/13/26 | Class wrap-up and review |
 
 ## Course platforms
