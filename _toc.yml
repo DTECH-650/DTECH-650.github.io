@@ -72,7 +72,6 @@ parts:
       - file: codes/intro-to-python
       - file: codes/distributions
       - file: codes/lecture-22-Newtons-method
-        title: "Lecture 22 — Newton's Method and IRLS"
   - caption: Assignments
     chapters:
       - file: assignments/assignment1
