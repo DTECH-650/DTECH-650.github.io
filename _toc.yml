@@ -71,6 +71,7 @@ parts:
     chapters:
       - file: codes/intro-to-python
       - file: codes/distributions
+      - file: codes/lecture-22-Newtons-method 
   - caption: Assignments
     chapters:
       - file: assignments/assignment1
@@ -79,3 +80,4 @@ parts:
   - caption: Project
     chapters:
       - file: project/project1
+      - file: project/project1-starter
